@@ -1,1 +1,1 @@
-# CSCE1102-Lab Project, MEDAD
+# CSCE1102-Lab Project, MEDAD Bookstore
