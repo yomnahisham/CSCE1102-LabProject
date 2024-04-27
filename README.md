@@ -1,1 +1,1 @@
-# CSCE1102-LabProject
+# CSCE1102-Lab Project, MEDAD
