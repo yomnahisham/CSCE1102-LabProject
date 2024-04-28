@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoginWindow</class>
+ <widget class="QDialog" name="LoginWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>387</width>
+    <height>218</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="loginB">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>170</y>
+     <width>100</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Login</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="regB">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>170</y>
+     <width>100</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Register</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LoginAsL">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>50</y>
+     <width>58</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Login as:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="customerB">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>110</y>
+     <width>100</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Customer</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="adminB">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>110</y>
+     <width>100</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Admin</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="userL">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Username:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="passL">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>130</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Password:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="userLE">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>80</y>
+     <width>113</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="passLE">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>130</y>
+     <width>113</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="userError">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>80</y>
+     <width>131</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#941100;&quot;&gt;Incorrect Username&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="passError">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>130</y>
+     <width>131</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#941100;&quot;&gt;Incorrect Password&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

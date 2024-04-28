@@ -16,9 +16,8 @@ SOURCES += \
     checkout.cpp \
     customer.cpp \
     discounts.cpp \
-    loginwinodw.cpp \
+    loginwindow.cpp \
     main.cpp \
-    mainwindow.cpp \
     productmanager.cpp \
     products.cpp \
     registerwindow.cpp \
@@ -34,8 +33,7 @@ HEADERS += \
     checkout.h \
     customer.h \
     discounts.h \
-    loginwinodw.h \
-    mainwindow.h \
+    loginwindow.h \
     productmanager.h \
     products.h \
     registerwindow.h \
@@ -45,8 +43,7 @@ HEADERS += \
 
 FORMS += \
     checkout.ui \
-    loginwinodw.ui \
-    mainwindow.ui \
+    loginwindow.ui \
     productmanager.ui \
     registerwindow.ui \
     shoppingcart.ui
@@ -55,3 +52,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    UserData.qrc
