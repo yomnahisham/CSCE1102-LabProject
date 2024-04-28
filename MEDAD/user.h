@@ -8,6 +8,8 @@ public:
     User();
     void setUsername (QString u);
     void setPassword (QString p);
+    QString getUsername ();
+    QString getPassword ();
     bool isempty = true;
 
 private:

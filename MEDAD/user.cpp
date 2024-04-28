@@ -13,4 +13,11 @@ void User::setPassword (QString p)
     password = p;
 }
 
+QString User::getUsername (){
+    return username;
+}
+
+QString User::getPassword (){
+    return password;
+}
 

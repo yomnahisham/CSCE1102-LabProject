@@ -923,7 +923,17 @@ loginwindow.o: ../MEDAD/loginwindow.cpp ../MEDAD/loginwindow.h \
 		../MEDAD/registerwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loginwindow.o ../MEDAD/loginwindow.cpp
 
-main.o: ../MEDAD/main.cpp ../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+main.o: ../MEDAD/main.cpp ../MEDAD/loginwindow.h \
+		../MEDAD/allusers.h \
+		../MEDAD/user.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../MEDAD/main.cpp
 

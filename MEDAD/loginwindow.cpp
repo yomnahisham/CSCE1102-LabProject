@@ -1,6 +1,8 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
 #include "registerwindow.h"
+#include "allusers.h"
+#include "productmanager.h"
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QDialog(parent)
@@ -47,7 +49,6 @@ void LoginWindow::on_adminB_clicked()
     ui -> passL -> show();
     ui -> userLE -> show();
     ui -> passLE -> show();
-    ui -> regB -> show();
     ui -> loginB -> show();
 }
 
@@ -62,17 +63,23 @@ void LoginWindow::on_regB_clicked()
 
 void LoginWindow::on_loginB_clicked()
 {
+    QString username = ui -> userLE ->text();
+    QString password = ui -> passLE ->text();
+
     //check fo username
-    bool userExists = false;
+    bool userExists = AllUsers::userExists(UserType, username);
 
     //check for password
-    bool passCorrect = false;
+    bool passCorrect = AllUsers::authenticateUser(UserType, username, password);
+
 
 
     //if both apply then go to productmanager window
     if (userExists&&passCorrect)
     {
-
+        ProductManager home;
+        home.show();
+        hide();
     }
     else
     {   //show accurate error messages and clear inaccurate LineEdits
