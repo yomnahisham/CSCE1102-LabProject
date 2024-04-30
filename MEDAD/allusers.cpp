@@ -19,7 +19,7 @@ AllUsers& AllUsers::operator=( AllUsers& other) { // add const
 
 void AllUsers::LoadUsers(){
     //load all user data
-    QFile userData (":/new/prefix1/UserData.txt");
+    QFile userData (":/UsersInfo/UserData.txt");
     if (!userData.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Failed to open file:" << userData.errorString();
         return;
@@ -44,7 +44,7 @@ void AllUsers::LoadUsers(){
 
 void AllUsers::SaveUsers()
 {
-    QFile userData (":/new/prefix1/UserData.txt");
+    QFile userData (":/UsersInfo/UserData.txt");
     if (userData.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         QTextStream stream(&userData);
 
