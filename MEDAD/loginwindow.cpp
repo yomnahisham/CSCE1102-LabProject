@@ -55,13 +55,14 @@ void LoginWindow::on_adminB_clicked()
     ui -> userLE -> show();
     ui -> passLE -> show();
     ui -> loginB -> show();
+
 }
 
 
 void LoginWindow::on_regB_clicked()
 {
-    RegisterWindow reg;
-    reg.show();
+    RegisterWindow *reg = new RegisterWindow(nullptr, users);
+    reg->show();
     hide();
 }
 
@@ -83,8 +84,9 @@ void LoginWindow::on_loginB_clicked()
     if (userExists&&loggedUser)
     {
         qDebug()<< "user found";
-        ProductManager home (nullptr, loggedUser);
-        home.show();
+        ProductManager* home = new ProductManager();
+        home-> setUser (loggedUser);
+        home-> show();
         hide();
     }
     else

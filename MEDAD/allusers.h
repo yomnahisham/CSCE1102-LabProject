@@ -21,6 +21,7 @@ public:
 private:
     static int m;
     static int hash (QString u, int att = 0);
+    bool finishedloading;
 
 };
 

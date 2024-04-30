@@ -8,17 +8,12 @@
 int AllUsers::m = 17;
 
 AllUsers::AllUsers() {
+    finishedloading = false;
 }
 
 AllUsers& AllUsers::operator=( AllUsers& other) { // add const
-    for (int i = 0; i < m; i++)
-    {
-        AllAdmins[i].setUsername(other.AllAdmins[i].getUsername());
-        AllAdmins[i].setPassword(other.AllAdmins[i].getPassword());
-        AllCustomers[i].setUsername(other.AllCustomers[i].getUsername());
-        AllCustomers[i].setPassword(other.AllCustomers[i].getPassword());
-    }
-    //could also save after each insert and load here
+    LoadUsers();
+    qDebug()<< "loaded in copy assign";
     return *this;
 }
 
@@ -44,8 +39,26 @@ void AllUsers::LoadUsers(){
     }
 
     userData.close ();
+    finishedloading = true;
 }
 
+void AllUsers::SaveUsers()
+{
+    QFile userData (":/new/prefix1/UserData.txt");
+    if (userData.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        QTextStream stream(&userData);
+
+        for (int i = 0 ; i < m; i ++)
+        {
+            stream << "admin " << AllAdmins[i].getUsername() << " " << AllAdmins[i].getPassword() ;
+            stream << "customer " << AllCustomers[i].getUsername() << " " << AllCustomers[i].getPassword() ;
+        }
+
+        userData.close();
+    } else
+        qDebug ()<< "file did not open correctly";
+
+}
 
 int AllUsers:: hash (QString u, int att)
 {   //quadratic probing
@@ -82,6 +95,10 @@ void AllUsers::insert (Type type, QString u, QString p)
             AllCustomers[i].setPassword(p);
         }
         break;
+    }
+    if (finishedloading)
+    {
+        SaveUsers(); // save any new users created
     }
 }
 

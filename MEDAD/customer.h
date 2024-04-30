@@ -12,6 +12,7 @@ public:
 
 private:
     ShoppingCart MyCart;
+
     //need to add credit cards??
     //need to add presonalized data
 };

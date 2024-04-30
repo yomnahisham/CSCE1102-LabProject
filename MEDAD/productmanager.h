@@ -13,11 +13,13 @@ class ProductManager : public QWidget
     Q_OBJECT
 
 public:
-    explicit ProductManager(QWidget *parent = nullptr, User* loggedUser = nullptr);
+    explicit ProductManager(QWidget *parent = nullptr);
     ~ProductManager();
+    void setUser(User* loggedUser);
 
 private:
     Ui::ProductManager *ui;
+    User* user;
 };
 
 #endif // PRODUCTMANAGER_H
