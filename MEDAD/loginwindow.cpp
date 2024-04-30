@@ -4,7 +4,7 @@
 #include "allusers.h"
 #include "productmanager.h"
 
-LoginWindow::LoginWindow(QWidget *parent)
+LoginWindow::LoginWindow(QWidget *parent, AllUsers* Allusers)
     : QDialog(parent)
     , ui(new Ui::LoginWindow)
 {
@@ -17,6 +17,11 @@ LoginWindow::LoginWindow(QWidget *parent)
     ui -> userError -> hide();
     ui -> regB -> hide();
     ui -> loginB -> hide();
+    users = Allusers;
+    if (users)
+    {
+        qDebug()<< "coppied successfully";
+    }
 }
 
 LoginWindow::~LoginWindow()
@@ -67,17 +72,18 @@ void LoginWindow::on_loginB_clicked()
     QString password = ui -> passLE ->text();
 
     //check fo username
-    bool userExists = AllUsers::userExists(UserType, username);
+    bool userExists = users-> AllUsers::userExists(UserType, username);
 
     //check for password
-    bool passCorrect = AllUsers::authenticateUser(UserType, username, password);
+    loggedUser = users-> AllUsers::authenticateUser(UserType, username, password);
 
 
 
     //if both apply then go to productmanager window
-    if (userExists&&passCorrect)
+    if (userExists&&loggedUser)
     {
-        ProductManager home;
+        qDebug()<< "user found";
+        ProductManager home (nullptr, loggedUser);
         home.show();
         hide();
     }
@@ -90,8 +96,9 @@ void LoginWindow::on_loginB_clicked()
             ui -> userLE -> setText("");
 
         }
-        if (!passCorrect)
+        if (!loggedUser)
         {
+            qDebug()<< "null ptr";
             ui -> passError -> show();
             ui -> passLE -> setText("");
 

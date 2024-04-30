@@ -8,12 +8,11 @@ public:
     User();
     void setUsername (QString u);
     void setPassword (QString p);
-    QString getUsername ();
-    QString getPassword ();
+    QString getUsername () ;
+    QString getPassword () ;
     bool isempty = true;
-
-private:
     QString username;
+private:
     QString password;
 
 };

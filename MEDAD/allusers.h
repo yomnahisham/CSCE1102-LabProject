@@ -9,14 +9,15 @@ class AllUsers
 {
 public:
     AllUsers();
+    AllUsers& operator=(AllUsers& other);
     enum Type {admin, customer};
-    static Customer AllCustomers [17];
-    static Admin AllAdmins [17];
-    static void SaveUsers ();
-    static void LoadUsers();
-    static bool authenticateUser(Type type , QString u, QString p);
-    static void insert (Type type, QString u, QString p);
-    static bool userExists (Type type, QString u) ;
+    Customer AllCustomers [17];
+    Admin AllAdmins [17];
+    void SaveUsers ();
+    void LoadUsers();
+    User* authenticateUser(Type type , QString u, QString p);
+    void insert (Type type, QString u, QString p);
+    bool userExists (Type type, QString u) ;
 private:
     static int m;
     static int hash (QString u, int att = 0);

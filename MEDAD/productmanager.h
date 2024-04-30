@@ -1,5 +1,6 @@
 #ifndef PRODUCTMANAGER_H
 #define PRODUCTMANAGER_H
+#include "user.h"
 
 #include <QWidget>
 
@@ -12,7 +13,7 @@ class ProductManager : public QWidget
     Q_OBJECT
 
 public:
-    explicit ProductManager(QWidget *parent = nullptr);
+    explicit ProductManager(QWidget *parent = nullptr, User* loggedUser = nullptr);
     ~ProductManager();
 
 private:

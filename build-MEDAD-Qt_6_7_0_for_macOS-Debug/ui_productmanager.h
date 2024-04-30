@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -18,12 +19,16 @@ QT_BEGIN_NAMESPACE
 class Ui_ProductManager
 {
 public:
+    QLabel *label;
 
     void setupUi(QWidget *ProductManager)
     {
         if (ProductManager->objectName().isEmpty())
             ProductManager->setObjectName("ProductManager");
         ProductManager->resize(400, 300);
+        label = new QLabel(ProductManager);
+        label->setObjectName("label");
+        label->setGeometry(QRect(140, 120, 171, 16));
 
         retranslateUi(ProductManager);
 
@@ -33,6 +38,7 @@ public:
     void retranslateUi(QWidget *ProductManager)
     {
         ProductManager->setWindowTitle(QCoreApplication::translate("ProductManager", "Form", nullptr));
+        label->setText(QCoreApplication::translate("ProductManager", "Reached Product manager", nullptr));
     } // retranslateUi
 
 };
