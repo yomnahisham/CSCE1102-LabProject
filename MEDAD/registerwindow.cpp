@@ -4,6 +4,10 @@
 #include "allusers.h"
 #include "loginwindow.h"
 #include "productmanager.h"
+#include "customer.h"
+
+#include <QDebug>
+using namespace std;
 
 RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers)
     : QWidget(parent)
@@ -12,6 +16,7 @@ RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers)
     ui->setupUi(this);
     ui -> userError -> hide();
     ui -> passError -> hide();
+    ui->preferenceError->hide();
     users = Allusers;
     if (users)
     {
@@ -44,6 +49,35 @@ void RegisterWindow::on_regB_clicked()
     else
         repeatedPass = false;
 
+    vector<string> genres;
+    if(ui->fantasy->isChecked()) {
+        genres.push_back("Fantasy");
+    }
+    if(ui->mystery->isChecked()) {
+        genres.push_back("Mystery");
+    }
+    if(ui->thriller->isChecked()) {
+        genres.push_back("Thriller");
+    }
+    if(ui->selfHelp->isChecked()) {
+        genres.push_back("SelfHelp");
+    }
+    if(ui->romance->isChecked()) {
+        genres.push_back("Romance");
+    }
+    if(ui->horror->isChecked()) {
+        genres.push_back("Horror");
+    }
+
+    // empty doesn't work here? does that mean push back doesn't also work?
+    if(genres.empty()) {
+        ui->preferenceError->setText("* Please select at least one preference");
+        ui->preferenceError->setVisible(true);
+    }
+
+    Customer::setPreferredGenres(genres);
+    qDebug() << "Worked, sent genres into preferences.";
+
     if (uniqueUser && repeatedPass)
     {
         users -> insert (AllUsers:: customer, username, password);
@@ -53,9 +87,7 @@ void RegisterWindow::on_regB_clicked()
         home-> show();
         hide();
 
-        //add prefrences
-    }else
-    {
+    }else {
         if (!uniqueUser)
         {   ui -> userError -> show();
             ui -> userLE -> setText("");
@@ -65,6 +97,11 @@ void RegisterWindow::on_regB_clicked()
             ui -> passLE -> setText("");
             ui -> passRLE -> setText("");
             ui -> passError -> show();
+        }
+        // if no prefered generes, prints out an error
+        if (!ui->fantasy->isChecked() && !ui->mystery->isChecked() && !ui->thriller->isChecked() && !ui->selfHelp->isChecked() && !ui->romance->isChecked() && !ui->horror->isChecked()) {
+            ui->preferenceError->setText("* Please include your preferences");
+            ui->preferenceError->setVisible(true);
         }
     }
 
