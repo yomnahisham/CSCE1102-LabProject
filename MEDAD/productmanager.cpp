@@ -3,11 +3,16 @@
 #include "clickablelabels.h"
 #include "shoppingcart.h"
 
+#include <QScreen>
+
 ProductManager::ProductManager(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ProductManager)
 {
     ui->setupUi(this);
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
 
     //creating custom clickable label
     ClickableLabels* cartLabel = new ClickableLabels(this);
@@ -19,10 +24,10 @@ ProductManager::ProductManager(QWidget *parent)
     //connecting cartLabel, its signal from ClickableLabels, this ui, and the function onCartClicked to handle what happens after cart is clicked
     connect(cartLabel, &ClickableLabels::clicked, this, &ProductManager::onCartClicked);
 
-    int windowWidth = width();
+    int widthFull = screenGeometry.width();
 
     int cartLabelWidth = cartLabel->width();
-    cartLabel->move(windowWidth - cartLabelWidth, 10);
+    cartLabel->move(widthFull - cartLabelWidth, 30);
 }
 
 void ProductManager::setUser(User* loggedUser){

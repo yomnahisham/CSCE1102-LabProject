@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>858</width>
+    <width>1305</width>
     <height>764</height>
    </rect>
   </property>
@@ -20,8 +20,8 @@
   <widget class="QPushButton" name="loginB">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>440</y>
+     <x>650</x>
+     <y>460</y>
      <width>100</width>
      <height>32</height>
     </rect>
@@ -33,8 +33,8 @@
   <widget class="QPushButton" name="regB">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>440</y>
+     <x>440</x>
+     <y>460</y>
      <width>100</width>
      <height>32</height>
     </rect>
@@ -46,8 +46,8 @@
   <widget class="QLabel" name="LoginAsL">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>320</y>
+     <x>570</x>
+     <y>340</y>
      <width>58</width>
      <height>16</height>
     </rect>
@@ -59,8 +59,8 @@
   <widget class="QPushButton" name="customerB">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>370</y>
+     <x>450</x>
+     <y>390</y>
      <width>100</width>
      <height>32</height>
     </rect>
@@ -72,8 +72,8 @@
   <widget class="QPushButton" name="adminB">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>370</y>
+     <x>650</x>
+     <y>390</y>
      <width>100</width>
      <height>32</height>
     </rect>
@@ -85,8 +85,8 @@
   <widget class="QLabel" name="userL">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>320</y>
+     <x>430</x>
+     <y>340</y>
      <width>71</width>
      <height>16</height>
     </rect>
@@ -98,8 +98,8 @@
   <widget class="QLabel" name="passL">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>370</y>
+     <x>430</x>
+     <y>390</y>
      <width>81</width>
      <height>16</height>
     </rect>
@@ -111,8 +111,8 @@
   <widget class="QLineEdit" name="userLE">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>320</y>
+     <x>520</x>
+     <y>340</y>
      <width>113</width>
      <height>21</height>
     </rect>
@@ -121,8 +121,8 @@
   <widget class="QLineEdit" name="passLE">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>370</y>
+     <x>520</x>
+     <y>390</y>
      <width>113</width>
      <height>21</height>
     </rect>
@@ -134,8 +134,8 @@
   <widget class="QLabel" name="userError">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>320</y>
+     <x>650</x>
+     <y>340</y>
      <width>131</width>
      <height>16</height>
     </rect>
@@ -147,8 +147,8 @@
   <widget class="QLabel" name="passError">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>370</y>
+     <x>650</x>
+     <y>390</y>
      <width>131</width>
      <height>16</height>
     </rect>
