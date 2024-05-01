@@ -18,22 +18,6 @@
 
 </string>
   </property>
-  <widget class="QScrollBar" name="verticalScrollBar">
-   <property name="geometry">
-    <rect>
-     <x>1020</x>
-     <y>220</y>
-     <width>16</width>
-     <height>421</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(175, 207, 255);</string>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
-   </property>
-  </widget>
   <widget class="QLabel" name="logoCorner">
    <property name="geometry">
     <rect>
@@ -45,6 +29,19 @@
    </property>
    <property name="text">
     <string>MEDAD LOGO</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="logoSub">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>100</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>subtitle</string>
    </property>
   </widget>
  </widget>

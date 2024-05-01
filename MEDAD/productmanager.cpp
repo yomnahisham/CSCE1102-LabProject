@@ -15,16 +15,19 @@ ProductManager::ProductManager(QWidget *parent)
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
 
-    //creating custom clickable label
-    ClickableLabels* cartLabel = new ClickableLabels(this);
-    ClickableLabels* signOutButton = new ClickableLabels(this);
-
     //setting logo in the corner of the shop app
-    QPixmap logoPix (":/logos/assets/nameonlyLogo.png");
+    QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
     int w = ui->logoCorner->width();
     int h = ui->logoCorner->height();
     ui-> logoCorner -> setPixmap(logoPix.scaled(w,h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->logoCorner->move(50, 50);
+
+    QPixmap sublogoPix(":/logos/assets/logosubtitle.png");
+    ui-> logoSub -> setPixmap(sublogoPix.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    //creating custom clickable labels and buttons
+    ClickableLabels* cartLabel = new ClickableLabels(this);
+    ClickableLabels* signOutButton = new ClickableLabels(this);
 
     //setting image of the clickable shopping cart label
     QPixmap cartPix(":/logos/assets/shoppingcartlogo.png");
@@ -43,8 +46,6 @@ ProductManager::ProductManager(QWidget *parent)
 
     //connecting signoutbutton, its signal from ClickableLabels, this ui, and the function onSignOutClicked to handle the click
     connect(signOutButton, &ClickableLabels::clicked, this, &ProductManager::onSignOutClicked);
-
-
 }
 
 void ProductManager::setUser(User* loggedUser){
