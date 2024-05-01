@@ -2,4 +2,7 @@
     <qresource prefix="/UsersInfo">
         <file>UserData.txt</file>
     </qresource>
+    <qresource prefix="/backandlogos">
+        <file>assets/whitebackground.png</file>
+    </qresource>
 </RCC>

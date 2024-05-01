@@ -13,19 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>310</y>
-     <width>171</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Reached Product manager</string>
-   </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">setbackgroundcolor: rgb(255, 255, 255);
+</string>
+  </property>
  </widget>
  <resources/>
  <connections/>
