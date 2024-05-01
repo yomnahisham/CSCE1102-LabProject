@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/BookMarks">
+        <file>assets/Bookmark Set Arabic 2.jpeg</file>
+        <file>assets/Bookmark Set Egyptian 2.jpeg</file>
+        <file>assets/Bookmark Set Plaestine 1.jpeg</file>
+        <file>assets/Bookmark Set Palestine2.jpeg</file>
+        <file>assets/Bookmark Set Harry Potter 3.jpeg</file>
+        <file>assets/Bookmark Set Harry Potter2.jpeg</file>
+        <file>assets/Bookmark Set HarryPotter2.jpeg</file>
+        <file>assets/Bookmark Set3.jpeg</file>
+        <file>assets/Bookmark Set2.jpeg</file>
+        <file>assets/Bookmark Set1.jpeg</file>
+    </qresource>
+</RCC>

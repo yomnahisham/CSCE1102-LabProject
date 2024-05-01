@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/Tshirts">
+        <file>assets/I'd Rather tshirt.jpeg</file>
+        <file>assets/Cool Kids Are Reading.jpeg</file>
+        <file>assets/Books Defense Tshirt.jpeg</file>
+        <file>assets/Reading Ticket Tshirst.jpeg</file>
+    </qresource>
+</RCC>

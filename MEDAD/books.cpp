@@ -1,3 +1,28 @@
 #include "books.h"
 
-Books::Books() {}
+Books::Books(QString n, double p, int q, bool a, QPixmap i, QString g, QString au, QString I): Products(n,p,q,a,i) , genre(g) ,author(au), ISBN(I) {}
+
+void Books:: setGenre(QString g)
+{
+    genre=g;
+}
+QString Books::getGenre()
+{
+    return genre;
+}
+void Books::setAuthor(QString au)
+{
+    author=au;
+}
+QString Books::getAuthor()
+{
+    return author;
+}
+void Books:: setISBN(QString I)
+{
+    ISBN=I;
+}
+QString Books::getISBN()
+{
+    return ISBN;
+}

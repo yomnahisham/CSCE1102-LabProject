@@ -1,0 +1,55 @@
+<RCC>
+    <qresource prefix="/Books">
+        <file>assets/1984.jpeg</file>
+        <file>assets/angels anddemons.jpeg</file>
+        <file>assets/animal farm.jpeg</file>
+        <file>assets/anna kare.jpeg</file>
+        <file>assets/beirut nightmares.jpeg</file>
+        <file>assets/splendid suns.jpeg</file>
+        <file>assets/kite runner.jpeg</file>
+        <file>assets/hot in this.jpeg</file>
+        <file>assets/huda f.jpeg</file>
+        <file>assets/iron cage.jpeg</file>
+        <file>assets/the hundred years war on palestine.jpeg</file>
+        <file>assets/no sea in beirut.jpg</file>
+        <file>assets/men in the sun.jpeg</file>
+        <file>assets/haifa.jpeg</file>
+        <file>assets/i was born.jpeg</file>
+        <file>assets/i saw ramallah.jpeg</file>
+        <file>assets/ya masr hanet.jpeg</file>
+        <file>assets/fi alquds.jpeg</file>
+        <file>assets/tantouriah.jpeg</file>
+        <file>assets/granada.jpeg</file>
+        <file>assets/broken wings.jpeg</file>
+        <file>assets/prophet.jpeg</file>
+        <file>assets/monte cristo.jpeg</file>
+        <file>assets/musketeers.jpeg</file>
+        <file>assets/the bell tolls.jpeg</file>
+        <file>assets/old man.jpeg</file>
+        <file>assets/plague.jpeg</file>
+        <file>assets/stranger.png</file>
+        <file>assets/tender is.jpeg</file>
+        <file>assets/gatsby.jpeg</file>
+        <file>assets/villette.jpeg</file>
+        <file>assets/jane eyre.jpeg</file>
+        <file>assets/wutheruing heights.jpeg</file>
+        <file>assets/room of ones.jpeg</file>
+        <file>assets/dalloway.jpeg</file>
+        <file>assets/davinci code.jpeg</file>
+        <file>assets/karawan.jpeg</file>
+        <file>assets/days.jpeg</file>
+        <file>assets/sanayat.jpeg</file>
+        <file>assets/kohl.jpeg</file>
+        <file>assets/the thief and the dogs.jpeg</file>
+        <file>assets/midaq.jpeg</file>
+        <file>assets/judgement.jpg</file>
+        <file>assets/metamorphosis.jpeg</file>
+        <file>assets/karamazov.jpeg</file>
+        <file>assets/crime.jpeg</file>
+        <file>assets/othello.jpeg</file>
+        <file>assets/ceaser.jpeg</file>
+        <file>assets/oliver.jpeg</file>
+        <file>assets/tale of two.jpeg</file>
+        <file>assets/war and peace.jpeg</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/Bags">
+        <file>assets/Raising Readers Tote Bag.jpeg</file>
+        <file>assets/Book Stack Tote Bag.jpeg</file>
+        <file>assets/Screenshot 2024-05-01 145322.png</file>
+    </qresource>
+</RCC>

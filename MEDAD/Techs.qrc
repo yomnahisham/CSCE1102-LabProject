@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/Techs">
+        <file>assets/Reading Light.jpeg</file>
+        <file>assets/Book Light.jpeg</file>
+        <file>assets/Kindle.jpeg</file>
+    </qresource>
+</RCC>
