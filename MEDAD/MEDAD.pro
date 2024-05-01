@@ -57,6 +57,6 @@ RESOURCES += \
     Bags.qrc \
     BookMarks.qrc \
     Books.qrc \
+    Resources.qrc \
     Techs.qrc \
-    Tshirts.qrc \
-    UserData.qrc
+    Tshirts.qrc

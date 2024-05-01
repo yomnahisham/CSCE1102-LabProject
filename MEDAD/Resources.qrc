@@ -4,5 +4,6 @@
     </qresource>
     <qresource prefix="/backandlogos">
         <file>assets/whitebackground.png</file>
+        <file>assets/shoppingcartlogo.png</file>
     </qresource>
 </RCC>
