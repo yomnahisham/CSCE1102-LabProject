@@ -38,14 +38,25 @@ void AllUsers::LoadUsers(){
 
     }
 
-    userData.close ();
+    userData.close();
+
     finishedloading = true;
 }
 
 void AllUsers::SaveUsers()
 {
     QFile userData (":/UsersInfo/UserData.txt");
-    if (userData.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+
+    if (userData.setPermissions(QFile::WriteOwner)) {
+        qDebug() << "Permissions updated successfully for file:";
+    } else {
+        qDebug() << "Error updating permissions for file:" ;
+    }
+
+    userData.open(QIODevice::WriteOnly | QIODevice::Text);
+    if (userData.isOpen()) {
+        qDebug ()<< "opened file:";
+
         QTextStream stream(&userData);
 
         for (int i = 0 ; i < m; i ++)
@@ -56,7 +67,7 @@ void AllUsers::SaveUsers()
 
         userData.close();
     } else
-        qDebug ()<< "file did not open correctly";
+        qDebug ()<< "Error opening file:" << userData.errorString();
 
 }
 
@@ -96,6 +107,7 @@ void AllUsers::insert (Type type, QString u, QString p)
         }
         break;
     }
+
     if (finishedloading)
     {
         SaveUsers(); // save any new users created
