@@ -13,21 +13,28 @@ ProductManager::ProductManager(QWidget *parent)
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
 
     //creating custom clickable label
     ClickableLabels* cartLabel = new ClickableLabels(this);
 
+    //setting logo in the corner of the shop app
+    QPixmap logoPix (":/logos/assets/nameonlyLogo.png");
+    int w = ui->logoCorner->width();
+    int h = ui->logoCorner->height();
+    ui-> logoCorner -> setPixmap(logoPix.scaled(w,h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->logoCorner->move(50, 50);
+
     //setting image of the clickable shopping cart label
-    QPixmap cartPix(":/backandlogos/assets/shoppingcartlogo.png");
+    QPixmap cartPix(":/logos/assets/shoppingcartlogo.png");
     cartLabel->setPixmap(cartPix.scaled(cartLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    int cartLabelWidth = cartLabel->width();
+    int headerLevel = widthFull - (2*cartLabelWidth);
+    cartLabel->move(headerLevel, 89);
 
     //connecting cartLabel, its signal from ClickableLabels, this ui, and the function onCartClicked to handle what happens after cart is clicked
     connect(cartLabel, &ClickableLabels::clicked, this, &ProductManager::onCartClicked);
 
-    int widthFull = screenGeometry.width();
-
-    int cartLabelWidth = cartLabel->width();
-    cartLabel->move(widthFull - cartLabelWidth, 30);
 }
 
 void ProductManager::setUser(User* loggedUser){

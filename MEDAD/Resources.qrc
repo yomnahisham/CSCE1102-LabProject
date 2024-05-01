@@ -2,7 +2,8 @@
     <qresource prefix="/UsersInfo">
         <file>UserData.txt</file>
     </qresource>
-    <qresource prefix="/backandlogos">
+    <qresource prefix="/logos">
         <file>assets/shoppingcartlogo.png</file>
+        <file>assets/nameonlyLogo.png</file>
     </qresource>
 </RCC>
