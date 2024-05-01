@@ -41,8 +41,8 @@ ProductManager::ProductManager(QWidget *parent)
     int signOutButtonWidth = 135;
     signOutButton->move(widthFull - (signOutButtonWidth), 60);
 
-    //connecting cartLabel, its signal from ClickableLabels, this ui, and the function onCartClicked to handle what happens after cart is clicked
-    connect(signOutButton, &ClickableLabels::clicked, this, &ProductManager::signOutClicked);
+    //connecting signoutbutton, its signal from ClickableLabels, this ui, and the function onSignOutClicked to handle the click
+    connect(signOutButton, &ClickableLabels::clicked, this, &ProductManager::onSignOutClicked);
 
 
 }
@@ -70,6 +70,6 @@ void ProductManager::onCartClicked(){
     hide();
 }
 
-void ProductManager::signOutClicked(){
+void ProductManager::onSignOutClicked(){
 
 }
