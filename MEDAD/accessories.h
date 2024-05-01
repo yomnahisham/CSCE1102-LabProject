@@ -13,6 +13,8 @@ public:
     QString getType();
     void setSize(char s);
     char getSize();
+    void displayDetails();
+
 
 
 };

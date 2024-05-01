@@ -26,3 +26,13 @@ QString Books::getISBN()
 {
     return ISBN;
 }
+void Books::displayDetails()
+{
+    qDebug() << "Name: " << name;
+    qDebug() << "Price: " << price;
+    qDebug() << "Quantity: " << quantity;
+    qDebug() << "Availability: " << (availability ? "Available" : "Not available");
+    qDebug() << "Genre: " << genre;
+    qDebug() << "Author: " << author;
+    qDebug() << "ISBN: " << ISBN;
+}

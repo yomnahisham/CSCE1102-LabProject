@@ -9,6 +9,7 @@ public:
     Techs(QString n, double p, int q, bool a, QPixmap i, int w);
     void setWarranty(int w);
     int getWarranty();
+    void displayDetails();
 
 };
 

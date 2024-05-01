@@ -17,6 +17,7 @@ public:
     QString getAuthor();
     void setISBN(QString I);
     QString getISBN();
+    void displayDetails();
 
 };
 
