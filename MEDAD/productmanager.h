@@ -18,6 +18,7 @@ public:
     void setUser(User* loggedUser);
 private slots:
     void onCartClicked();
+    void signOutClicked();
 private:
     Ui::ProductManager *ui;
     User* user;

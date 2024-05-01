@@ -5,5 +5,6 @@
     <qresource prefix="/logos">
         <file>assets/shoppingcartlogo.png</file>
         <file>assets/nameonlyLogo.png</file>
+        <file>assets/signoutbutton.png</file>
     </qresource>
 </RCC>
