@@ -72,5 +72,6 @@ void ProductManager::onCartClicked(){
 }
 
 void ProductManager::onSignOutClicked(){
-
+    qDebug() << "signing out!";
+    //ayla, please see what signout should do according to your user and allusers class
 }
