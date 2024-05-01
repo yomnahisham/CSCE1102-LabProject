@@ -7,6 +7,7 @@
 #include "customer.h"
 
 #include <QDebug>
+#include <QScreen>
 using namespace std;
 
 RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers)
@@ -31,7 +32,11 @@ RegisterWindow::~RegisterWindow()
 
 void RegisterWindow::on_backB_clicked()
 {
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+
     LoginWindow* login = new LoginWindow();
+    login->resize(screenGeometry.width(), screenGeometry.height());
     login -> show();
     hide();
 }
@@ -83,11 +88,15 @@ void RegisterWindow::on_regB_clicked()
         Customer* cus = dynamic_cast<Customer*> (user);
         cus -> setPreferredGenres(genres);
         qDebug() << "Worked, sent genres into preferences.";
+
+        QScreen* screen = QGuiApplication::primaryScreen();
+        QRect screenGeometry = screen->geometry();
+
         ProductManager* home = new ProductManager();
-        home-> setUser (user);
+        home->resize(screenGeometry.width(), screenGeometry.height());
+        home-> setUser(user);
         home-> show();
         hide();
-
     }else {
         if (!uniqueUser)
         {   ui -> userError -> show();

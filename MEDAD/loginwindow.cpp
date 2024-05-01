@@ -4,6 +4,8 @@
 #include "allusers.h"
 #include "productmanager.h"
 
+#include <QScreen>
+
 LoginWindow::LoginWindow(QWidget *parent, AllUsers* Allusers)
     : QDialog(parent)
     , ui(new Ui::LoginWindow)
@@ -61,7 +63,11 @@ void LoginWindow::on_adminB_clicked()
 
 void LoginWindow::on_regB_clicked()
 {
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+
     RegisterWindow *reg = new RegisterWindow(nullptr, users);
+    reg->resize(screenGeometry.width(), screenGeometry.height());
     reg->show();
     hide();
 }
@@ -84,7 +90,12 @@ void LoginWindow::on_loginB_clicked()
     if (userExists&&loggedUser)
     {
         qDebug()<< "user found";
+
+        QScreen* screen = QGuiApplication::primaryScreen();
+        QRect screenGeometry = screen->geometry();
+
         ProductManager* home = new ProductManager();
+        home->resize(screenGeometry.width(), screenGeometry.height());
         home-> setUser (loggedUser);
         home-> show();
         hide();

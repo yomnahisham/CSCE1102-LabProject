@@ -38,7 +38,12 @@ ProductManager::~ProductManager()
 
 void ProductManager::onCartClicked(){
     qDebug() << "cart clicked, moving to shopping cart ui.";
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+
     ShoppingCart* shop = new ShoppingCart();
+    shop->resize(screenGeometry.width(), screenGeometry.height());
     shop->show();
     hide();
 }
