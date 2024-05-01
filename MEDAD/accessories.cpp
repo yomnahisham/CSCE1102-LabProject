@@ -18,3 +18,15 @@ char Accessories:: getSize()
 {
     return size;
 }
+
+void Accessories::displayDetails()
+{
+    qDebug() << "Name: " << name;
+    qDebug() << "Price: " << price;
+    qDebug() << "Quantity: " << quantity;
+    qDebug() << "Availability: " << (availability ? "Available" : "Not available");
+    qDebug() << "Type: " << type;
+    qDebug() << "Size: " << size;
+}
+
+

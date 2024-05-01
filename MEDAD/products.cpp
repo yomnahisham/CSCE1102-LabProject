@@ -6,7 +6,7 @@ Products::Products(QString n, double p, int q, bool a, QPixmap i )
     name=n;
     price=p;
     quantity=q;
-    availibilty=a;
+    availability=a;
     image=i;
 
 }
@@ -34,13 +34,13 @@ int Products:: getQuantity()
 {
     return quantity;
 }
-void Products:: setAvailibilty(bool a)
+void Products:: setAvailability(bool a)
 {
-    availibilty=a;
+    availability=a;
 }
-bool Products:: getAvailibilty()
+bool Products:: getAvailability()
 {
-    return availibilty;
+    return availability;
 }
 void Products:: setImage(QPixmap i)
 {
@@ -49,4 +49,12 @@ void Products:: setImage(QPixmap i)
 QPixmap Products:: getImage ()
 {
     return image;
+}
+void Products::displayDetails()
+{
+    qDebug() << "Name: " << name;
+    qDebug() << "Price: " << price;
+    qDebug() << "Quantity: " << quantity;
+    qDebug() << "Availability: " << (availability ? "Available" : "Not available");
+
 }
