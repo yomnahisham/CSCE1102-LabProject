@@ -1,6 +1,7 @@
 #include "productmanager.h"
 #include "ui_productmanager.h"
 #include "clickablelabels.h"
+#include "shoppingcart.h"
 
 ProductManager::ProductManager(QWidget *parent)
     : QWidget(parent)
@@ -34,4 +35,7 @@ ProductManager::~ProductManager()
 
 void ProductManager::onCartClicked(){
     qDebug() << "cart clicked, moving to shopping cart ui.";
+    ShoppingCart* shop = new ShoppingCart();
+    shop->show();
+    hide();
 }
