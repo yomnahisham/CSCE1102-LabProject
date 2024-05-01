@@ -1,15 +1,24 @@
 #include "productmanager.h"
 #include "ui_productmanager.h"
+#include "clickablelabels.h"
 
 ProductManager::ProductManager(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ProductManager)
 {
     ui->setupUi(this);
-    QPixmap cartpic(":/backandlogos/assets/shoppingcartlogo.png");
+
+    //creating custom clickable label
+    ClickableLabels* cartLabel = new ClickableLabels(this);
+
+    //setting image of the clickable shopping cart label
+    QPixmap cartPix(":/backandlogos/assets/shoppingcartlogo.png");
     int width = ui->cartpicture->width();
     int height = ui->cartpicture->height();
-    ui->cartpicture->setPixmap(cartpic.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    cartLabel->setPixmap(cartPix.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    //connecting cartLabel, its signal from ClickableLabels, this ui, and the function onCartClicked to handle what happens after cart is clicked
+    connect(cartLabel, &ClickableLabels::clicked, this, &ProductManager::onCartClicked);
 }
 
 void ProductManager::setUser(User* loggedUser){
@@ -21,4 +30,8 @@ void ProductManager::setUser(User* loggedUser){
 ProductManager::~ProductManager()
 {
     delete ui;
+}
+
+void ProductManager::onCartClicked(){
+    qDebug() << "cart clicked, moving to shopping cart ui.";
 }
