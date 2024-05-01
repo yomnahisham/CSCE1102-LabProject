@@ -6,12 +6,10 @@ ProductManager::ProductManager(QWidget *parent)
     , ui(new Ui::ProductManager)
 {
     ui->setupUi(this);
-
-    // Load the background image
-    QPixmap bgImage(":/backandlogos/assets/whitebackground.png");
-
-    // Set the background image to cover the entire widget
-    setStyleSheet("QWidget { background-image: url(:/backandlogos/assets/whitebackground.png); }");
+    QPixmap cartpic(":/backandlogos/assets/shoppingcartlogo.png");
+    int width = ui->cartpicture->width();
+    int height = ui->cartpicture->height();
+    ui->cartpicture->setPixmap(cartpic.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void ProductManager::setUser(User* loggedUser){
