@@ -814,14 +814,20 @@ moc_loginwindow.cpp: ../MEDAD/loginwindow.h \
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=15 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/LiloBilo/Qt/6.7.0/macos/mkspecs/macx-clang -I/Users/LiloBilo/Documents/GitHub/CSCE1102-LabProject/MEDAD -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtWidgets.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtGui.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/LiloBilo/Qt/6.7.0/macos/lib ../MEDAD/loginwindow.h -o moc_loginwindow.cpp
 
 moc_productmanager.cpp: ../MEDAD/productmanager.h \
+		../MEDAD/user.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
 		../../../../Qt/6.7.0/macos/libexec/moc
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=15 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/LiloBilo/Qt/6.7.0/macos/mkspecs/macx-clang -I/Users/LiloBilo/Documents/GitHub/CSCE1102-LabProject/MEDAD -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtWidgets.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtGui.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/LiloBilo/Qt/6.7.0/macos/lib ../MEDAD/productmanager.h -o moc_productmanager.cpp
 
 moc_registerwindow.cpp: ../MEDAD/registerwindow.h \
+		../MEDAD/user.h \
+		../MEDAD/allusers.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
 		../../../../Qt/6.7.0/macos/libexec/moc
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=15 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/LiloBilo/Qt/6.7.0/macos/mkspecs/macx-clang -I/Users/LiloBilo/Documents/GitHub/CSCE1102-LabProject/MEDAD -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtWidgets.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtGui.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/LiloBilo/Qt/6.7.0/macos/lib ../MEDAD/registerwindow.h -o moc_registerwindow.cpp
 
@@ -920,7 +926,8 @@ loginwindow.o: ../MEDAD/loginwindow.cpp ../MEDAD/loginwindow.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
 		ui_loginwindow.h \
-		../MEDAD/registerwindow.h
+		../MEDAD/registerwindow.h \
+		../MEDAD/productmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loginwindow.o ../MEDAD/loginwindow.cpp
 
 main.o: ../MEDAD/main.cpp ../MEDAD/loginwindow.h \
@@ -938,6 +945,7 @@ main.o: ../MEDAD/main.cpp ../MEDAD/loginwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../MEDAD/main.cpp
 
 productmanager.o: ../MEDAD/productmanager.cpp ../MEDAD/productmanager.h \
+		../MEDAD/user.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
 		ui_productmanager.h
@@ -947,9 +955,20 @@ products.o: ../MEDAD/products.cpp ../MEDAD/products.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o products.o ../MEDAD/products.cpp
 
 registerwindow.o: ../MEDAD/registerwindow.cpp ../MEDAD/registerwindow.h \
+		../MEDAD/user.h \
+		../MEDAD/allusers.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
-		ui_registerwindow.h
+		../MEDAD/admin.h \
+		ui_registerwindow.h \
+		../MEDAD/loginwindow.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		../MEDAD/productmanager.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o registerwindow.o ../MEDAD/registerwindow.cpp
 
 shoppingcart.o: ../MEDAD/shoppingcart.cpp ../MEDAD/shoppingcart.h \

@@ -49,39 +49,40 @@ void RegisterWindow::on_regB_clicked()
     else
         repeatedPass = false;
 
+    bool hasChecks = false;
     vector<string> genres;
     if(ui->fantasy->isChecked()) {
         genres.push_back("Fantasy");
+        hasChecks = true;
     }
     if(ui->mystery->isChecked()) {
         genres.push_back("Mystery");
+        hasChecks = true;
     }
     if(ui->thriller->isChecked()) {
         genres.push_back("Thriller");
+        hasChecks = true;
     }
     if(ui->selfHelp->isChecked()) {
         genres.push_back("SelfHelp");
+        hasChecks = true;
     }
     if(ui->romance->isChecked()) {
         genres.push_back("Romance");
+        hasChecks = true;
     }
     if(ui->horror->isChecked()) {
         genres.push_back("Horror");
-    }
+        hasChecks = true;
+    }   
 
-    // empty doesn't work here? does that mean push back doesn't also work?
-    if(genres.empty()) {
-        ui->preferenceError->setText("* Please select at least one preference");
-        ui->preferenceError->setVisible(true);
-    }
-
-    Customer::setPreferredGenres(genres);
-    qDebug() << "Worked, sent genres into preferences.";
-
-    if (uniqueUser && repeatedPass)
+    if (uniqueUser && repeatedPass && hasChecks)
     {
         users -> insert (AllUsers:: customer, username, password);
         user = users -> authenticateUser (AllUsers:: customer, username, password);
+        Customer* cus = dynamic_cast<Customer*> (user);
+        cus -> setPreferredGenres(genres);
+        qDebug() << "Worked, sent genres into preferences.";
         ProductManager* home = new ProductManager();
         home-> setUser (user);
         home-> show();
@@ -98,10 +99,8 @@ void RegisterWindow::on_regB_clicked()
             ui -> passRLE -> setText("");
             ui -> passError -> show();
         }
-        // if no prefered generes, prints out an error
-        if (!ui->fantasy->isChecked() && !ui->mystery->isChecked() && !ui->thriller->isChecked() && !ui->selfHelp->isChecked() && !ui->romance->isChecked() && !ui->horror->isChecked()) {
-            ui->preferenceError->setText("* Please include your preferences");
-            ui->preferenceError->setVisible(true);
+        if(!hasChecks) {
+            ui->preferenceError->show();
         }
     }
 

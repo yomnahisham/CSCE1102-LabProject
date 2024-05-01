@@ -25,10 +25,10 @@ public:
     {
         if (ProductManager->objectName().isEmpty())
             ProductManager->setObjectName("ProductManager");
-        ProductManager->resize(400, 300);
+        ProductManager->resize(854, 632);
         label = new QLabel(ProductManager);
         label->setObjectName("label");
-        label->setGeometry(QRect(140, 120, 171, 16));
+        label->setGeometry(QRect(330, 310, 171, 16));
 
         retranslateUi(ProductManager);
 

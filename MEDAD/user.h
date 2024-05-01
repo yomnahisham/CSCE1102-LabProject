@@ -11,9 +11,10 @@ public:
     QString getUsername () ;
     QString getPassword () ;
     bool isempty = true;
-    QString username;
+    virtual void virtualfunc();
 private:
     QString password;
+    QString username;
 
 };
 

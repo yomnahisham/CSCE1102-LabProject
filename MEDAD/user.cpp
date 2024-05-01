@@ -21,3 +21,7 @@ QString User::getPassword (){
     return password;
 }
 
+void User::virtualfunc()
+{
+
+}

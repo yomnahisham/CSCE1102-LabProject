@@ -37,41 +37,41 @@ public:
     {
         if (LoginWindow->objectName().isEmpty())
             LoginWindow->setObjectName("LoginWindow");
-        LoginWindow->resize(387, 218);
+        LoginWindow->resize(858, 764);
         loginB = new QPushButton(LoginWindow);
         loginB->setObjectName("loginB");
-        loginB->setGeometry(QRect(240, 170, 100, 32));
+        loginB->setGeometry(QRect(470, 440, 100, 32));
         regB = new QPushButton(LoginWindow);
         regB->setObjectName("regB");
-        regB->setGeometry(QRect(30, 170, 100, 32));
+        regB->setGeometry(QRect(260, 440, 100, 32));
         LoginAsL = new QLabel(LoginWindow);
         LoginAsL->setObjectName("LoginAsL");
-        LoginAsL->setGeometry(QRect(160, 50, 58, 16));
+        LoginAsL->setGeometry(QRect(390, 320, 58, 16));
         customerB = new QPushButton(LoginWindow);
         customerB->setObjectName("customerB");
-        customerB->setGeometry(QRect(40, 100, 100, 32));
+        customerB->setGeometry(QRect(270, 370, 100, 32));
         adminB = new QPushButton(LoginWindow);
         adminB->setObjectName("adminB");
-        adminB->setGeometry(QRect(240, 100, 100, 32));
+        adminB->setGeometry(QRect(470, 370, 100, 32));
         userL = new QLabel(LoginWindow);
         userL->setObjectName("userL");
-        userL->setGeometry(QRect(20, 50, 71, 16));
+        userL->setGeometry(QRect(250, 320, 71, 16));
         passL = new QLabel(LoginWindow);
         passL->setObjectName("passL");
-        passL->setGeometry(QRect(20, 100, 81, 16));
+        passL->setGeometry(QRect(250, 370, 81, 16));
         userLE = new QLineEdit(LoginWindow);
         userLE->setObjectName("userLE");
-        userLE->setGeometry(QRect(110, 50, 113, 21));
+        userLE->setGeometry(QRect(340, 320, 113, 21));
         passLE = new QLineEdit(LoginWindow);
         passLE->setObjectName("passLE");
-        passLE->setGeometry(QRect(110, 100, 113, 21));
+        passLE->setGeometry(QRect(340, 370, 113, 21));
         passLE->setEchoMode(QLineEdit::Password);
         userError = new QLabel(LoginWindow);
         userError->setObjectName("userError");
-        userError->setGeometry(QRect(240, 50, 131, 16));
+        userError->setGeometry(QRect(470, 320, 131, 16));
         passError = new QLabel(LoginWindow);
         passError->setObjectName("passError");
-        passError->setGeometry(QRect(240, 100, 131, 16));
+        passError->setGeometry(QRect(470, 370, 131, 16));
 
         retranslateUi(LoginWindow);
 

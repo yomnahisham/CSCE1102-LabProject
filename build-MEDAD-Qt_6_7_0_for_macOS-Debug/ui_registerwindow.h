@@ -51,30 +51,31 @@ public:
     QPushButton *backB;
     QLabel *userError;
     QLabel *passError;
+    QLabel *preferenceError;
 
     void setupUi(QWidget *RegisterWindow)
     {
         if (RegisterWindow->objectName().isEmpty())
             RegisterWindow->setObjectName("RegisterWindow");
-        RegisterWindow->resize(400, 514);
+        RegisterWindow->resize(856, 635);
         userL = new QLabel(RegisterWindow);
         userL->setObjectName("userL");
-        userL->setGeometry(QRect(50, 30, 71, 16));
+        userL->setGeometry(QRect(250, 80, 71, 16));
         passL = new QLabel(RegisterWindow);
         passL->setObjectName("passL");
-        passL->setGeometry(QRect(50, 60, 71, 16));
+        passL->setGeometry(QRect(250, 110, 71, 16));
         passRL = new QLabel(RegisterWindow);
         passRL->setObjectName("passRL");
-        passRL->setGeometry(QRect(10, 90, 111, 16));
+        passRL->setGeometry(QRect(210, 140, 111, 16));
         langL = new QLabel(RegisterWindow);
         langL->setObjectName("langL");
-        langL->setGeometry(QRect(10, 140, 241, 16));
+        langL->setGeometry(QRect(210, 190, 241, 16));
         authorL = new QLabel(RegisterWindow);
         authorL->setObjectName("authorL");
-        authorL->setGeometry(QRect(10, 330, 191, 16));
+        authorL->setGeometry(QRect(210, 380, 191, 16));
         groupBox = new QGroupBox(RegisterWindow);
         groupBox->setObjectName("groupBox");
-        groupBox->setGeometry(QRect(10, 160, 231, 41));
+        groupBox->setGeometry(QRect(210, 210, 231, 41));
         eng = new QCheckBox(groupBox);
         eng->setObjectName("eng");
         eng->setGeometry(QRect(0, 20, 85, 20));
@@ -83,7 +84,7 @@ public:
         arab->setGeometry(QRect(140, 20, 85, 20));
         groupBox_2 = new QGroupBox(RegisterWindow);
         groupBox_2->setObjectName("groupBox_2");
-        groupBox_2->setGeometry(QRect(10, 340, 401, 80));
+        groupBox_2->setGeometry(QRect(210, 390, 401, 80));
         rooney = new QCheckBox(groupBox_2);
         rooney->setObjectName("rooney");
         rooney->setGeometry(QRect(10, 20, 111, 20));
@@ -98,10 +99,10 @@ public:
         king->setGeometry(QRect(10, 50, 111, 20));
         authorL_2 = new QLabel(RegisterWindow);
         authorL_2->setObjectName("authorL_2");
-        authorL_2->setGeometry(QRect(10, 220, 191, 16));
+        authorL_2->setGeometry(QRect(210, 270, 191, 16));
         genreL = new QGroupBox(RegisterWindow);
         genreL->setObjectName("genreL");
-        genreL->setGeometry(QRect(10, 230, 341, 80));
+        genreL->setGeometry(QRect(210, 280, 341, 80));
         fantasy = new QCheckBox(genreL);
         fantasy->setObjectName("fantasy");
         fantasy->setGeometry(QRect(10, 20, 85, 20));
@@ -122,25 +123,28 @@ public:
         horror->setGeometry(QRect(250, 50, 85, 20));
         userLE = new QLineEdit(RegisterWindow);
         userLE->setObjectName("userLE");
-        userLE->setGeometry(QRect(120, 30, 113, 21));
+        userLE->setGeometry(QRect(320, 80, 113, 21));
         passLE = new QLineEdit(RegisterWindow);
         passLE->setObjectName("passLE");
-        passLE->setGeometry(QRect(120, 60, 113, 21));
+        passLE->setGeometry(QRect(320, 110, 113, 21));
         passRLE = new QLineEdit(RegisterWindow);
         passRLE->setObjectName("passRLE");
-        passRLE->setGeometry(QRect(120, 90, 113, 21));
+        passRLE->setGeometry(QRect(320, 140, 113, 21));
         regB = new QPushButton(RegisterWindow);
         regB->setObjectName("regB");
-        regB->setGeometry(QRect(270, 460, 100, 32));
+        regB->setGeometry(QRect(470, 510, 100, 32));
         backB = new QPushButton(RegisterWindow);
         backB->setObjectName("backB");
-        backB->setGeometry(QRect(20, 460, 100, 32));
+        backB->setGeometry(QRect(220, 510, 100, 32));
         userError = new QLabel(RegisterWindow);
         userError->setObjectName("userError");
-        userError->setGeometry(QRect(260, 30, 131, 16));
+        userError->setGeometry(QRect(460, 80, 131, 16));
         passError = new QLabel(RegisterWindow);
         passError->setObjectName("passError");
-        passError->setGeometry(QRect(250, 90, 131, 16));
+        passError->setGeometry(QRect(450, 140, 271, 16));
+        preferenceError = new QLabel(RegisterWindow);
+        preferenceError->setObjectName("preferenceError");
+        preferenceError->setGeometry(QRect(410, 270, 271, 16));
 
         retranslateUi(RegisterWindow);
 
@@ -175,6 +179,7 @@ public:
         backB->setText(QCoreApplication::translate("RegisterWindow", "Back", nullptr));
         userError->setText(QCoreApplication::translate("RegisterWindow", "<html><head/><body><p><span style=\" color:#941100;\">user already exists</span></p></body></html>", nullptr));
         passError->setText(QCoreApplication::translate("RegisterWindow", "<html><head/><body><p><span style=\" color:#941100;\">password does not match</span></p></body></html>", nullptr));
+        preferenceError->setText(QCoreApplication::translate("RegisterWindow", "<html><head/><body><p><span style=\" color:#941100;\">* Please select at least one preference</span></p></body></html>", nullptr));
     } // retranslateUi
 
 };
