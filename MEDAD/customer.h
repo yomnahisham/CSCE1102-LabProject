@@ -15,11 +15,11 @@ public:
     Customer();
     void setPreferredGenres(const vector<string>& genres);
    // static void setPreferredAuthors(const vector<string>& authors);
-    const vector<string>& getPreferredGenres();
+    const vector<string>& getPreferredGenres() const;
     // static const vector<string>& getPreferredAuthors();
     void virtualfunc();
 private:
-    vector<std::string> preferredGenres;
+    vector<string> preferredGenres;
    // static vector<std::string> preferredAuthors;
 
     ShoppingCart MyCart;

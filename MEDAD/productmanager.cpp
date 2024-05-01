@@ -1,6 +1,7 @@
 #include "productmanager.h"
 #include "ui_productmanager.h"
 #include "clickablelabels.h"
+#include "customer.h"
 #include "shoppingcart.h"
 #include "books.h"
 #include "accessories.h"
@@ -123,6 +124,7 @@ void ProductManager::initializeProducts() {
         {"A Tale of Two Cities", "15.5", "5", "true", ":/Books/assets/tale of two.jpeg", "Classics", "Charles Dickens", "9780582400115"},
         {"Oliver Twist", "14", "5", "true", ":/Books/assets/oliver.jpeg", "Classics", "Charles Dickens", "9780140430172"},
         {"Julius Caesar", "16", "5", "true", ":/Books/assets/ceaser.jpeg", "Plays", "William Shakespeare", "9780743482745"},
+        //add rest of books later
     };
 
     for (const auto& data : productsData) {
@@ -178,6 +180,28 @@ void ProductManager::initializeProducts() {
         techyProducts->push_back(tech);
     }
 
+}
+
+vector<Products*> ProductManager::suggestSimilarItems(const Customer& customer, const vector<Products*>& allProducts){
+    vector<Products*> suggestions;
+    const vector<string>& preferredGenres = customer.getPreferredGenres();
+
+    //iterating through all products and check for similarity with user preferences
+    for (Products* product : allProducts) {
+        //if the product genre matches any preferred genre
+        for (const string& genre : preferredGenres) {
+            for(const auto& book : *bookProducts){
+                if (book->getGenre() == QString::fromStdString(genre)) {
+                suggestions.push_back(product);
+                break;
+                }
+            }
+        }
+        if (suggestions.size() >= 5) {
+            break; //only taking five suggestions for the sake of keeping enough products for normal searching
+        }
+    }
+    return suggestions;
 }
 
 
