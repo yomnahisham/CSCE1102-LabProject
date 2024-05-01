@@ -14,12 +14,15 @@ ProductManager::ProductManager(QWidget *parent)
 
     //setting image of the clickable shopping cart label
     QPixmap cartPix(":/backandlogos/assets/shoppingcartlogo.png");
-    int width = ui->cartpicture->width();
-    int height = ui->cartpicture->height();
-    cartLabel->setPixmap(cartPix.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    cartLabel->setPixmap(cartPix.scaled(cartLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     //connecting cartLabel, its signal from ClickableLabels, this ui, and the function onCartClicked to handle what happens after cart is clicked
     connect(cartLabel, &ClickableLabels::clicked, this, &ProductManager::onCartClicked);
+
+    int windowWidth = width();
+
+    int cartLabelWidth = cartLabel->width();
+    cartLabel->move(windowWidth - cartLabelWidth, 10);
 }
 
 void ProductManager::setUser(User* loggedUser){
