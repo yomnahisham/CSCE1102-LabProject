@@ -16,7 +16,8 @@ public:
     explicit ProductManager(QWidget *parent = nullptr);
     ~ProductManager();
     void setUser(User* loggedUser);
-
+private slots:
+    void onCartClicked();
 private:
     Ui::ProductManager *ui;
     User* user;

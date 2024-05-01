@@ -14,6 +14,7 @@ SOURCES += \
     allusers.cpp \
     books.cpp \
     checkout.cpp \
+    clickablelabels.cpp \
     customer.cpp \
     discounts.cpp \
     loginwindow.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     allusers.h \
     books.h \
     checkout.h \
+    clickablelabels.h \
     customer.h \
     discounts.h \
     loginwindow.h \
