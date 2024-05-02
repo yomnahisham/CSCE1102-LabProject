@@ -171,10 +171,10 @@ void ProductManager::initializeProducts() {
         { "No Sea in Beirut", "28", "5", "true", ":/Books/assets/no sea in beirut.jpg" , "Arabic Literature" , "Ghada Al-Samman" , ""},
         { "The Hundred Years’ War on Palestine", "45", "5", "true", ":/Books/assets/the hundred years war on palestine.jpeg" , "Palestine" , "Rashid Khalidi" , "9781627798549"},
         { "The Iron Cage", "43", "5", "true", ":/Books/assets/iron cage.jpeg" , "Palestine" , "Rashid Khalidi" , "9780807003084"},
-         { "Huda F Are You?", "20", "5", "true", ":/Books/assets/huda f.jpeg" , "Comic {" , "Huda Fahmy" , "9780593324318"},
-         { "Yes, I’m Hot in This 23", "23", "5", "true", ":/Books/assets/hot in this.jpeg" , "Comic {" , "Huda Fahmy" , "9781507209349"},
-         { "The Kite Runner", "42", "5", "true", ":/Books/assets/kite runner.jpeg" , "Arab-American" , "Khaled Hosseini" , "9781594631931"},
-         { "A Thousand Splendid Suns", "41", "5", "true", ":/Books/assets/splendid suns.jpeg" , "Arab-American" , "Khaled Hosseini" , "9780143180654"}
+        { "Huda F Are You?", "20", "5", "true", ":/Books/assets/huda f.jpeg" , "Comic {" , "Huda Fahmy" , "9780593324318"},
+        { "Yes, I’m Hot in This", "23", "5", "true", ":/Books/assets/hot in this.jpeg" , "Comic {" , "Huda Fahmy" , "9781507209349"},
+        { "The Kite Runner", "42", "5", "true", ":/Books/assets/kite runner.jpeg" , "Arab-American" , "Khaled Hosseini" , "9781594631931"},
+        { "A Thousand Splendid Suns", "41", "5", "true", ":/Books/assets/splendid suns.jpeg" , "Arab-American" , "Khaled Hosseini" , "9780143180654"}
 
 
     };
@@ -267,7 +267,7 @@ vector<Products*> ProductManager::suggestSimilarItems(){
         for (const auto& book : *bookProducts) {
             if (book->getGenre() == genre) {
                 suggestions.push_back(book); //add the book to suggestions
-                if (suggestions.size() >= 5) {
+                if (suggestions.size() >= 8) {
                     return suggestions; //only taking five suggestions
                 }
                 break;
@@ -275,7 +275,7 @@ vector<Products*> ProductManager::suggestSimilarItems(){
         }
     }
     //fill the rest with random books if suggestions less than 5
-    while (suggestions.size() < 5 && !bookProducts->empty()) {
+    while (suggestions.size() < 8 && !bookProducts->empty()) {
         suggestions.push_back(bookProducts->back());
         bookProducts->pop_back();
     }
@@ -287,6 +287,15 @@ void ProductManager::makeFirstPage(){
     initializeProducts();
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+
+    int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
+
+    // Adjusting the size of the parent widget of recsLayout
+    ui->recsLayout->parentWidget()->resize(widthFull, recsLayoutHeight);
 
     int column = 0; //track the column index for the current book
 
@@ -306,15 +315,28 @@ void ProductManager::makeFirstPage(){
 
                 //create QLabel for name and price
                 QLabel* nameLabel = new QLabel(name);
-                QLabel* priceLabel = new QLabel(QString::number(price));
+                QLabel* priceLabel = new QLabel(QString::number(price)+ " EGP");
 
-                // Add the labels to the vertical layout
+                QFont Bfont("Optima", 12, QFont::Bold); // Change font to your desired font
+                nameLabel->setFont(Bfont);
+                QFont uBfont("Optima", 12);
+                priceLabel->setFont(uBfont);
+
+                nameLabel->setMaximumWidth(imageLabel->width());
+                nameLabel->setWordWrap(true);
+
+                bookLayout->setAlignment(Qt::AlignCenter);
+
+                //add the labels to the vertical layout
                 bookLayout->addWidget(imageLabel);
                 bookLayout->addWidget(nameLabel);
                 bookLayout->addWidget(priceLabel);
 
-                // Add the vertical layout to the horizontal layout
+                bookLayout->addSpacing(10);
+                //add the vertical layout to the horizontal layout
                 ui->recsLayout->addLayout(bookLayout);
+
+                ui->recsLayout->setAlignment(Qt::AlignCenter);
 
                 //increment the column index for the next book
                 column++;
@@ -323,6 +345,7 @@ void ProductManager::makeFirstPage(){
             }
         }
     }
+    ui->recsLayout->setContentsMargins(0, 0, 0, 0);
 }
 
 
