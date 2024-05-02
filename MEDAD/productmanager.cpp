@@ -439,6 +439,9 @@ void ProductManager::clearLayout(QLayout* layout){
 }
 
 void ProductManager::showSuggestions(){
+    QPixmap youPix(":/logos/assets/basedonyou.png");
+    ui-> basedonyouLogo -> setPixmap(youPix.scaled(200, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
     initializeProducts();
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
