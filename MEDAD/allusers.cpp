@@ -10,8 +10,12 @@
 #include <QCoreApplication>
 
 int AllUsers::m = 17;
+int AllUsers::n = 17;
+
 
 AllUsers::AllUsers() {
+    AllAdmins = new Admin[m];
+    AllCustomers = new Customer[n];
     finishedloading = false;
 }
 
@@ -118,25 +122,64 @@ void AllUsers::SaveUsers()
     userData.close();
 }
 
-int AllUsers:: hash (QString u, int att)
+int AllUsers:: hash (Type type, QString u, int att)
 {   //quadratic probing
     int hash_value = 0;
     for (auto c : u){
         hash_value += c.unicode();
     }
-    return (hash_value + att*att) % m;
+    if (type == admin)
+        return (hash_value + att*att) % m;
+    else
+        return (hash_value + att*att) % n;
 
+
+}
+
+void AllUsers::checkTable (Type type)
+{
+    int x = 0;
+
+    switch(type)
+    {case admin:
+        for (int i = 0; i < m; i++)
+        {
+            if (!AllAdmins[i].isempty)
+                x++;
+        }
+
+        if (x > m/2)    //reached half capacity
+        {
+            m = m*2;
+            LoadUsers();
+        }
+        break;
+    case customer:
+        for (int i = 0; i < n; i++)
+        {
+            if (!AllCustomers[i].isempty)
+                x++;
+        }
+
+        if (x > n/2)    //reached half capacity
+        {
+            n = n*2;
+            LoadUsers();
+        }
+        break;
+    }
 }
 
 void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
 {
+    checkTable(type);
     int a = 0;
-    int i = hash (u, a);
+    int i = hash (type, u, a);
     switch (type)
     {case admin:
         while (!AllAdmins[i].isempty)//while full
         {
-            i = hash(u, a++); //find next index
+            i = hash(type, u, a++); //find next index
         }
        if (AllAdmins[i].isempty)
         {    AllAdmins[i].setUsername(u);
@@ -146,7 +189,7 @@ void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
     case customer:
         while (!AllCustomers[i].isempty)//while full
         {
-            i = hash(u, a++); //find next index
+            i = hash(type, u, a++); //find next index
         }
         if (AllCustomers[i].isempty)
         {    AllCustomers[i].setUsername(u);
@@ -166,7 +209,7 @@ void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
 
 User* AllUsers::authenticateUser (Type type, QString u, QString p) {
     int a = 0;
-    int i = hash (u, a);
+    int i = hash (type, u, a);
     bool endHash = false;
     switch (type)
     {case admin:
@@ -175,7 +218,7 @@ User* AllUsers::authenticateUser (Type type, QString u, QString p) {
             if ((AllAdmins[i].getUsername() == u)&&(AllAdmins[i].getPassword() == p))
                 return &AllAdmins[i];
             else
-                i = hash (u, a++);
+                i = hash (type , u, a++);
 
             if ((!AllAdmins[i].isempty )||(a < m))  // while [i] is full and we haven't completed a full loop
                 endHash = true;
@@ -188,9 +231,9 @@ User* AllUsers::authenticateUser (Type type, QString u, QString p) {
             if ((AllCustomers[i].getUsername() == u)&&(AllCustomers[i].getPassword() == p))
                 return &AllCustomers[i];
             else
-                i = hash (u, a++);
+                i = hash (type, u, a++);
 
-            if ((!AllAdmins[i].isempty )||(a < m))  // while [i] is full and we haven't completed a full loop
+            if ((!AllCustomers[i].isempty )||(a < n))  // while [i] is full and we haven't completed a full loop
                 endHash = true;
         }
         return nullptr;
@@ -201,7 +244,7 @@ User* AllUsers::authenticateUser (Type type, QString u, QString p) {
 bool AllUsers::userExists (Type type, QString u)
 {
     int a = 0;
-    int i = hash (u, a);
+    int i = hash (type, u, a);
     bool endHash = false;
     switch (type)
     {case admin:
@@ -210,7 +253,7 @@ bool AllUsers::userExists (Type type, QString u)
             if (AllAdmins[i].getUsername() == u)
                 return true;
             else
-                i = hash (u, a++);
+                i = hash (type, u, a++);
 
             if ((!AllAdmins[i].isempty )||(a < m))  // while [i] is full and we haven't completed a full loop
                 endHash = true;
@@ -223,9 +266,9 @@ bool AllUsers::userExists (Type type, QString u)
             if (AllCustomers[i].getUsername() == u)
                 return true;
             else
-                i = hash (u, a++);
+                i = hash (type, u, a++);
 
-            if ((!AllCustomers[i].isempty )||(a < m))  // while [i] is full and we haven't completed a full loop
+            if ((!AllCustomers[i].isempty )||(a < n))  // while [i] is full and we haven't completed a full loop
                 endHash = true;
         }
         return false;

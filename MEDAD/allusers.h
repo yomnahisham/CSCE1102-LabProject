@@ -11,8 +11,8 @@ public:
     AllUsers();
     AllUsers& operator=(AllUsers& other);
     enum Type {admin, customer};
-    Customer AllCustomers [17];
-    Admin AllAdmins [17];
+    Customer* AllCustomers;
+    Admin* AllAdmins;
     void SaveUsers ();
     void LoadUsers();
     User* authenticateUser(Type type , QString u, QString p);
@@ -20,8 +20,10 @@ public:
     bool userExists (Type type, QString u) ;
 private:
     static int m;
-    static int hash (QString u, int att = 0);
+    static int n;
+    static int hash (Type type, QString u, int att = 0);
     bool finishedloading;
+    void checkTable (Type type);
 
 };
 
