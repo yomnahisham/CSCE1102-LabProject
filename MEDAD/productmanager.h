@@ -21,6 +21,7 @@ class ProductManager : public QWidget
 public:
     explicit ProductManager(QWidget *parent = nullptr);
     ~ProductManager();
+
     void setUser(User* loggedUser);
     User* getUser();
 
@@ -28,8 +29,10 @@ public:
     Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size);
     Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, int type);
 
+    vector<Products*> suggestSimilarItems();
+
     void initializeProducts();
-    vector<Products*> suggestSimilarItems(const vector<Products*>& allProducts);
+    void makeFirstPage();
 private slots:
     void onCartClicked();
     void onSignOutClicked();

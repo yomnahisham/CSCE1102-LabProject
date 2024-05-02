@@ -57,17 +57,8 @@ ProductManager::ProductManager(QWidget *parent)
     //connecting signoutbutton, its signal from ClickableLabels, this ui, and the function onSignOutClicked to handle the click
     connect(signOutButton, &ClickableLabels::clicked, this, &ProductManager::onSignOutClicked);
 
+    makeFirstPage();
     initializeProducts();
-}
-
-void ProductManager::setUser(User* loggedUser){
-    user = loggedUser;
-    if (user)
-        qDebug() << "User transferred successfully";
-}
-
-User* ProductManager::getUser(){
-    return user;
 }
 
 ProductManager::~ProductManager()
@@ -87,6 +78,18 @@ ProductManager::~ProductManager()
     }
     delete techyProducts;
 }
+
+
+void ProductManager::setUser(User* loggedUser){
+    user = loggedUser;
+    if (user)
+        qDebug() << "User transferred successfully";
+}
+
+User* ProductManager::getUser(){
+    return user;
+}
+
 
 void ProductManager::onCartClicked(){
     qDebug() << "cart clicked, moving to shopping cart ui.";
@@ -235,7 +238,7 @@ void ProductManager::initializeProducts() {
 
 }
 
-vector<Products*> ProductManager::suggestSimilarItems(const vector<Products*>& allProducts){
+vector<Products*> ProductManager::suggestSimilarItems(){
     User* person;
     person = getUser();
 
@@ -254,22 +257,23 @@ vector<Products*> ProductManager::suggestSimilarItems(const vector<Products*>& a
     vector<Products*> suggestions;
     const vector<string>& preferredGenres = customer->getPreferredGenres();
 
-    //iterating through all products and check for similarity with user preferences
-    for (Products* product : allProducts) {
-        //if the product genre matches any preferred genre
-        for (const string& genre : preferredGenres) {
-            for(const auto& book : *bookProducts){
-                if (book->getGenre() == QString::fromStdString(genre)) {
-                suggestions.push_back(product);
-                break;
+    //if the product genre matches any preferred genre
+    for (const string& genre : preferredGenres) {
+        for (const auto& book : *bookProducts) {
+            if (book->getGenre() == QString::fromStdString(genre)) {
+                suggestions.push_back(book); //add the book to suggestions
+                if (suggestions.size() >= 5) {
+                    return suggestions; //only taking five suggestions
                 }
+                break;
             }
-        }
-        if (suggestions.size() >= 5) {
-            break; //only taking five suggestions for the sake of keeping enough products for normal searching
         }
     }
     return suggestions;
 }
 
-
+void ProductManager::makeFirstPage(){
+    initializeProducts();
+    vector<Products*> recommendations;
+    recommendations = suggestSimilarItems();
+}
