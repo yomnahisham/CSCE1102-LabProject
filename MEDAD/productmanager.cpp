@@ -506,6 +506,7 @@ void ProductManager::showSuggestions(){
             }
         }
     }
+    ui->recsLayout->setAlignment(Qt::AlignHCenter);
     ui->recsLayout->setContentsMargins(0, 0, 0, 0);
 }
 
