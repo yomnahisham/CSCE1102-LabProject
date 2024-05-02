@@ -299,18 +299,22 @@ void ProductManager::makeFirstPage(){
             double price = book->getPrice();
 
             if (!imagePath.isNull()) {
+                QVBoxLayout* bookLayout = new QVBoxLayout();
                 //create a QLabel for displaying the book's image
                 QLabel* imageLabel = new QLabel();
-                imageLabel->setPixmap(imagePath.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation)); // Size might need adjusting
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
                 //create QLabel for name and price
                 QLabel* nameLabel = new QLabel(name);
                 QLabel* priceLabel = new QLabel(QString::number(price));
 
-                //add the labels to the horizontal layout
-                ui->recsLayout->addWidget(imageLabel, 0, Qt::AlignTop);
-                ui->recsLayout->addWidget(nameLabel, 1, Qt::AlignTop);
-                ui->recsLayout->addWidget(priceLabel, 2, Qt::AlignTop);
+                // Add the labels to the vertical layout
+                bookLayout->addWidget(imageLabel);
+                bookLayout->addWidget(nameLabel);
+                bookLayout->addWidget(priceLabel);
+
+                // Add the vertical layout to the horizontal layout
+                ui->recsLayout->addLayout(bookLayout);
 
                 //increment the column index for the next book
                 column++;
