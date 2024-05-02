@@ -36,6 +36,7 @@ public:
 private slots:
     void onCartClicked();
     void onSignOutClicked();
+    void onAddToCartClicked();
 private:
     Ui::ProductManager *ui;
     User* user;

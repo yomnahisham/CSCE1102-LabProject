@@ -85,14 +85,6 @@ ProductManager::~ProductManager()
     delete techyProducts;
 }
 
-
-/*void ProductManager::setUser(User* loggedUser){
-    user = loggedUser;
-    if (user)
-        qDebug() << "User transferred successfully";
-}*/
-
-
 void ProductManager::onCartClicked(){
     qDebug() << "cart clicked, moving to shopping cart ui.";
 
@@ -114,6 +106,11 @@ void ProductManager::onSignOutClicked(){
     login-> setWindowTitle("Login");
     login -> show();
     hide();
+}
+
+void ProductManager::onAddToCartClicked(){
+    qDebug() << "sending product data to shopping cart";
+    //Rawan, your part
 }
 
 Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
@@ -327,6 +324,8 @@ void ProductManager::makeFirstPage(){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+                connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
 
                 //add the labels to the book layout
                 bookLayout->addWidget(imageLabel);
