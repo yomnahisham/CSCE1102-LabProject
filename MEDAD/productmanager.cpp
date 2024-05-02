@@ -288,11 +288,14 @@ void ProductManager::makeFirstPage(){
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
+    int heightFull = screenGeometry.height();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
+    int productLayoutHeight = heightFull + 10;
 
     //adjusting the size of the parent widget of recsLayout
     ui->recsLayout->parentWidget()->resize(widthFull-100, recsLayoutHeight);
+    ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
 
     int column = 0; //track the column index for the current book
 
@@ -324,7 +327,6 @@ void ProductManager::makeFirstPage(){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
                 connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
 
                 //add the labels to the book layout
@@ -347,8 +349,71 @@ void ProductManager::makeFirstPage(){
         }
     }
     ui->recsLayout->setContentsMargins(0, 0, 0, 0);
-}
 
+    int maxBooksPerRow = 6;
+    int booksInCurrentRow = 0;
+    QHBoxLayout* currentRowLayout = new QHBoxLayout();
+
+    for (Products* product : *bookProducts) {
+        Books* book = dynamic_cast<Books*>(product);
+        if (book) {
+            QString name = book->getName();
+            QPixmap imagePath = book->getImage();
+            double price = book->getPrice();
+            if (!imagePath.isNull()) {
+                QVBoxLayout* bookLayout = new QVBoxLayout();
+
+                QLabel* imageLabel = new QLabel();
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+                QLabel* nameLabel = new QLabel(name);
+                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                nameLabel->setMaximumWidth(imageLabel->width());
+                nameLabel->setWordWrap(true);
+
+                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                priceLabel->setFont(QFont("Optima", 12));
+
+                ClickableLabels* addtoCart = new ClickableLabels(this);
+                QPixmap addPix(":/logos/assets/addtoCart.png");
+                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                //add the labels to the book layout
+                bookLayout->addWidget(imageLabel);
+                bookLayout->addWidget(nameLabel);
+                bookLayout->addWidget(priceLabel);
+                bookLayout->addWidget(addtoCart);
+
+                //set alignment for the book layout
+                bookLayout->setAlignment(Qt::AlignTop);
+
+                //add the book layout to the current row layout
+                currentRowLayout->addLayout(bookLayout);
+
+                //increment the number of books in the current row
+                booksInCurrentRow++;
+
+                //check if we need to start a new row
+                if (booksInCurrentRow >= maxBooksPerRow) {
+                    //ad the current row layout to the main layout
+                    ui->allproductsLayout->addLayout(currentRowLayout);
+
+                    //create a new layout for the next row
+                    currentRowLayout = new QHBoxLayout();
+
+                    //reset the number of books in the current row
+                    booksInCurrentRow = 0;
+                }
+            } else {
+                qDebug() << "Invalid image path for book: " << name;
+            }
+        }
+    }
+
+    //add the last row layout to the main layout
+    ui->allproductsLayout->addLayout(currentRowLayout);
+}
 
 
 

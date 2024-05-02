@@ -44,17 +44,6 @@
     <string>subtitle</string>
    </property>
   </widget>
-  <widget class="QWidget" name="gridLayoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>470</y>
-     <width>1021</width>
-     <height>451</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="allproductsgridLayout"/>
-  </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
@@ -65,6 +54,17 @@
     </rect>
    </property>
    <layout class="QHBoxLayout" name="recsLayout"/>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>79</x>
+     <y>489</y>
+     <width>681</width>
+     <height>501</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="allproductsLayout"/>
   </widget>
  </widget>
  <resources/>
