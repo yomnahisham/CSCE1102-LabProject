@@ -470,8 +470,9 @@ void ProductManager::searchProducts(const QString &keyword){
         }
     }
 
-    if (keyword.isEmpty()) {
-        //showing suggestions to restore original layout
+    if (keyword.trimmed().isEmpty()) {
+        //clear the layout and show suggestions?
+        clearLayout(ui->recsLayout);
         showSuggestions();
         return;
     }
