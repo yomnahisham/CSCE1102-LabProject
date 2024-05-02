@@ -421,14 +421,12 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword){
+    clearLayout(ui->recsLayout);
     if (keyword.isEmpty()) {
         //clear the layout and show suggestions?
-        clearLayout(ui->recsLayout);
         showSuggestions();
         return;
     }
-    // Clear the layout to prepare for new search results
-    clearLayout(ui->recsLayout);
 
     for (Products* product : *bookProducts) {
         Books* book = dynamic_cast<Books*>(product);
