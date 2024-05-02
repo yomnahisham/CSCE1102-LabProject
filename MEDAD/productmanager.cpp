@@ -284,10 +284,6 @@ vector<Products*> ProductManager::suggestSimilarItems(){
 }
 
 void ProductManager::makeFirstPage(){
-    //initializeProducts();
-    //vector<Products*> recommendations;
-    //recommendations = suggestSimilarItems();
-
     showSuggestions();
 
     QScreen* screen = QGuiApplication::primaryScreen();
@@ -295,65 +291,10 @@ void ProductManager::makeFirstPage(){
     int widthFull = screenGeometry.width();
     int heightFull = screenGeometry.height();
 
-    //int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
     int productLayoutHeight = heightFull + 10;
 
-    //adjusting the size of the parent widget of recsLayout
-    //ui->recsLayout->parentWidget()->resize(widthFull-100, recsLayoutHeight);
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
 
-    int column = 0; //track the column index for the current book
-
-   /* for (Products* product : recommendations) {
-        Books* book = dynamic_cast<Books*>(product);
-        if (book) {
-            //retrieve book information from the bookProducts vector
-            QString name = book->getName();
-            QPixmap imagePath = book->getImage();
-            double price = book->getPrice();
-
-            if (!imagePath.isNull()) {
-                QVBoxLayout* bookLayout = new QVBoxLayout();
-                //create a QLabel for displaying the book's image
-                QLabel* imageLabel = new QLabel();
-                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
-                //create QLabel for name
-                QLabel* nameLabel = new QLabel(name);
-                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
-                nameLabel->setMaximumWidth(imageLabel->width());
-                nameLabel->setWordWrap(true);
-
-                //create QLabel for price
-                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
-                priceLabel->setFont(QFont("Optima", 12));
-
-                //create add to cart label
-                ClickableLabels* addtoCart = new ClickableLabels(this);
-                QPixmap addPix(":/logos/assets/addtoCart.png");
-                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
-
-                //add the labels to the book layout
-                bookLayout->addWidget(imageLabel);
-                bookLayout->addWidget(nameLabel);
-                bookLayout->addWidget(priceLabel);
-                bookLayout->addWidget(addtoCart);
-
-                //set alignment for the book layout
-                bookLayout->setAlignment(Qt::AlignTop);
-
-                //add the book layout to the main layout
-                ui->recsLayout->addLayout(bookLayout);
-
-                //increment the column index for the next book
-                column++;
-            } else {
-                qDebug() << "Invalid image path for book: " << name;
-            }
-        }
-    }
-    ui->recsLayout->setContentsMargins(0, 0, 0, 0);*/
 
     int maxBooksPerRow = 6;
     int booksInCurrentRow = 0;
@@ -427,6 +368,7 @@ void ProductManager::searchProducts(const QString &keyword){
         showSuggestions();
         return;
     }
+
     QSet<QString> displayedBooks; //track displayed books to ensure uniqueness
     int displayedCount = 0;
 
@@ -479,6 +421,7 @@ void ProductManager::searchProducts(const QString &keyword){
             }
         }
     }
+    ui->recsLayout->setAlignment(Qt::AlignHCenter);
 }
 
 void ProductManager::clearLayout(QLayout* layout){
@@ -494,7 +437,6 @@ void ProductManager::clearLayout(QLayout* layout){
         }
     }
 }
-
 
 void ProductManager::showSuggestions(){
     initializeProducts();
