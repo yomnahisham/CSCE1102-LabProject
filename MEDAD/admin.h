@@ -8,7 +8,6 @@ public:
     Admin();
     ~Admin();
     void virtualfunc();
-    void addAdmin ();
 };
 
 #endif // ADMIN_H
