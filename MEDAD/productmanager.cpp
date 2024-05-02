@@ -13,12 +13,13 @@
 #include <QVBoxLayout>
 
 
-ProductManager::ProductManager(QWidget *parent)
+ProductManager::ProductManager(QWidget *parent, User* loggedUser)
     : QWidget(parent)
     , ui(new Ui::ProductManager)
     , bookProducts(new QVector<Books*>())
     , accessoryProducts(new QVector<Accessories*>())
     , techyProducts(new QVector<Techs*>())
+    , user(loggedUser)
 {
     ui->setupUi(this);
 
@@ -80,15 +81,11 @@ ProductManager::~ProductManager()
 }
 
 
-void ProductManager::setUser(User* loggedUser){
+/*void ProductManager::setUser(User* loggedUser){
     user = loggedUser;
     if (user)
         qDebug() << "User transferred successfully";
-}
-
-User* ProductManager::getUser(){
-    return user;
-}
+}*/
 
 
 void ProductManager::onCartClicked(){
@@ -239,15 +236,12 @@ void ProductManager::initializeProducts() {
 }
 
 vector<Products*> ProductManager::suggestSimilarItems(){
-    User* person;
-    person = getUser();
-
-    if (!person) {
+    if (!user) {
         qDebug() << "Error: No user logged in.";
         return {};
     }
 
-    Customer* customer = dynamic_cast<Customer*>(person);
+    Customer* customer = dynamic_cast<Customer*>(user);
 
     if (!customer) {
         qDebug() << "Error: User is not a Customer.";
@@ -277,29 +271,33 @@ void ProductManager::makeFirstPage(){
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
 
-    int row = 0;
-    int column = 0;
+    int column = 0; //track the column index for the current book
 
     for (Products* product : recommendations) {
         Books* book = dynamic_cast<Books*>(product);
         if (book) {
-            QLabel* nameLabel = new QLabel(book->getName());
-            QLabel* priceLabel = new QLabel(QString::number(book->getPrice()));
+            //retrieve book information from the bookProducts vector
+            QString name = book->getName();
+            QPixmap imagePath = book->getImage();
+            double price = book->getPrice();
 
             //create a QLabel for displaying the book's image
             QLabel* imageLabel = new QLabel();
-            imageLabel->setPixmap(book->getImage().scaled(100, 100)); //size might need adjusting
+            imageLabel->setPixmap(imagePath.scaled(100, 100)); // Size might need adjusting
 
-            //add the labels to the existing layout using a grid layout
-            ui->gridLayout->addWidget(nameLabel, row, column);
-            ui->gridLayout->addWidget(priceLabel, row, column + 1);
-            ui->gridLayout->addWidget(imageLabel, row, column + 2);
+            //create QLabel for name and price
+            QLabel* nameLabel = new QLabel(name);
+            QLabel* priceLabel = new QLabel(QString::number(price));
 
-            column += 3;
-            if (column >= ui->gridLayout->columnCount()) {
-                column = 0;
-                row++;
-            }
+            //add the labels to the horizontal layout
+            ui->recsLayout->addWidget(imageLabel, 0, Qt::AlignTop);
+            ui->recsLayout->addWidget(nameLabel, 1, Qt::AlignTop);
+            ui->recsLayout->addWidget(priceLabel, 2, Qt::AlignTop);
+
+            //increment the column index for the next book
+            column++;
         }
     }
 }
+
+
