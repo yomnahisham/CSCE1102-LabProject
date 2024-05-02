@@ -6,6 +6,7 @@ class Admin : public User
 {
 public:
     Admin();
+    ~Admin();
     void virtualfunc();
     void addAdmin ();
 };

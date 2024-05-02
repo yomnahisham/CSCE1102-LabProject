@@ -13,7 +13,7 @@ class RegisterWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit RegisterWindow(QWidget *parent = nullptr, AllUsers* Allusers = nullptr);
+    explicit RegisterWindow(QWidget *parent = nullptr, AllUsers* Allusers = nullptr, AllUsers::Type type = AllUsers::customer);
     ~RegisterWindow();
 
 private slots:

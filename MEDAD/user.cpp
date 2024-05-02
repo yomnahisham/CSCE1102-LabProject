@@ -1,6 +1,11 @@
 #include "user.h"
 
-User::User() {}
+User::User() {
+    isempty = true;
+}
+
+User::~User() {}
+
 
 void User::setUsername (QString u)
 {

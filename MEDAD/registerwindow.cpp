@@ -9,7 +9,7 @@
 #include <QScreen>
 using namespace std;
 
-RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers)
+RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers, AllUsers::Type type)
     : QWidget(parent)
     , ui(new Ui::RegisterWindow)
 {
@@ -21,6 +21,19 @@ RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers)
     if (users)
     {
         qDebug()<< "coppied in reg successfully";
+    }
+
+    if (type == AllUsers::admin)
+    {
+        ui -> genreL -> hide();
+        ui ->arabAmerican -> hide();
+        ui ->classics -> hide();
+        ui ->philo -> hide();
+        ui ->comic -> hide();
+        ui ->palestine -> hide();
+        ui ->poetry -> hide();
+        ui ->arabLit -> hide();
+
     }
 }
 
@@ -34,7 +47,7 @@ void RegisterWindow::on_backB_clicked()
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
 
-    LoginWindow* login = new LoginWindow();
+    LoginWindow* login = new LoginWindow(nullptr, users);
     login->resize(screenGeometry.width(), screenGeometry.height());
     login -> show();
     hide();
@@ -92,7 +105,7 @@ void RegisterWindow::on_regB_clicked()
         QScreen* screen = QGuiApplication::primaryScreen();
         QRect screenGeometry = screen->geometry();
 
-        ProductManager* home = new ProductManager(nullptr, user);
+        ProductManager* home = new ProductManager(nullptr, user, users);
         home->resize(screenGeometry.width(), screenGeometry.height());
         home-> show();
         hide();

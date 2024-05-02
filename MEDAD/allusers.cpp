@@ -16,6 +16,7 @@ int AllUsers::n = 17;
 AllUsers::AllUsers() {
     AllAdmins = new Admin[m];
     AllCustomers = new Customer[n];
+    //SaveUsers();
     finishedloading = false;
 }
 
@@ -67,10 +68,10 @@ void AllUsers::LoadUsers(){
     userData.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QTextStream in(&userData);
-
+    int x = 0;
     while(!in.atEnd()) {
         QString data = in.readLine();
-        qDebug()<< data;
+        qDebug()<< x << " : " <<data ;
         QStringList splitdata = data.split (" ");
 
         vector<QString> genres;
@@ -78,15 +79,20 @@ void AllUsers::LoadUsers(){
         if (splitdata[0] == "admin")
            insert (admin,splitdata[1], splitdata[2], genres);
         else if (splitdata[0] == "customer")
-        {    for (int i = 3; splitdata[i] != "N" ; i++)
+        {
+            for (int i = 3; splitdata[i] != "N" ; i++)
                 genres.push_back(splitdata[i]);
             insert (customer,splitdata[1], splitdata[2], genres);
+        }else if (splitdata[0]== "/")
+        {
+            qDebug()<< "empty spot";
         }
-
+        x++;
     }
 
     userData.close();
     finishedloading = true;
+    return;
 }
 
 void AllUsers::SaveUsers()
@@ -107,16 +113,25 @@ void AllUsers::SaveUsers()
     /*stream << "customer yomna yomna1 Classics Comic-Books N" << "\n";
     stream << "customer aylaS ayla1234 Classics Palestine N" << "\n";
     stream << "admin AylaSaleh ayla1234" << "\n";
-    stream << "admin yoyoo yomna1" << "\n";*/
+    stream << "admin yoyoo yomna1" << "\n";
+    for (int i = 0; i < 30; i++)
+        stream << "/" << "\n";*/
+
 
     for (int i = 0 ; i < m; i ++)
     {
-        stream << "admin " << AllAdmins[i].getUsername() << " " << AllAdmins[i].getPassword() << "\n" ;
-        stream << "customer " << AllCustomers[i].getUsername() << " " << AllCustomers[i].getPassword() ;
-        vector <QString> genre = AllCustomers[i].getPreferredGenres();
-        for (auto it = genre.begin(); it != genre.end(); it++)
-            stream << " " <<*it;
-        stream << " N" << "\n";
+        if (AllAdmins[i].isempty|| AllCustomers[i].isempty)
+        {
+            stream <<"/";
+        }else
+        {
+            stream << "admin " << AllAdmins[i].getUsername() << " " << AllAdmins[i].getPassword() << "\n" ;
+            stream << "customer " << AllCustomers[i].getUsername() << " " << AllCustomers[i].getPassword() ;
+            vector <QString> genre = AllCustomers[i].getPreferredGenres();
+            for (auto it = genre.begin(); it != genre.end(); it++)
+                stream << " " <<*it;
+            stream << " N" << "\n";
+        }
     }
 
     userData.close();
@@ -151,6 +166,11 @@ void AllUsers::checkTable (Type type)
         if (x > m/2)    //reached half capacity
         {
             m = m*2;
+            SaveUsers();
+            Admin* q = AllAdmins;
+            AllAdmins = nullptr;
+            delete q;
+            AllAdmins = new Admin[m];
             LoadUsers();
         }
         break;
@@ -164,6 +184,11 @@ void AllUsers::checkTable (Type type)
         if (x > n/2)    //reached half capacity
         {
             n = n*2;
+            SaveUsers();
+            Customer* q = AllCustomers;
+            AllCustomers = nullptr;
+            delete q;
+            AllCustomers = new Customer[n];
             LoadUsers();
         }
         break;
@@ -172,7 +197,7 @@ void AllUsers::checkTable (Type type)
 
 void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
 {
-    checkTable(type);
+    //checkTable(type);
     int a = 0;
     int i = hash (type, u, a);
     switch (type)
@@ -180,26 +205,30 @@ void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
         while (!AllAdmins[i].isempty)//while full
         {
             i = hash(type, u, a++); //find next index
+            qDebug()<< "mediate i :" <<i;
         }
        if (AllAdmins[i].isempty)
-        {    AllAdmins[i].setUsername(u);
-             AllAdmins[i].setPassword(p);
+        {   AllAdmins[i].setUsername(u);
+            AllAdmins[i].setPassword(p);
+           qDebug()<< "final i : " << i;
         }
         break;
     case customer:
         while (!AllCustomers[i].isempty)//while full
         {
             i = hash(type, u, a++); //find next index
+            qDebug()<< "mediate i :" <<i;
+
         }
         if (AllCustomers[i].isempty)
         {    AllCustomers[i].setUsername(u);
             AllCustomers[i].setPassword(p);
             AllCustomers[i].setPreferredGenres(genres);
+            qDebug()<< "final i : " << i;
+
         }
         break;
     }
-
-    qDebug()<< finishedloading;
 
     if (finishedloading)
     {

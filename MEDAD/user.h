@@ -6,6 +6,7 @@ class User
 {
 public:
     User();
+    ~User();
     void setUsername (QString u);
     void setPassword (QString p);
     QString getUsername () ;

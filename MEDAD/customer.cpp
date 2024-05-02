@@ -2,6 +2,8 @@
 
 
 Customer::Customer() {}
+Customer::~Customer() {}
+
 
 void Customer::setPreferredGenres(const vector<QString>& genres){
     preferredGenres = genres;

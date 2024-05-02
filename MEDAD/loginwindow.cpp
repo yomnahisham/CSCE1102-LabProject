@@ -94,7 +94,7 @@ void LoginWindow::on_loginB_clicked()
         QScreen* screen = QGuiApplication::primaryScreen();
         QRect screenGeometry = screen->geometry();
 
-        ProductManager* home = new ProductManager(nullptr, loggedUser);
+        ProductManager* home = new ProductManager(nullptr, loggedUser, users);
         home->resize(screenGeometry.width(), screenGeometry.height());
        // home-> setUser (loggedUser);
         home-> show();

@@ -2,7 +2,8 @@
 #include "allusers.h"
 #include <QApplication>
 #include <QScreen>
-#include"books.h"
+
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -13,7 +14,9 @@ int main(int argc, char *argv[])
 
     AllUsers allusers;
     allusers.LoadUsers(); //load all users
+    qDebug()<< "finished loading";
     LoginWindow login (nullptr, &allusers);
+    qDebug()<< "login created";
     login.resize(screenGeometry.width(), screenGeometry.height()); //resizing according to the QScreen measurements
     login.setWindowTitle("Login");
     login.show();

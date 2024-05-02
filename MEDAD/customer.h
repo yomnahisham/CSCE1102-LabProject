@@ -12,6 +12,7 @@ class Customer : public User
 {
 public:
     Customer();
+    ~Customer();
     void setPreferredGenres(const vector<QString>& genres);
    // static void setPreferredAuthors(const vector<string>& authors);
     const vector<QString>& getPreferredGenres() const;

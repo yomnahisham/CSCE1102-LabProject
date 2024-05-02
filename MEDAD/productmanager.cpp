@@ -6,14 +6,17 @@
 #include "books.h"
 #include "accessories.h"
 #include "techs.h"
+#include "loginwindow.h"
 
+#include <QApplication>
+#include <QScreen>
 #include <QScreen>
 #include <QVector>
 #include <QString>
 #include <QVBoxLayout>
 
 
-ProductManager::ProductManager(QWidget *parent, User* loggedUser)
+ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers)
     : QWidget(parent)
     , ui(new Ui::ProductManager)
     , bookProducts(new QVector<Books*>())
@@ -22,6 +25,8 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser)
     , user(loggedUser)
 {
     ui->setupUi(this);
+
+    users = Allusers;
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -102,7 +107,13 @@ void ProductManager::onCartClicked(){
 
 void ProductManager::onSignOutClicked(){
     qDebug() << "signing out!";
-    //ayla, please see what signout should do according to your user and allusers class
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    LoginWindow* login = new LoginWindow(nullptr, users);
+    login-> resize(screenGeometry.width(), screenGeometry.height()); //resizing according to the QScreen measurements
+    login-> setWindowTitle("Login");
+    login -> show();
+    hide();
 }
 
 Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
