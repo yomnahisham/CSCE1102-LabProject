@@ -124,7 +124,45 @@ void ProductManager::initializeProducts() {
         {"A Tale of Two Cities", "15.5", "5", "true", ":/Books/assets/tale of two.jpeg", "Classics", "Charles Dickens", "9780582400115"},
         {"Oliver Twist", "14", "5", "true", ":/Books/assets/oliver.jpeg", "Classics", "Charles Dickens", "9780140430172"},
         {"Julius Caesar", "16", "5", "true", ":/Books/assets/ceaser.jpeg", "Plays", "William Shakespeare", "9780743482745"},
-        //add rest of books later
+        { "The Days", "25", "5", "true", ":/{/assets/days.jpeg" , "Arabic Literature" , "Taha Hussein" , "9781617971310"},
+        { "Doaa Al-Karawan", "20", "5", "true", ":/{/assets/karawan.jpeg" , "Arabic Literature" , "Taha Hussein" , "9789771497011"},
+        { "1984", "19", "5", "true", ":/{/assets/1984.jpeg" , "Classics" , "George Orwell" , "9780155658110"},
+        { "Animal Farm", "18.5", "5", "true", ":/{/assets/animal farm.jpeg" , "Classics" , "George Orwell" , "9788129116123"},
+        { "The Da Vinci Code", "17", "5", "true", ":/{/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780307277671"},
+        { "Angels and Demons", "16.5", "5", "true", ":/{/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780743486224"},
+        { "Mrs. Dalloway", "23", "5", "true", ":/{/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
+        { "A Room of One’s Own", "24", "5", "true", ":/{/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
+        { "Wuthering Heights", "26", "5", "true", ":/{/assets/wutheruing heights.jpeg" , "Classics" , "Emily Bronte" , "9780175565757"},
+        { "Jane Eyre", "27", "5", "true", ":/{/assets/jane eyre.jpeg" , "Classics" , "Charlotte Bronte" , "9780785294788"},
+        { "Villette", "24", "5", "true", ":/{/assets/villette.jpeg" , "Classics" , "Charlotte Bronte" , "9781853260193"},
+        { "The Great Gatsby", "27", "5", "true", ":/{/assets/gatsby.jpeg" , "Classics" , "F. Scott Fitzgerald" , "9780393042375"},
+        { "Tender is The Night", "34", "5", "true", ":/{/assets/tender is.jpeg" , "Classics" , "F. Scott Fitzgerald" , "9780684151519"},
+        { "The Stranger", "16", "5", "true", ":/{/assets/stranger.png" , "Philosophy" , "Albert Camus" , "9780679720201"},
+        { "The Plague", "17", "5", "true", ":/{/assets/plague.jpeg" , "Philosophy" , "Albert Camus" , "9780307827807"},
+        { "The Old Man and The Sea", "30", "5", "true", ":/{/assets/old man.jpeg" , "Classics" , "Ernest Hemingway" , "9787201046440"},
+        { "For whom the Bell Tolls", "31", "5", "true", ":/{/assets/the bell tolls.jpeg" , "Classics" , "Ernest Hemingway" , "9780307273789"},
+        { "The Three Musketeers", "36", "5", "true", ":/{/assets/musketeers.jpeg" , "Classics" , "Leo Tolstoy" , "9783954183531"},
+        { "The Count of Monte Cristo", "37", "5", "true", ":/{/assets/monte cristo.jpeg" , "Classics" , "Alexander Dumas" , "9780199219650"},
+        { "The Prophet", "38", "5", "true", ":/{/assets/prophet.jpeg" , "Poetry" , "Khalil Gibran" , "9783530268003"},
+        { "Broken Wings", "32", "5", "true", ":/{/assets/broken wings.jpeg" , "Arabic Literature" , "Khalil Gibran" , "9788177697025"},
+        { "Granada", "40", "5", "true", ":/{/assets/granada.jpeg" , "Classics" , "Leo Tolstoy" , "9780393042375"},
+        { "Al Tantouriah", "42", "5", "true", ":/{/assets/tantouriah.jpeg" , "Palestine" , "Radwa Ashour" , "9789770928295"},
+        { "Fi Al-Quds", "26", "5", "true", ":/{/assets/fi alquds.jpeg" , "Palestine" , "Tamim Al-Barghouthi" , ""},
+        { "Ya Masr Hanet", "20", "5", "true", ":/{/assets/ya masr hanet.jpeg" , "Poetry" , "Tamim Al-Barghouthi" , ""},
+        { "I saw Ramallah", "45", "5", "true", ":/{/assets/i saw ramallah.jpeg" , "Palestine" , "Mourid Al-Barghouthi" , "9789774247552"},
+        { "I Was Born There, I Was Born Here", "40", "5", "true", ":/{/assets/i was born.jpeg" , "Palestine" , "Mourid Al-Barghouthi" , "9781408829097"},
+        { "Returning To Haifa", "39", "5", "true", ":/{/assets/haifa.jpeg" , "Palestine" , "Ghassan Kanafani" , "9780571347827"},
+        { "Men in The Sun", "37", "5", "true", ":/{/assets/men in the sun.jpeg" , "Palestine" , "Ghassan Kanafani" , "9780894108570"},
+        { "Beirut Nightmares", "29", "5", "true", ":/{/assets/beirut nightmares.jpeg" , "Arabic Literature" , "Ghada Al-Samman" , "9780704380653"},
+        { "No Sea in Beirut", "28", "5", "true", ":/{/assets/no sea in beirut.jpg" , "Arabic Literature" , "Ghada Al-Samman" , ""},
+        { "The Hundred Years’ War on Palestine", "45", "5", "true", ":/{/assets/the hundred years war on palestine.jpeg" , "Palestine" , "Rashid Khalidi" , "9781627798549"},
+        { "The Iron Cage", "43", "5", "true", ":/Books/assets/iron cage.jpeg" , "Palestine" , "Rashid Khalidi" , "9780807003084"},
+         { "Huda F Are You?", "20", "5", "true", ":/{/assets/huda f.jpeg" , "Comic {" , "Huda Fahmy" , "9780593324318"},
+         { "Yes, I’m Hot in This 23", "23", "5", "true", ":/{/assets/hot in this.jpeg" , "Comic {" , "Huda Fahmy" , "9781507209349"},
+         { "The Kite Runner", "42", "5", "true", ":/{/assets/kite runner.jpeg" , "Arab-American" , "Khaled Hosseini" , "9781594631931"},
+         { "A Thousand Splendid Suns", "41", "5", "true", ":/{/assets/splendid suns.jpeg" , "Arab-American" , "Khaled Hosseini" , "9780143180654"}
+
+
     };
 
     for (const auto& data : productsData) {
@@ -143,8 +181,21 @@ void ProductManager::initializeProducts() {
 
     QString accessoriesData[][7] = {
         {"Books Defense Tshirt", "25", "5", "true", ":/Tshirts/assets/Books Defense Tshirt.jpeg", "T-shirt", "M"},
-        {"Cool Kids Tshirt", "20", "5", "true", ":/Tshirts/assets/Cool Kids Are Reading.jpeg", "T-shirt", "L"}
-        //add more accessories data later
+        {"Cool Kids Tshirt", "20", "5", "true", ":/Tshirts/assets/Cool Kids Are Reading.jpeg", "T-shirt", "L"},
+        { "I’d Rather Be Reading Tshirt","30", "5", "true", ":/Tshirts/assets/I'd Rather tshirt.jpeg"  ,  "T-shirt",   "S"},
+        { " Reading TicketTshirt","30", "5", "true", ":/Tshirts/assets/Reading Ticket Tshirst.jpeg"  ,  "T-shirt",   "XS"},
+        { "Raising Readers Tote Bag","36", "5", "true", ":/Bags/assets/Raising Readers Tote Bag.jpeg"  ,  "Bag",   " "},
+        { "Book Stack Tote Bag","38", "5", "true", ":/Bags/assets/Book Stack Tote Bag.jpeg"  ,  "Bag",   " "},
+        { "Medad Merchandise Tote Bag","40", "5", "true", ":/Bags/assets/Screenshot 2024-05-01 145322.png"  ,  "Bag",   " "},
+        { " Bookmark set1","10", "5", "true", ":/BookMarks/assets/Bookmark Set1.jpeg"  ,  "BookMarks",   " "},
+        { " Bookmark set2","10", "5", "true", ":/BookMarks/assets/Bookmark Set3.jpeg"  ,  "BookMarks",   " "},
+        { " Bookmark set3","10", "5", "true", ":/BookMarks/assets/Bookmark Set2.jpeg"  ,  "BookMarks",   " "},
+        { " Bookmark Palestine1","15", "5", "true", ":/BookMarks/assets/Bookmark Set Plaestine 1.jpeg"  ,  "BookMarks",   " "},
+        { " Bookmark Palestine2","15", "5", "true", ":/BookMarks/assets/Bookmark Set Palestine2.jpeg"  ,  "BookMarks",   " "},
+        { " Bookmark HarryPotter","20", "5", "true", ":/BookMarks/assets/Bookmark Set Harry Potter2.jpeg"  ,  "BookMarks",   " "},
+        { " Bookmark Egyptian","25", "5", "true", ":/BookMarks/assets/Bookmark Set Egyptian 2.jpeg"  ,  "BookMarks"," "},
+        { " Bookmark Arabic","30", "5", "true", ":/BookMarks/assets/Bookmark Set Arabic 2.jpeg"  ,  "BookMarks", " "},
+
     };
 
     for (const auto& data : accessoriesData) {

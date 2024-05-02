@@ -58,6 +58,9 @@ public:
         if (RegisterWindow->objectName().isEmpty())
             RegisterWindow->setObjectName("RegisterWindow");
         RegisterWindow->resize(856, 635);
+        RegisterWindow->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+"\n"
+""));
         userL = new QLabel(RegisterWindow);
         userL->setObjectName("userL");
         userL->setGeometry(QRect(250, 80, 71, 16));

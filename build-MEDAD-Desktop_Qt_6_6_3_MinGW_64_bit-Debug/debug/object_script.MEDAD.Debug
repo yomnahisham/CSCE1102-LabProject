@@ -3,6 +3,7 @@ debug/admin.o
 debug/allusers.o
 debug/books.o
 debug/checkout.o
+debug/clickablelabels.o
 debug/customer.o
 debug/discounts.o
 debug/loginwindow.o
@@ -16,10 +17,11 @@ debug/user.o
 debug/qrc_Bags.o
 debug/qrc_BookMarks.o
 debug/qrc_Books.o
+debug/qrc_Resources.o
 debug/qrc_Techs.o
 debug/qrc_Tshirts.o
-debug/qrc_UserData.o
 debug/moc_checkout.o
+debug/moc_clickablelabels.o
 debug/moc_loginwindow.o
 debug/moc_productmanager.o
 debug/moc_registerwindow.o

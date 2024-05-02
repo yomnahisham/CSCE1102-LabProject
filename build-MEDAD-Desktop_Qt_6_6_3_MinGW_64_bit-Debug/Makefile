@@ -265,9 +265,9 @@ Makefile: ../MEDAD/MEDAD.pro C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++/qmake.conf C
 		../MEDAD/Bags.qrc \
 		../MEDAD/BookMarks.qrc \
 		../MEDAD/Books.qrc \
+		../MEDAD/Resources.qrc \
 		../MEDAD/Techs.qrc \
-		../MEDAD/Tshirts.qrc \
-		../MEDAD/UserData.qrc
+		../MEDAD/Tshirts.qrc
 	$(QMAKE) -o Makefile ..\MEDAD\MEDAD.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/Qt/6.6.3/mingw_64/mkspecs/features/spec_pre.prf:
 C:/Qt/6.6.3/mingw_64/mkspecs/features/device_config.prf:
@@ -464,9 +464,9 @@ C:/Qt/6.6.3/mingw_64/mkspecs/features/build_pass.prf:
 ../MEDAD/Bags.qrc:
 ../MEDAD/BookMarks.qrc:
 ../MEDAD/Books.qrc:
+../MEDAD/Resources.qrc:
 ../MEDAD/Techs.qrc:
 ../MEDAD/Tshirts.qrc:
-../MEDAD/UserData.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\MEDAD\MEDAD.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 

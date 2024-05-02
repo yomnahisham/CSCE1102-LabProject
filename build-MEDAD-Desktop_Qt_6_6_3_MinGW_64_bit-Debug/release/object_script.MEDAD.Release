@@ -3,6 +3,7 @@ release/admin.o
 release/allusers.o
 release/books.o
 release/checkout.o
+release/clickablelabels.o
 release/customer.o
 release/discounts.o
 release/loginwindow.o
@@ -16,10 +17,11 @@ release/user.o
 release/qrc_Bags.o
 release/qrc_BookMarks.o
 release/qrc_Books.o
+release/qrc_Resources.o
 release/qrc_Techs.o
 release/qrc_Tshirts.o
-release/qrc_UserData.o
 release/moc_checkout.o
+release/moc_clickablelabels.o
 release/moc_loginwindow.o
 release/moc_productmanager.o
 release/moc_registerwindow.o

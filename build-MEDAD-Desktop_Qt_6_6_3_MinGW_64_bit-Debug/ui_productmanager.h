@@ -19,16 +19,23 @@ QT_BEGIN_NAMESPACE
 class Ui_ProductManager
 {
 public:
-    QLabel *label;
+    QLabel *logoCorner;
+    QLabel *logoSub;
 
     void setupUi(QWidget *ProductManager)
     {
         if (ProductManager->objectName().isEmpty())
             ProductManager->setObjectName("ProductManager");
-        ProductManager->resize(854, 632);
-        label = new QLabel(ProductManager);
-        label->setObjectName("label");
-        label->setGeometry(QRect(330, 310, 171, 16));
+        ProductManager->resize(1041, 637);
+        ProductManager->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+"\n"
+""));
+        logoCorner = new QLabel(ProductManager);
+        logoCorner->setObjectName("logoCorner");
+        logoCorner->setGeometry(QRect(0, 20, 221, 61));
+        logoSub = new QLabel(ProductManager);
+        logoSub->setObjectName("logoSub");
+        logoSub->setGeometry(QRect(80, 100, 171, 31));
 
         retranslateUi(ProductManager);
 
@@ -38,7 +45,8 @@ public:
     void retranslateUi(QWidget *ProductManager)
     {
         ProductManager->setWindowTitle(QCoreApplication::translate("ProductManager", "Form", nullptr));
-        label->setText(QCoreApplication::translate("ProductManager", "Reached Product manager", nullptr));
+        logoCorner->setText(QCoreApplication::translate("ProductManager", "MEDAD LOGO", nullptr));
+        logoSub->setText(QCoreApplication::translate("ProductManager", "subtitle", nullptr));
     } // retranslateUi
 
 };
