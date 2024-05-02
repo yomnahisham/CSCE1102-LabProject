@@ -294,8 +294,8 @@ void ProductManager::makeFirstPage(){
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
-    // Adjusting the size of the parent widget of recsLayout
-    ui->recsLayout->parentWidget()->resize(widthFull, recsLayoutHeight);
+    //adjusting the size of the parent widget of recsLayout
+    ui->recsLayout->parentWidget()->resize(widthFull-100, recsLayoutHeight);
 
     int column = 0; //track the column index for the current book
 
@@ -313,30 +313,32 @@ void ProductManager::makeFirstPage(){
                 QLabel* imageLabel = new QLabel();
                 imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
-                //create QLabel for name and price
+                //create QLabel for name
                 QLabel* nameLabel = new QLabel(name);
-                QLabel* priceLabel = new QLabel(QString::number(price)+ " EGP");
-
-                QFont Bfont("Optima", 12, QFont::Bold); // Change font to your desired font
-                nameLabel->setFont(Bfont);
-                QFont uBfont("Optima", 12);
-                priceLabel->setFont(uBfont);
-
+                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
                 nameLabel->setMaximumWidth(imageLabel->width());
                 nameLabel->setWordWrap(true);
 
-                bookLayout->setAlignment(Qt::AlignCenter);
+                //create QLabel for price
+                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                priceLabel->setFont(QFont("Optima", 12));
 
-                //add the labels to the vertical layout
+                //create add to cart label
+                ClickableLabels* addtoCart = new ClickableLabels(this);
+                QPixmap addPix(":/logos/assets/addtoCart.png");
+                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+                //add the labels to the book layout
                 bookLayout->addWidget(imageLabel);
                 bookLayout->addWidget(nameLabel);
                 bookLayout->addWidget(priceLabel);
+                bookLayout->addWidget(addtoCart);
 
-                bookLayout->addSpacing(10);
-                //add the vertical layout to the horizontal layout
+                //set alignment for the book layout
+                bookLayout->setAlignment(Qt::AlignTop);
+
+                //add the book layout to the main layout
                 ui->recsLayout->addLayout(bookLayout);
-
-                ui->recsLayout->setAlignment(Qt::AlignCenter);
 
                 //increment the column index for the next book
                 column++;
@@ -347,6 +349,7 @@ void ProductManager::makeFirstPage(){
     }
     ui->recsLayout->setContentsMargins(0, 0, 0, 0);
 }
+
 
 
 

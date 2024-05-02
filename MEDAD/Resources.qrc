@@ -7,5 +7,6 @@
         <file>assets/nameonlyLogo.png</file>
         <file>assets/signoutbutton.png</file>
         <file>assets/logosubtitle.png</file>
+        <file>assets/addtoCart.png</file>
     </qresource>
 </RCC>
