@@ -66,11 +66,14 @@ void ProductManager::setUser(User* loggedUser){
         qDebug() << "User transferred successfully";
 }
 
+User* ProductManager::getUser(){
+    return user;
+}
+
 ProductManager::~ProductManager()
 {
     delete ui;
-    delete user; // Delete user object if necessary
-    // Delete vectors and their elements
+    //delete vectors and their elements
     for (auto book : *bookProducts) {
         delete book;
     }
@@ -195,7 +198,6 @@ void ProductManager::initializeProducts() {
         { " Bookmark HarryPotter","20", "5", "true", ":/BookMarks/assets/Bookmark Set Harry Potter2.jpeg"  ,  "BookMarks",   " "},
         { " Bookmark Egyptian","25", "5", "true", ":/BookMarks/assets/Bookmark Set Egyptian 2.jpeg"  ,  "BookMarks"," "},
         { " Bookmark Arabic","30", "5", "true", ":/BookMarks/assets/Bookmark Set Arabic 2.jpeg"  ,  "BookMarks", " "},
-
     };
 
     for (const auto& data : accessoriesData) {
@@ -233,9 +235,24 @@ void ProductManager::initializeProducts() {
 
 }
 
-vector<Products*> ProductManager::suggestSimilarItems(const Customer& customer, const vector<Products*>& allProducts){
+vector<Products*> ProductManager::suggestSimilarItems(const vector<Products*>& allProducts){
+    User* person;
+    person = getUser();
+
+    if (!person) {
+        qDebug() << "Error: No user logged in.";
+        return {};
+    }
+
+    Customer* customer = dynamic_cast<Customer*>(person);
+
+    if (!customer) {
+        qDebug() << "Error: User is not a Customer.";
+        return {};
+    }
+
     vector<Products*> suggestions;
-    const vector<string>& preferredGenres = customer.getPreferredGenres();
+    const vector<string>& preferredGenres = customer->getPreferredGenres();
 
     //iterating through all products and check for similarity with user preferences
     for (Products* product : allProducts) {

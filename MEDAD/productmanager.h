@@ -22,13 +22,14 @@ public:
     explicit ProductManager(QWidget *parent = nullptr);
     ~ProductManager();
     void setUser(User* loggedUser);
+    User* getUser();
 
     Books* createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN);
     Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size);
     Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, int type);
 
     void initializeProducts();
-    vector<Products*> suggestSimilarItems(const Customer& customer, const vector<Products*>& allProducts);
+    vector<Products*> suggestSimilarItems(const vector<Products*>& allProducts);
 private slots:
     void onCartClicked();
     void onSignOutClicked();
