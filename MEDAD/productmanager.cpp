@@ -427,10 +427,19 @@ void ProductManager::searchProducts(const QString &keyword){
         showSuggestions();
         return;
     }
+    QSet<QString> displayedBooks; // Track displayed books to ensure uniqueness
+    int displayedCount = 0;
 
     for (Products* product : *bookProducts) {
         Books* book = dynamic_cast<Books*>(product);
-        if (book && (book->getName().contains(keyword, Qt::CaseInsensitive) || book->getGenre().contains(keyword, Qt::CaseInsensitive))) {
+        if (book && (book->getName().contains(keyword, Qt::CaseInsensitive) || book->getGenre().contains(keyword, Qt::CaseInsensitive))){
+            if (displayedBooks.contains(book->getName())) {
+                continue; // Skip if book already displayed
+            }
+
+            if (displayedCount >= 5) {
+                break; // Limit reached, stop displaying more
+            }
             if (book) {
                 QString name = book->getName();
                 QPixmap imagePath = book->getImage();
@@ -462,6 +471,8 @@ void ProductManager::searchProducts(const QString &keyword){
                     bookLayout->setAlignment(Qt::AlignTop);
 
                     ui->recsLayout->addLayout(bookLayout);
+                    displayedBooks.insert(name);
+                    displayedCount++;
                 } else {
                     qDebug() << "Invalid image path for book: " << name;
                 }
