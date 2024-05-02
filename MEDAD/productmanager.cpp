@@ -421,11 +421,12 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword){
-    //clear the layout only if the keyword is not empty
     if (keyword.isEmpty()) {
+        //clear the layout and show suggestions?
+        clearLayout(ui->recsLayout);
+        showSuggestions();
         return;
     }
-
     // Clear the layout to prepare for new search results
     clearLayout(ui->recsLayout);
 
@@ -468,13 +469,6 @@ void ProductManager::searchProducts(const QString &keyword){
                 }
             }
         }
-    }
-
-    if (keyword.trimmed().isEmpty()) {
-        //clear the layout and show suggestions?
-        clearLayout(ui->recsLayout);
-        showSuggestions();
-        return;
     }
 }
 
