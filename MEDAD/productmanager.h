@@ -8,6 +8,7 @@
 #include "techs.h"
 #include <QWidget>
 #include <vector>
+#include <QLayoutItem>
 
 using namespace std;
 
@@ -33,10 +34,14 @@ public:
 
     void initializeProducts();
     void makeFirstPage();
+    void showSuggestions();
+
+    void clearLayout(QLayout* layout);
 private slots:
     void onCartClicked();
     void onSignOutClicked();
     void onAddToCartClicked();
+    void searchProducts(const QString& keyword);
 private:
     Ui::ProductManager *ui;
     User* user;
@@ -44,6 +49,8 @@ private:
     QVector<Books*> *bookProducts;
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;
+
+    QVector<QLayoutItem*> originalLayoutItems;
 };
 
 #endif // PRODUCTMANAGER_H

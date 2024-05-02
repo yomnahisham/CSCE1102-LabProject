@@ -58,13 +58,26 @@
   <widget class="QWidget" name="horizontalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>79</x>
-     <y>489</y>
-     <width>681</width>
+     <x>80</x>
+     <y>470</y>
+     <width>1221</width>
      <height>501</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="allproductsLayout"/>
+  </widget>
+  <widget class="QLineEdit" name="searchLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>392</x>
+     <y>120</y>
+     <width>421</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Search...</string>
+   </property>
   </widget>
  </widget>
  <resources/>
