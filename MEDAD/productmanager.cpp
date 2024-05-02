@@ -10,6 +10,7 @@
 #include <QScreen>
 #include <QVector>
 #include <QString>
+#include <QVBoxLayout>
 
 
 ProductManager::ProductManager(QWidget *parent)
@@ -58,7 +59,6 @@ ProductManager::ProductManager(QWidget *parent)
     connect(signOutButton, &ClickableLabels::clicked, this, &ProductManager::onSignOutClicked);
 
     makeFirstPage();
-    initializeProducts();
 }
 
 ProductManager::~ProductManager()
@@ -276,4 +276,30 @@ void ProductManager::makeFirstPage(){
     initializeProducts();
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
+
+    int row = 0;
+    int column = 0;
+
+    for (Products* product : recommendations) {
+        Books* book = dynamic_cast<Books*>(product);
+        if (book) {
+            QLabel* nameLabel = new QLabel(book->getName());
+            QLabel* priceLabel = new QLabel(QString::number(book->getPrice()));
+
+            //create a QLabel for displaying the book's image
+            QLabel* imageLabel = new QLabel();
+            imageLabel->setPixmap(book->getImage().scaled(100, 100)); //size might need adjusting
+
+            //add the labels to the existing layout using a grid layout
+            ui->gridLayout->addWidget(nameLabel, row, column);
+            ui->gridLayout->addWidget(priceLabel, row, column + 1);
+            ui->gridLayout->addWidget(imageLabel, row, column + 2);
+
+            column += 3;
+            if (column >= ui->gridLayout->columnCount()) {
+                column = 0;
+                row++;
+            }
+        }
+    }
 }
