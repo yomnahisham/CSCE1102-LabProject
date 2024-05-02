@@ -16,7 +16,7 @@ public:
     void SaveUsers ();
     void LoadUsers();
     User* authenticateUser(Type type , QString u, QString p);
-    void insert (Type type, QString u, QString p);
+    void insert (Type type, QString u, QString p, vector<QString> genres);
     bool userExists (Type type, QString u) ;
 private:
     static int m;

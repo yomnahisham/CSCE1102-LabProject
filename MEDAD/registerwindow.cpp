@@ -4,7 +4,6 @@
 #include "allusers.h"
 #include "loginwindow.h"
 #include "productmanager.h"
-#include "customer.h"
 
 #include <QDebug>
 #include <QScreen>
@@ -55,46 +54,46 @@ void RegisterWindow::on_regB_clicked()
         repeatedPass = false;
 
     bool hasChecks = false;
-    vector<string> genres;
-    if(ui->fantasy->isChecked()) {
-        genres.push_back("Fantasy");
+    vector<QString> genres;
+    if(ui->classics->isChecked()) {
+        genres.push_back("Classics");
         hasChecks = true;
     }
-    if(ui->mystery->isChecked()) {
-        genres.push_back("Mystery");
+    if(ui->arabLit->isChecked()) {
+        genres.push_back("Arabic-Literature");
         hasChecks = true;
     }
-    if(ui->thriller->isChecked()) {
-        genres.push_back("Thriller");
+    if(ui->philo->isChecked()) {
+        genres.push_back("Philosophy");
         hasChecks = true;
     }
-    if(ui->selfHelp->isChecked()) {
-        genres.push_back("SelfHelp");
+    if(ui->poetry->isChecked()) {
+        genres.push_back("Poetry");
         hasChecks = true;
     }
-    if(ui->romance->isChecked()) {
-        genres.push_back("Romance");
+    if(ui->palestine->isChecked()) {
+        genres.push_back("Palestine");
         hasChecks = true;
     }
-    if(ui->horror->isChecked()) {
-        genres.push_back("Horror");
+    if(ui->arabAmerican->isChecked()) {
+        genres.push_back("Arab-American");
         hasChecks = true;
-    }   
+    }
+    if(ui->comic->isChecked()) {
+        genres.push_back("Comic-Books");
+        hasChecks = true;
+    }
 
     if (uniqueUser && repeatedPass && hasChecks)
     {
-        users -> insert (AllUsers:: customer, username, password);
+        users -> insert (AllUsers:: customer, username, password, genres);
         user = users -> authenticateUser (AllUsers:: customer, username, password);
-        Customer* cus = dynamic_cast<Customer*> (user);
-        cus -> setPreferredGenres(genres);
-        qDebug() << "Worked, sent genres into preferences.";
 
         QScreen* screen = QGuiApplication::primaryScreen();
         QRect screenGeometry = screen->geometry();
 
         ProductManager* home = new ProductManager(nullptr, user);
         home->resize(screenGeometry.width(), screenGeometry.height());
-        //home-> setUser(user);
         home-> show();
         hide();
     }else {

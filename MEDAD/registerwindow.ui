@@ -197,22 +197,22 @@
     </rect>
    </property>
    <property name="text">
-    <string>Select Your Preffered Authors:</string>
+    <string>Select Your Preffered Genres:</string>
    </property>
   </widget>
   <widget class="QGroupBox" name="genreL">
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>280</y>
-     <width>341</width>
+     <y>290</y>
+     <width>461</width>
      <height>80</height>
     </rect>
    </property>
    <property name="title">
     <string>Genre</string>
    </property>
-   <widget class="QCheckBox" name="fantasy">
+   <widget class="QCheckBox" name="classics">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -222,36 +222,36 @@
      </rect>
     </property>
     <property name="text">
-     <string>Fantasy</string>
+     <string>Classics</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="mystery">
+   <widget class="QCheckBox" name="arabLit">
     <property name="geometry">
      <rect>
       <x>120</x>
       <y>20</y>
-      <width>85</width>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Mystery</string>
+     <string>Arabic Literature</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="thriller">
+   <widget class="QCheckBox" name="philo">
     <property name="geometry">
      <rect>
       <x>250</x>
       <y>20</y>
-      <width>85</width>
+      <width>101</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Thriller</string>
+     <string>Philosophy</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="selfHelp">
+   <widget class="QCheckBox" name="poetry">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -261,10 +261,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Self Help</string>
+     <string>Poetry</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="romance">
+   <widget class="QCheckBox" name="palestine">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -274,20 +274,33 @@
      </rect>
     </property>
     <property name="text">
-     <string>Romance</string>
+     <string>Palestine</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="horror">
+   <widget class="QCheckBox" name="arabAmerican">
     <property name="geometry">
      <rect>
       <x>250</x>
       <y>50</y>
-      <width>85</width>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Horror</string>
+     <string>Arab-American</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="comic">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>20</y>
+      <width>101</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Comic Books</string>
     </property>
    </widget>
   </widget>

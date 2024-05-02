@@ -24,6 +24,8 @@ public:
         if (Checkout->objectName().isEmpty())
             Checkout->setObjectName("Checkout");
         Checkout->resize(400, 300);
+        Checkout->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+""));
 
         retranslateUi(Checkout);
 

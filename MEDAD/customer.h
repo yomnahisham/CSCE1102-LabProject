@@ -5,7 +5,6 @@
 #include "shoppingcart.h"
 
 #include <vector>
-#include <string>
 
 using namespace std;
 
@@ -13,13 +12,13 @@ class Customer : public User
 {
 public:
     Customer();
-    void setPreferredGenres(const vector<string>& genres);
+    void setPreferredGenres(const vector<QString>& genres);
    // static void setPreferredAuthors(const vector<string>& authors);
-    const vector<string>& getPreferredGenres() const;
+    const vector<QString>& getPreferredGenres() const;
     // static const vector<string>& getPreferredAuthors();
     void virtualfunc();
 private:
-    vector<string> preferredGenres;
+    vector<QString> preferredGenres;
    // static vector<std::string> preferredAuthors;
 
     ShoppingCart MyCart;

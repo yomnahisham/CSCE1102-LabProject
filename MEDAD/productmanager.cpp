@@ -249,12 +249,12 @@ vector<Products*> ProductManager::suggestSimilarItems(){
     }
 
     vector<Products*> suggestions;
-    const vector<string>& preferredGenres = customer->getPreferredGenres();
+    const vector<QString>& preferredGenres = customer->getPreferredGenres();
 
     //if the product genre matches any preferred genre
-    for (const string& genre : preferredGenres) {
+    for (const QString& genre : preferredGenres) {
         for (const auto& book : *bookProducts) {
-            if (book->getGenre() == QString::fromStdString(genre)) {
+            if (book->getGenre() == genre) {
                 suggestions.push_back(book); //add the book to suggestions
                 if (suggestions.size() >= 5) {
                     return suggestions; //only taking five suggestions

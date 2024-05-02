@@ -31,10 +31,16 @@ void AllUsers::LoadUsers(){
         QString data = in.readLine();
         QStringList splitdata = data.split (" ");
 
+        vector<QString> genres;
+
+
         if (splitdata[0] == "admin")
-           insert (admin,splitdata[1], splitdata[2]);
+           insert (admin,splitdata[1], splitdata[2], genres);
         else if (splitdata[0] == "customer")
-           insert (customer,splitdata[1], splitdata[2]);
+        {    for (int i = 3; splitdata[i] != "N" ; i++)
+                genres.push_back(splitdata[i]);
+            insert (customer,splitdata[1], splitdata[2], genres);
+        }
 
     }
 
@@ -61,8 +67,12 @@ void AllUsers::SaveUsers()
 
         for (int i = 0 ; i < m; i ++)
         {
-            stream << "admin " << AllAdmins[i].getUsername() << " " << AllAdmins[i].getPassword() ;
+            stream << "admin " << AllAdmins[i].getUsername() << " " << AllAdmins[i].getPassword() << "/n" ;
             stream << "customer " << AllCustomers[i].getUsername() << " " << AllCustomers[i].getPassword() ;
+            vector <QString> genre = AllCustomers[i].getPreferredGenres();
+            for (auto it = genre.begin(); it != genre.end(); it++)
+                stream << " " <<*it;
+            stream << "/n";
         }
 
         userData.close();
@@ -81,7 +91,7 @@ int AllUsers:: hash (QString u, int att)
 
 }
 
-void AllUsers::insert (Type type, QString u, QString p)
+void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
 {
     int a = 0;
     int i = hash (u, a);
@@ -104,6 +114,7 @@ void AllUsers::insert (Type type, QString u, QString p)
         if (AllCustomers[i].isempty)
         {    AllCustomers[i].setUsername(u);
             AllCustomers[i].setPassword(p);
+            AllCustomers[i].setPreferredGenres(genres);
         }
         break;
     }

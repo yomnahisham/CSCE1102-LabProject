@@ -3,11 +3,11 @@
 
 Customer::Customer() {}
 
-void Customer::setPreferredGenres(const vector<string>& genres){
+void Customer::setPreferredGenres(const vector<QString>& genres){
     preferredGenres = genres;
 }
 
-const vector<string>& Customer::getPreferredGenres() const {
+const vector<QString>& Customer::getPreferredGenres() const {
     return preferredGenres;
 }
 
