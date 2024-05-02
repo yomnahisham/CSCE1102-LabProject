@@ -427,18 +427,18 @@ void ProductManager::searchProducts(const QString &keyword){
         showSuggestions();
         return;
     }
-    QSet<QString> displayedBooks; // Track displayed books to ensure uniqueness
+    QSet<QString> displayedBooks; //track displayed books to ensure uniqueness
     int displayedCount = 0;
 
     for (Products* product : *bookProducts) {
         Books* book = dynamic_cast<Books*>(product);
         if (book && (book->getName().contains(keyword, Qt::CaseInsensitive) || book->getGenre().contains(keyword, Qt::CaseInsensitive))){
             if (displayedBooks.contains(book->getName())) {
-                continue; // Skip if book already displayed
+                continue; //skip if book already displayed
             }
 
             if (displayedCount >= 5) {
-                break; // Limit reached, stop displaying more
+                break; //limit reached, stop displaying more
             }
             if (book) {
                 QString name = book->getName();
@@ -484,10 +484,14 @@ void ProductManager::searchProducts(const QString &keyword){
 void ProductManager::clearLayout(QLayout* layout){
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr){
-        if (item->widget()) {
-            delete item->widget();
+        if (QWidget* widget = item->widget()) {
+            delete widget;
+        } else {
+            if (QLayout* childLayout = item->layout()) {
+                clearLayout(childLayout); //recursively clear child layouts
+            }
+            delete item;
         }
-        delete item;
     }
 }
 
