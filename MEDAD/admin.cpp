@@ -6,3 +6,8 @@ void Admin::virtualfunc()
 {
 
 }
+
+void Admin::addAdmin ()
+{
+
+}
