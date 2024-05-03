@@ -7,6 +7,7 @@
 #include "accessories.h"
 #include "techs.h"
 #include"allproducts1.h"
+#include "shoppingcart.h"
 #include <QWidget>
 #include <vector>
 #include <QLayoutItem>
@@ -53,6 +54,7 @@ public:
     void clearLayout(QLayout* layout);
 
     bool isProductDisplayed(Products* product);
+    ShoppingCart *cart;
 
 
 private slots:

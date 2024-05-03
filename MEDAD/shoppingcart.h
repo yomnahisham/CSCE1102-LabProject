@@ -1,7 +1,7 @@
 #ifndef SHOPPINGCART_H
 #define SHOPPINGCART_H
 
-#include "productmanager.h"
+
 #include "products.h"
 #include <QWidget>
 #include <QTableWidget>
@@ -17,7 +17,7 @@ class ShoppingCart : public QWidget
 public:
     explicit ShoppingCart(QWidget *parent = nullptr);
     ~ShoppingCart();
-    void AddItemToTable();
+    void AddItemToCart(const QString &ItemName, double price, int quantity);
 
 private:
     Ui::ShoppingCart *ui;
