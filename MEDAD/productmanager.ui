@@ -160,6 +160,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);</string>
+   </property>
    <property name="text">
     <string>Add Product</string>
    </property>
@@ -172,6 +175,9 @@
      <width>100</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
     <string>Add Admin</string>
