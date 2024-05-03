@@ -11,6 +11,9 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -18,14 +21,26 @@ QT_BEGIN_NAMESPACE
 class Ui_ShoppingCart
 {
 public:
+    QTableWidget *cartTable;
+    QPushButton *CheckOutButton;
+    QPushButton *DeleteItem;
 
     void setupUi(QWidget *ShoppingCart)
     {
         if (ShoppingCart->objectName().isEmpty())
             ShoppingCart->setObjectName("ShoppingCart");
-        ShoppingCart->resize(400, 300);
+        ShoppingCart->resize(633, 545);
         ShoppingCart->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252);\n"
 "color: rgb(0, 0, 0);"));
+        cartTable = new QTableWidget(ShoppingCart);
+        cartTable->setObjectName("cartTable");
+        cartTable->setGeometry(QRect(150, 70, 301, 301));
+        CheckOutButton = new QPushButton(ShoppingCart);
+        CheckOutButton->setObjectName("CheckOutButton");
+        CheckOutButton->setGeometry(QRect(350, 400, 171, 51));
+        DeleteItem = new QPushButton(ShoppingCart);
+        DeleteItem->setObjectName("DeleteItem");
+        DeleteItem->setGeometry(QRect(100, 400, 141, 51));
 
         retranslateUi(ShoppingCart);
 
@@ -35,6 +50,8 @@ public:
     void retranslateUi(QWidget *ShoppingCart)
     {
         ShoppingCart->setWindowTitle(QCoreApplication::translate("ShoppingCart", "Form", nullptr));
+        CheckOutButton->setText(QCoreApplication::translate("ShoppingCart", "Proceed to checkout", nullptr));
+        DeleteItem->setText(QCoreApplication::translate("ShoppingCart", "Delete", nullptr));
     } // retranslateUi
 
 };
