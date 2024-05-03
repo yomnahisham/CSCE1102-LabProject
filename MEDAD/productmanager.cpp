@@ -7,6 +7,7 @@
 #include "accessories.h"
 #include "techs.h"
 #include "loginwindow.h"
+#include "registerwindow.h"
 
 #include <QApplication>
 #include <QScreen>
@@ -23,10 +24,15 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     , accessoryProducts(new QVector<Accessories*>())
     , techyProducts(new QVector<Techs*>())
     , user(loggedUser)
+    ,users(Allusers)
 {
     ui->setupUi(this);
 
-    users = Allusers;
+    Customer* cus = dynamic_cast<Customer*> (user);
+    if (cus)
+    {   ui -> addAdminB -> hide();
+        ui -> addProductB -> hide();
+    }
 
     connect(ui->searchLineEdit, &QLineEdit::returnPressed, this, &ProductManager::clickSearch);
 
@@ -539,5 +545,20 @@ void ProductManager::on_AllProducts_clicked()
     allproducts1->showFullScreen();
     allproducts1->allproductsdisplay(displayedProducts);
 
+}
+
+
+void ProductManager::on_addAdminB_clicked()
+{
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+
+    Admin* ad = dynamic_cast<Admin*> (user);
+
+    RegisterWindow *reg = new RegisterWindow(nullptr, users, AllUsers::admin, ad);
+    reg->resize(screenGeometry.width(), screenGeometry.height());
+    reg -> setWindowTitle("Register new Admin");
+    reg->show();
+    hide();
 }
 

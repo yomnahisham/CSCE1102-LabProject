@@ -16,8 +16,7 @@ int AllUsers::n = 17;
 AllUsers::AllUsers() {
     AllAdmins = new Admin[m];
     AllCustomers = new Customer[n];
-    //SaveUsers();
-    finishedloading = false;
+    SaveUsers();
 }
 
 AllUsers& AllUsers::operator=( AllUsers& other) { // add const
@@ -58,6 +57,8 @@ QString cachedResource(const QString &resPath) {
 
 void AllUsers::LoadUsers(){
     //load all user data
+    qDebug() << "loading users:";
+
     QFile userData (cachedResource(":/UsersInfo/UserData.txt"));
 
     if (userData.setPermissions(QFile::ReadOwner))
@@ -97,7 +98,7 @@ void AllUsers::LoadUsers(){
 
 void AllUsers::SaveUsers()
 {
-    qDebug() << "Saving users";
+    qDebug() << "Saving users:";
 
     QFile userData (cachedResource(":/UsersInfo/UserData.txt"));
 
@@ -110,19 +111,19 @@ void AllUsers::SaveUsers()
     userData.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Truncate);
 
     QTextStream stream(&userData);
-    /*stream << "customer yomna yomna1 Classics Comic-Books N" << "\n";
+    stream << "customer yomna yomna1 Classics Comic-Books N" << "\n";
     stream << "customer aylaS ayla1234 Classics Palestine N" << "\n";
     stream << "admin AylaSaleh ayla1234" << "\n";
     stream << "admin yoyoo yomna1" << "\n";
     for (int i = 0; i < 30; i++)
-        stream << "/" << "\n";*/
+        stream << "/" << "\n";
 
 
-    for (int i = 0 ; i < m; i ++)
+   /* for (int i = 0 ; i < m; i ++)
     {
         if (AllAdmins[i].isempty|| AllCustomers[i].isempty)
         {
-            stream <<"/";
+            stream <<"/" << "\n";
         }else
         {
             stream << "admin " << AllAdmins[i].getUsername() << " " << AllAdmins[i].getPassword() << "\n" ;
@@ -132,7 +133,7 @@ void AllUsers::SaveUsers()
                 stream << " " <<*it;
             stream << " N" << "\n";
         }
-    }
+    }*/
 
     userData.close();
 }

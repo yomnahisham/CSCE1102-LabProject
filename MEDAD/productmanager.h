@@ -59,6 +59,8 @@ private slots:
 
     void on_AllProducts_clicked();
 
+    void on_addAdminB_clicked();
+
 public:
     Ui::ProductManager *ui;
     User* user;

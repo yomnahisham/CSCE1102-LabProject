@@ -66,8 +66,10 @@ void LoginWindow::on_regB_clicked()
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
 
+
     RegisterWindow *reg = new RegisterWindow(nullptr, users);
     reg->resize(screenGeometry.width(), screenGeometry.height());
+    reg -> setWindowTitle("Register");
     reg->show();
     hide();
 }
@@ -96,7 +98,7 @@ void LoginWindow::on_loginB_clicked()
 
         ProductManager* home = new ProductManager(nullptr, loggedUser, users);
         home->resize(screenGeometry.width(), screenGeometry.height());
-       // home-> setUser (loggedUser);
+        home -> setWindowTitle("Home");
         home-> show();
         hide();
     }

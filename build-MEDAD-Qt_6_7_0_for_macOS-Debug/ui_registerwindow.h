@@ -35,6 +35,8 @@ public:
     QCheckBox *palestine;
     QCheckBox *arabAmerican;
     QCheckBox *comic;
+    QPushButton *returnB;
+    QPushButton *loginB;
     QLineEdit *userLE;
     QLineEdit *passLE;
     QLineEdit *passRLE;
@@ -49,7 +51,7 @@ public:
         if (RegisterWindow->objectName().isEmpty())
             RegisterWindow->setObjectName("RegisterWindow");
         RegisterWindow->resize(856, 635);
-        RegisterWindow->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+        RegisterWindow->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252);\n"
 "\n"
 ""));
         userL = new QLabel(RegisterWindow);
@@ -88,6 +90,12 @@ public:
         comic = new QCheckBox(genreL);
         comic->setObjectName("comic");
         comic->setGeometry(QRect(350, 20, 101, 20));
+        returnB = new QPushButton(genreL);
+        returnB->setObjectName("returnB");
+        returnB->setGeometry(QRect(60, 10, 141, 32));
+        loginB = new QPushButton(genreL);
+        loginB->setObjectName("loginB");
+        loginB->setGeometry(QRect(260, 10, 181, 32));
         userLE = new QLineEdit(RegisterWindow);
         userLE->setObjectName("userLE");
         userLE->setGeometry(QRect(320, 80, 113, 21));
@@ -133,6 +141,8 @@ public:
         palestine->setText(QCoreApplication::translate("RegisterWindow", "Palestine", nullptr));
         arabAmerican->setText(QCoreApplication::translate("RegisterWindow", "Arab-American", nullptr));
         comic->setText(QCoreApplication::translate("RegisterWindow", "Comic Books", nullptr));
+        returnB->setText(QCoreApplication::translate("RegisterWindow", "Return to Home Page", nullptr));
+        loginB->setText(QCoreApplication::translate("RegisterWindow", "Login as Registered Admin", nullptr));
         regB->setText(QCoreApplication::translate("RegisterWindow", "Register", nullptr));
         backB->setText(QCoreApplication::translate("RegisterWindow", "Back", nullptr));
         userError->setText(QCoreApplication::translate("RegisterWindow", "<html><head/><body><p><span style=\" color:#941100;\">user already exists</span></p></body></html>", nullptr));

@@ -54,6 +54,7 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../MEDAD/accessories.cpp \
 		../MEDAD/admin.cpp \
+		../MEDAD/allproducts1.cpp \
 		../MEDAD/allusers.cpp \
 		../MEDAD/books.cpp \
 		../MEDAD/checkout.cpp \
@@ -65,6 +66,7 @@ SOURCES       = ../MEDAD/accessories.cpp \
 		../MEDAD/productmanager.cpp \
 		../MEDAD/products.cpp \
 		../MEDAD/registerwindow.cpp \
+		../MEDAD/search.cpp \
 		../MEDAD/shoppingcart.cpp \
 		../MEDAD/techs.cpp \
 		../MEDAD/user.cpp qrc_Bags.cpp \
@@ -73,14 +75,17 @@ SOURCES       = ../MEDAD/accessories.cpp \
 		qrc_Resources.cpp \
 		qrc_Techs.cpp \
 		qrc_Tshirts.cpp \
+		moc_allproducts1.cpp \
 		moc_checkout.cpp \
 		moc_clickablelabels.cpp \
 		moc_loginwindow.cpp \
 		moc_productmanager.cpp \
 		moc_registerwindow.cpp \
+		moc_search.cpp \
 		moc_shoppingcart.cpp
 OBJECTS       = accessories.o \
 		admin.o \
+		allproducts1.o \
 		allusers.o \
 		books.o \
 		checkout.o \
@@ -92,6 +97,7 @@ OBJECTS       = accessories.o \
 		productmanager.o \
 		products.o \
 		registerwindow.o \
+		search.o \
 		shoppingcart.o \
 		techs.o \
 		user.o \
@@ -101,11 +107,13 @@ OBJECTS       = accessories.o \
 		qrc_Resources.o \
 		qrc_Techs.o \
 		qrc_Tshirts.o \
+		moc_allproducts1.o \
 		moc_checkout.o \
 		moc_clickablelabels.o \
 		moc_loginwindow.o \
 		moc_productmanager.o \
 		moc_registerwindow.o \
+		moc_search.o \
 		moc_shoppingcart.o
 DIST          = ../../../../Qt/6.7.0/macos/mkspecs/features/spec_pre.prf \
 		../../../../Qt/6.7.0/macos/mkspecs/features/device_config.prf \
@@ -300,6 +308,7 @@ DIST          = ../../../../Qt/6.7.0/macos/mkspecs/features/spec_pre.prf \
 		../../../../Qt/6.7.0/macos/mkspecs/features/lex.prf \
 		../MEDAD/MEDAD.pro ../MEDAD/accessories.h \
 		../MEDAD/admin.h \
+		../MEDAD/allproducts1.h \
 		../MEDAD/allusers.h \
 		../MEDAD/books.h \
 		../MEDAD/checkout.h \
@@ -310,10 +319,12 @@ DIST          = ../../../../Qt/6.7.0/macos/mkspecs/features/spec_pre.prf \
 		../MEDAD/productmanager.h \
 		../MEDAD/products.h \
 		../MEDAD/registerwindow.h \
+		../MEDAD/search.h \
 		../MEDAD/shoppingcart.h \
 		../MEDAD/techs.h \
 		../MEDAD/user.h ../MEDAD/accessories.cpp \
 		../MEDAD/admin.cpp \
+		../MEDAD/allproducts1.cpp \
 		../MEDAD/allusers.cpp \
 		../MEDAD/books.cpp \
 		../MEDAD/checkout.cpp \
@@ -325,6 +336,7 @@ DIST          = ../../../../Qt/6.7.0/macos/mkspecs/features/spec_pre.prf \
 		../MEDAD/productmanager.cpp \
 		../MEDAD/products.cpp \
 		../MEDAD/registerwindow.cpp \
+		../MEDAD/search.cpp \
 		../MEDAD/shoppingcart.cpp \
 		../MEDAD/techs.cpp \
 		../MEDAD/user.cpp
@@ -348,7 +360,7 @@ include /Users/LiloBilo/Qt/6.7.0/macos/mkspecs/features/mac/sdk.mk
 first: all
 ####### Build rules
 
-MEDAD.app/Contents/MacOS/MEDAD: ui_checkout.h ui_loginwindow.h ui_productmanager.h ui_registerwindow.h ui_shoppingcart.h $(OBJECTS)  
+MEDAD.app/Contents/MacOS/MEDAD: ui_allproducts1.h ui_checkout.h ui_loginwindow.h ui_productmanager.h ui_registerwindow.h ui_search.h ui_shoppingcart.h $(OBJECTS)  
 	@test -d MEDAD.app/Contents/MacOS/ || mkdir -p MEDAD.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET)  $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -780,9 +792,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../MEDAD/Bags.qrc ../MEDAD/BookMarks.qrc ../MEDAD/Books.qrc ../MEDAD/Resources.qrc ../MEDAD/Techs.qrc ../MEDAD/Tshirts.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../MEDAD/accessories.h ../MEDAD/admin.h ../MEDAD/allusers.h ../MEDAD/books.h ../MEDAD/checkout.h ../MEDAD/clickablelabels.h ../MEDAD/customer.h ../MEDAD/discounts.h ../MEDAD/loginwindow.h ../MEDAD/productmanager.h ../MEDAD/products.h ../MEDAD/registerwindow.h ../MEDAD/shoppingcart.h ../MEDAD/techs.h ../MEDAD/user.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../MEDAD/accessories.cpp ../MEDAD/admin.cpp ../MEDAD/allusers.cpp ../MEDAD/books.cpp ../MEDAD/checkout.cpp ../MEDAD/clickablelabels.cpp ../MEDAD/customer.cpp ../MEDAD/discounts.cpp ../MEDAD/loginwindow.cpp ../MEDAD/main.cpp ../MEDAD/productmanager.cpp ../MEDAD/products.cpp ../MEDAD/registerwindow.cpp ../MEDAD/shoppingcart.cpp ../MEDAD/techs.cpp ../MEDAD/user.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../MEDAD/checkout.ui ../MEDAD/loginwindow.ui ../MEDAD/productmanager.ui ../MEDAD/registerwindow.ui ../MEDAD/shoppingcart.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../MEDAD/accessories.h ../MEDAD/admin.h ../MEDAD/allproducts1.h ../MEDAD/allusers.h ../MEDAD/books.h ../MEDAD/checkout.h ../MEDAD/clickablelabels.h ../MEDAD/customer.h ../MEDAD/discounts.h ../MEDAD/loginwindow.h ../MEDAD/productmanager.h ../MEDAD/products.h ../MEDAD/registerwindow.h ../MEDAD/search.h ../MEDAD/shoppingcart.h ../MEDAD/techs.h ../MEDAD/user.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../MEDAD/accessories.cpp ../MEDAD/admin.cpp ../MEDAD/allproducts1.cpp ../MEDAD/allusers.cpp ../MEDAD/books.cpp ../MEDAD/checkout.cpp ../MEDAD/clickablelabels.cpp ../MEDAD/customer.cpp ../MEDAD/discounts.cpp ../MEDAD/loginwindow.cpp ../MEDAD/main.cpp ../MEDAD/productmanager.cpp ../MEDAD/products.cpp ../MEDAD/registerwindow.cpp ../MEDAD/search.cpp ../MEDAD/shoppingcart.cpp ../MEDAD/techs.cpp ../MEDAD/user.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../MEDAD/allproducts1.ui ../MEDAD/checkout.ui ../MEDAD/loginwindow.ui ../MEDAD/productmanager.ui ../MEDAD/registerwindow.ui ../MEDAD/search.ui ../MEDAD/shoppingcart.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -870,7 +882,6 @@ qrc_Books.cpp: ../MEDAD/Books.qrc \
 		../MEDAD/assets/metamorphosis.jpeg \
 		../MEDAD/assets/ceaser.jpeg \
 		../MEDAD/assets/oliver.jpeg \
-		../MEDAD/assets/war\ and\ peace.jpeg \
 		../MEDAD/assets/room\ of\ ones.jpeg \
 		../MEDAD/assets/davinci\ code.jpeg \
 		../MEDAD/assets/ya\ masr\ hanet.jpeg \
@@ -885,16 +896,21 @@ qrc_Books.cpp: ../MEDAD/Books.qrc \
 		../MEDAD/assets/plague.jpeg \
 		../MEDAD/assets/the\ thief\ and\ the\ dogs.jpeg \
 		../MEDAD/assets/haifa.jpeg \
-		../MEDAD/assets/kite\ runner.jpeg
+		../MEDAD/assets/kite\ runner.jpeg \
+		../MEDAD/assets/warandpeace.png
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/rcc -name Books --no-zstd ../MEDAD/Books.qrc -o qrc_Books.cpp
 
 qrc_Resources.cpp: ../MEDAD/Resources.qrc \
 		../../../../Qt/6.7.0/macos/libexec/rcc \
 		../MEDAD/UserData.txt \
 		../MEDAD/assets/nameonlyLogo.png \
+		../MEDAD/assets/basedonsearch.png \
 		../MEDAD/assets/signoutbutton.png \
+		../MEDAD/assets/other\ products.png \
 		../MEDAD/assets/logosubtitle.png \
-		../MEDAD/assets/shoppingcartlogo.png
+		../MEDAD/assets/addtoCart.png \
+		../MEDAD/assets/shoppingcartlogo.png \
+		../MEDAD/assets/basedonyou.png
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/rcc -name Resources --no-zstd ../MEDAD/Resources.qrc -o qrc_Resources.cpp
 
 qrc_Techs.cpp: ../MEDAD/Techs.qrc \
@@ -912,9 +928,50 @@ qrc_Tshirts.cpp: ../MEDAD/Tshirts.qrc \
 		../MEDAD/assets/Cool\ Kids\ Are\ Reading.jpeg
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/rcc -name Tshirts --no-zstd ../MEDAD/Tshirts.qrc -o qrc_Tshirts.cpp
 
-compiler_moc_header_make_all: moc_checkout.cpp moc_clickablelabels.cpp moc_loginwindow.cpp moc_productmanager.cpp moc_registerwindow.cpp moc_shoppingcart.cpp
+compiler_moc_header_make_all: moc_allproducts1.cpp moc_checkout.cpp moc_clickablelabels.cpp moc_loginwindow.cpp moc_productmanager.cpp moc_registerwindow.cpp moc_search.cpp moc_shoppingcart.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_checkout.cpp moc_clickablelabels.cpp moc_loginwindow.cpp moc_productmanager.cpp moc_registerwindow.cpp moc_shoppingcart.cpp
+	-$(DEL_FILE) moc_allproducts1.cpp moc_checkout.cpp moc_clickablelabels.cpp moc_loginwindow.cpp moc_productmanager.cpp moc_registerwindow.cpp moc_search.cpp moc_shoppingcart.cpp
+moc_allproducts1.cpp: ../MEDAD/allproducts1.h \
+		../MEDAD/user.h \
+		../MEDAD/allusers.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
+		../MEDAD/books.h \
+		../MEDAD/Products.h \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QPixmap \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qpixmap.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/Qstring \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qdebug.h \
+		../MEDAD/accessories.h \
+		../MEDAD/products.h \
+		../MEDAD/techs.h \
+		../MEDAD/productmanager.h \
+		../MEDAD/allproducts1.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../MEDAD/search.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../../Qt/6.7.0/macos/libexec/moc
+	/Users/LiloBilo/Qt/6.7.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=15 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/LiloBilo/Qt/6.7.0/macos/mkspecs/macx-clang -I/Users/LiloBilo/Documents/GitHub/CSCE1102-LabProject/MEDAD -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtWidgets.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtGui.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/LiloBilo/Qt/6.7.0/macos/lib ../MEDAD/allproducts1.h -o moc_allproducts1.cpp
+
 moc_checkout.cpp: ../MEDAD/checkout.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
@@ -944,10 +1001,12 @@ moc_loginwindow.cpp: ../MEDAD/loginwindow.h \
 
 moc_productmanager.cpp: ../MEDAD/productmanager.h \
 		../MEDAD/user.h \
+		../MEDAD/allusers.h \
 		../MEDAD/customer.h \
 		../MEDAD/shoppingcart.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
 		../MEDAD/books.h \
 		../MEDAD/Products.h \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QPixmap \
@@ -959,6 +1018,25 @@ moc_productmanager.cpp: ../MEDAD/productmanager.h \
 		../MEDAD/accessories.h \
 		../MEDAD/products.h \
 		../MEDAD/techs.h \
+		../MEDAD/allproducts1.h \
+		../MEDAD/productmanager.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../MEDAD/search.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../../Qt/6.7.0/macos/libexec/moc
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=15 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/LiloBilo/Qt/6.7.0/macos/mkspecs/macx-clang -I/Users/LiloBilo/Documents/GitHub/CSCE1102-LabProject/MEDAD -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtWidgets.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtGui.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/LiloBilo/Qt/6.7.0/macos/lib ../MEDAD/productmanager.h -o moc_productmanager.cpp
 
@@ -973,6 +1051,44 @@ moc_registerwindow.cpp: ../MEDAD/registerwindow.h \
 		../../../../Qt/6.7.0/macos/libexec/moc
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=15 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/LiloBilo/Qt/6.7.0/macos/mkspecs/macx-clang -I/Users/LiloBilo/Documents/GitHub/CSCE1102-LabProject/MEDAD -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtWidgets.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtGui.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/LiloBilo/Qt/6.7.0/macos/lib ../MEDAD/registerwindow.h -o moc_registerwindow.cpp
 
+moc_search.cpp: ../MEDAD/search.h \
+		../MEDAD/user.h \
+		../MEDAD/allusers.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
+		../MEDAD/books.h \
+		../MEDAD/Products.h \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QPixmap \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qpixmap.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/Qstring \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qdebug.h \
+		../MEDAD/accessories.h \
+		../MEDAD/products.h \
+		../MEDAD/techs.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../../../Qt/6.7.0/macos/libexec/moc
+	/Users/LiloBilo/Qt/6.7.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=15 -D__clang_minor__=0 -D__clang_patchlevel__=0 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/LiloBilo/Qt/6.7.0/macos/mkspecs/macx-clang -I/Users/LiloBilo/Documents/GitHub/CSCE1102-LabProject/MEDAD -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtWidgets.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtGui.framework/Headers -I/Users/LiloBilo/Qt/6.7.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/LiloBilo/Qt/6.7.0/macos/lib ../MEDAD/search.h -o moc_search.cpp
+
 moc_shoppingcart.cpp: ../MEDAD/shoppingcart.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
@@ -983,9 +1099,13 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_checkout.h ui_loginwindow.h ui_productmanager.h ui_registerwindow.h ui_shoppingcart.h
+compiler_uic_make_all: ui_allproducts1.h ui_checkout.h ui_loginwindow.h ui_productmanager.h ui_registerwindow.h ui_search.h ui_shoppingcart.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_checkout.h ui_loginwindow.h ui_productmanager.h ui_registerwindow.h ui_shoppingcart.h
+	-$(DEL_FILE) ui_allproducts1.h ui_checkout.h ui_loginwindow.h ui_productmanager.h ui_registerwindow.h ui_search.h ui_shoppingcart.h
+ui_allproducts1.h: ../MEDAD/allproducts1.ui \
+		../../../../Qt/6.7.0/macos/libexec/uic
+	/Users/LiloBilo/Qt/6.7.0/macos/libexec/uic ../MEDAD/allproducts1.ui -o ui_allproducts1.h
+
 ui_checkout.h: ../MEDAD/checkout.ui \
 		../../../../Qt/6.7.0/macos/libexec/uic
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/uic ../MEDAD/checkout.ui -o ui_checkout.h
@@ -1001,6 +1121,10 @@ ui_productmanager.h: ../MEDAD/productmanager.ui \
 ui_registerwindow.h: ../MEDAD/registerwindow.ui \
 		../../../../Qt/6.7.0/macos/libexec/uic
 	/Users/LiloBilo/Qt/6.7.0/macos/libexec/uic ../MEDAD/registerwindow.ui -o ui_registerwindow.h
+
+ui_search.h: ../MEDAD/search.ui \
+		../../../../Qt/6.7.0/macos/libexec/uic
+	/Users/LiloBilo/Qt/6.7.0/macos/libexec/uic ../MEDAD/search.ui -o ui_search.h
 
 ui_shoppingcart.h: ../MEDAD/shoppingcart.ui \
 		../../../../Qt/6.7.0/macos/libexec/uic
@@ -1029,8 +1153,60 @@ accessories.o: ../MEDAD/accessories.cpp ../MEDAD/accessories.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o accessories.o ../MEDAD/accessories.cpp
 
 admin.o: ../MEDAD/admin.cpp ../MEDAD/admin.h \
-		../MEDAD/user.h
+		../MEDAD/user.h \
+		../MEDAD/allusers.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o admin.o ../MEDAD/admin.cpp
+
+allproducts1.o: ../MEDAD/allproducts1.cpp ../MEDAD/allproducts1.h \
+		../MEDAD/user.h \
+		../MEDAD/allusers.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
+		../MEDAD/books.h \
+		../MEDAD/Products.h \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QPixmap \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qpixmap.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/Qstring \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qdebug.h \
+		../MEDAD/accessories.h \
+		../MEDAD/products.h \
+		../MEDAD/techs.h \
+		../MEDAD/productmanager.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../MEDAD/search.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		ui_allproducts1.h \
+		ui_search.h \
+		../MEDAD/clickablelabels.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLabel \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QMouseEvent \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qevent.h \
+		../MEDAD/loginwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o allproducts1.o ../MEDAD/allproducts1.cpp
 
 allusers.o: ../MEDAD/allusers.cpp ../MEDAD/allusers.h \
 		../MEDAD/user.h \
@@ -1041,8 +1217,16 @@ allusers.o: ../MEDAD/allusers.cpp ../MEDAD/allusers.h \
 		../MEDAD/admin.h \
 		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QFile \
 		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qfile.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QDir \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qdir.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QFileInfo \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qfileinfo.h \
 		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QTextStream \
-		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qtextstream.h
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qtextstream.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStandardPaths \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstandardpaths.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QCoreApplication \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qcoreapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o allusers.o ../MEDAD/allusers.cpp
 
 books.o: ../MEDAD/books.cpp ../MEDAD/books.h \
@@ -1102,6 +1286,22 @@ loginwindow.o: ../MEDAD/loginwindow.cpp ../MEDAD/loginwindow.h \
 		../MEDAD/accessories.h \
 		../MEDAD/products.h \
 		../MEDAD/techs.h \
+		../MEDAD/allproducts1.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../MEDAD/search.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QScreen \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qscreen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loginwindow.o ../MEDAD/loginwindow.cpp
@@ -1119,23 +1319,17 @@ main.o: ../MEDAD/main.cpp ../MEDAD/loginwindow.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QScreen \
-		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qscreen.h \
-		../MEDAD/books.h \
-		../MEDAD/Products.h \
-		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QPixmap \
-		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qpixmap.h \
-		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/Qstring \
-		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstring.h \
-		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QDebug \
-		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qdebug.h
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qscreen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../MEDAD/main.cpp
 
 productmanager.o: ../MEDAD/productmanager.cpp ../MEDAD/productmanager.h \
 		../MEDAD/user.h \
+		../MEDAD/allusers.h \
 		../MEDAD/customer.h \
 		../MEDAD/shoppingcart.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
 		../MEDAD/books.h \
 		../MEDAD/Products.h \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QPixmap \
@@ -1147,19 +1341,36 @@ productmanager.o: ../MEDAD/productmanager.cpp ../MEDAD/productmanager.h \
 		../MEDAD/accessories.h \
 		../MEDAD/products.h \
 		../MEDAD/techs.h \
+		../MEDAD/allproducts1.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../MEDAD/search.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		ui_productmanager.h \
 		../MEDAD/clickablelabels.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLabel \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QMouseEvent \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qevent.h \
+		../MEDAD/loginwindow.h \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QScreen \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qscreen.h \
 		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QVector \
 		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qvector.h \
-		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QString \
-		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
-		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QString
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o productmanager.o ../MEDAD/productmanager.cpp
 
 products.o: ../MEDAD/products.cpp ../MEDAD/products.h \
@@ -1195,9 +1406,72 @@ registerwindow.o: ../MEDAD/registerwindow.cpp ../MEDAD/registerwindow.h \
 		../MEDAD/accessories.h \
 		../MEDAD/products.h \
 		../MEDAD/techs.h \
+		../MEDAD/allproducts1.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../MEDAD/search.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QScreen \
 		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qscreen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o registerwindow.o ../MEDAD/registerwindow.cpp
+
+search.o: ../MEDAD/search.cpp ../MEDAD/search.h \
+		../MEDAD/user.h \
+		../MEDAD/allusers.h \
+		../MEDAD/customer.h \
+		../MEDAD/shoppingcart.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../MEDAD/admin.h \
+		../MEDAD/books.h \
+		../MEDAD/Products.h \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QPixmap \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qpixmap.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/Qstring \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qdebug.h \
+		../MEDAD/accessories.h \
+		../MEDAD/products.h \
+		../MEDAD/techs.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLayoutItem \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/QStringList \
+		../../../../Qt/6.7.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		ui_search.h \
+		../MEDAD/productmanager.h \
+		../MEDAD/allproducts1.h \
+		ui_productmanager.h \
+		../MEDAD/clickablelabels.h \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QLabel \
+		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/QMouseEvent \
+		../../../../Qt/6.7.0/macos/lib/QtGui.framework/Headers/qevent.h \
+		../MEDAD/loginwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o search.o ../MEDAD/search.cpp
 
 shoppingcart.o: ../MEDAD/shoppingcart.cpp ../MEDAD/shoppingcart.h \
 		../../../../Qt/6.7.0/macos/lib/QtWidgets.framework/Headers/QWidget \
@@ -1236,6 +1510,9 @@ qrc_Techs.o: qrc_Techs.cpp
 qrc_Tshirts.o: qrc_Tshirts.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_Tshirts.o qrc_Tshirts.cpp
 
+moc_allproducts1.o: moc_allproducts1.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_allproducts1.o moc_allproducts1.cpp
+
 moc_checkout.o: moc_checkout.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_checkout.o moc_checkout.cpp
 
@@ -1250,6 +1527,9 @@ moc_productmanager.o: moc_productmanager.cpp
 
 moc_registerwindow.o: moc_registerwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_registerwindow.o moc_registerwindow.cpp
+
+moc_search.o: moc_search.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_search.o moc_search.cpp
 
 moc_shoppingcart.o: moc_shoppingcart.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_shoppingcart.o moc_shoppingcart.cpp

@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     login.resize(screenGeometry.width(), screenGeometry.height()); //resizing according to the QScreen measurements
     login.setWindowTitle("Login");
     login.show();
+
     return a.exec();
 
 

@@ -173,6 +173,32 @@
      <string>Comic Books</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="returnB">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>10</y>
+      <width>141</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Return to Home Page</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="loginB">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>10</y>
+      <width>181</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Login as Registered Admin</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLineEdit" name="userLE">
    <property name="geometry">
