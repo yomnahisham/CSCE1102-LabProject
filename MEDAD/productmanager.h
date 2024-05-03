@@ -41,14 +41,17 @@ public:
 
     vector<Products*> suggestSimilarItems();
 
-    void initializeProducts();
     void makeFirstPage();
     void makeSecondPage();
+    void makeThirdPage();
+    void makeFourthPage();
+
+    void initializeProducts();
     void showSuggestions();
     void showRemainingProducts();
     void clearLayout(QLayout* layout);
 
-    bool isProductDisplayed(Books* book);
+    bool isProductDisplayed(Products* product);
 
 
 private slots:
@@ -73,6 +76,9 @@ public:
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;
     vector<Products*> displayedProducts; //to store all displayed products in first page
+    bool secondPage = false;
+    bool thirdPage = false;
+    bool fourthPage = false;
 };
 
 #endif // PRODUCTMANAGER_H
