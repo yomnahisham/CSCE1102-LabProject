@@ -31,8 +31,6 @@ class ProductManager : public QWidget
 
 public:
     explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers);
-
-
     ~ProductManager();
 
     void setUser(User* loggedUser);
@@ -44,7 +42,7 @@ public:
     vector<Products*> suggestSimilarItems();
 
     void initializeProducts();
-    vector<Products*> makeFirstPage();
+    void makeFirstPage();
     void showSuggestions();
     void clearLayout(QLayout* layout);
 
@@ -53,13 +51,15 @@ private slots:
     void onCartClicked();
     void onSignOutClicked();
     void onAddToCartClicked();
-    void sortProducts();
-    vector<Products*> clickSearch();
+    void onNextClicked();
+    void searchProducts(const QString& keyword);
+   // void sortProducts();
+   // vector<Products*> clickSearch();
 
 
-    void on_AllProducts_clicked();
+   // void on_AllProducts_clicked();
 
-    void on_addAdminB_clicked();
+   // void on_addAdminB_clicked();
 
 public:
     Ui::ProductManager *ui;
@@ -68,9 +68,7 @@ public:
     QVector<Books*> *bookProducts;
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;
-    QVector<QLayoutItem*> originalLayoutItems;
-
-
 };
 
 #endif // PRODUCTMANAGER_H
+

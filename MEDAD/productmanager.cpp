@@ -7,7 +7,6 @@
 #include "accessories.h"
 #include "techs.h"
 #include "loginwindow.h"
-#include "registerwindow.h"
 
 #include <QApplication>
 #include <QScreen>
@@ -24,19 +23,10 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     , accessoryProducts(new QVector<Accessories*>())
     , techyProducts(new QVector<Techs*>())
     , user(loggedUser)
-    ,users(Allusers)
 {
     ui->setupUi(this);
 
-    Customer* cus = dynamic_cast<Customer*> (user);
-    if (cus)
-    {   ui -> addAdminB -> hide();
-        ui -> addProductB -> hide();
-    }
-
-    connect(ui->searchLineEdit, &QLineEdit::returnPressed, this, &ProductManager::clickSearch);
-
-    ui->horizontalLayoutWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    users = Allusers;
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -55,6 +45,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     //creating custom clickable labels and buttons
     ClickableLabels* cartLabel = new ClickableLabels(this);
     ClickableLabels* signOutButton = new ClickableLabels(this);
+    ClickableLabels* nextButton = new ClickableLabels(this);
 
     //setting image of the clickable shopping cart label
     QPixmap cartPix(":/logos/assets/shoppingcartlogo.png");
@@ -74,20 +65,28 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     //connecting signoutbutton, its signal from ClickableLabels, this ui, and the function onSignOutClicked to handle the click
     connect(signOutButton, &ClickableLabels::clicked, this, &ProductManager::onSignOutClicked);
 
+    //connecting searchLineEdit with the function searchProducts based on a textChanged signal
+    connect(ui->searchLineEdit, &QLineEdit::textChanged, this, &ProductManager::searchProducts);
+
+    QPixmap nextPix(":/logos/assets/nextLogo.png");
+    nextButton->setPixmap(nextPix.scaled(70, 60, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    //nextButton->raise();
+    int nextButtonWidth = 105;
+    nextButton->move(widthFull - (nextButtonWidth), 490);
+    connect(nextButton, &ClickableLabels::clicked, this, &ProductManager::onNextClicked);
+
+    QPixmap allPix(":/logos/assets/ourproducts.png");
+    ui->ourproductsLogo->setPixmap(allPix.scaled(ui->ourproductsLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->ourproductsLogo->setVisible(true);
 
     //prefered to use ui->basedonsearchLogo->size() because it fits the size needed to make the desgin look better
     QPixmap youPix(":/logos/assets/basedonyou.png");
     ui->basedonyouLogo->setPixmap(youPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->basedonyouLogo->setVisible(false);
 
-
-    QPixmap otherPix(":/logos/assets/other products.png");
-    ui->otherProducts->setPixmap(otherPix.scaled(ui->otherProducts->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->otherProducts->setVisible(true);
-
-
-    connect(ui->filterBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ProductManager::sortProducts);
-
+    QPixmap searchPix(":/logos/assets/basedonsearch.png");
+    ui->basedonsearchLogo->setPixmap(searchPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->basedonsearchLogo->setVisible(false);
 
     makeFirstPage();
 }
@@ -108,6 +107,20 @@ ProductManager::~ProductManager()
         delete tech;
     }
     delete techyProducts;
+}
+
+void ProductManager::clearLayout(QLayout* layout){
+    QLayoutItem* item;
+    while ((item = layout->takeAt(0)) != nullptr){
+        if (QWidget* widget = item->widget()) {
+            delete widget;
+        } else {
+            if (QLayout* childLayout = item->layout()) {
+                clearLayout(childLayout); //recursively clear child layouts
+            }
+            delete item;
+        }
+    }
 }
 
 void ProductManager::onCartClicked(){
@@ -138,6 +151,7 @@ void ProductManager::onAddToCartClicked(){
     //Rawan, your part
 }
 
+void ProductManager::onNextClicked(){}
 Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
     QPixmap image(imagePath);
     return new Books(name, price, quantity, availability, image, genre, author, ISBN);
@@ -197,8 +211,6 @@ void ProductManager::initializeProducts() {
         { "Yes, I’m Hot in This", "23", "5", "true", ":/Books/assets/hot in this.jpeg" , "Comic {" , "Huda Fahmy" , "9781507209349"},
         { "The Kite Runner", "42", "5", "true", ":/Books/assets/kite runner.jpeg" , "Arab-American" , "Khaled Hosseini" , "9781594631931"},
         { "A Thousand Splendid Suns", "41", "5", "true", ":/Books/assets/splendid suns.jpeg" , "Arab-American" , "Khaled Hosseini" , "9780143180654"}
-
-
     };
 
     for (const auto& data : productsData) {
@@ -216,22 +228,22 @@ void ProductManager::initializeProducts() {
     }
 
     QString accessoriesData[][7] = {
-        {"Books Defense Tshirt", "25", "5", "true", ":/Tshirts/assets/Books Defense Tshirt.jpeg", "T-shirt", "M"},
-        {"Cool Kids Tshirt", "20", "5", "true", ":/Tshirts/assets/Cool Kids Are Reading.jpeg", "T-shirt", "L"},
-        { "I’d Rather Be Reading Tshirt","30", "5", "true", ":/Tshirts/assets/I'd Rather tshirt.jpeg"  ,  "T-shirt",   "S"},
-        { " Reading TicketTshirt","30", "5", "true", ":/Tshirts/assets/Reading Ticket Tshirst.jpeg"  ,  "T-shirt",   "XS"},
-        { "Raising Readers Tote Bag","36", "5", "true", ":/Bags/assets/Raising Readers Tote Bag.jpeg"  ,  "Bag",   " "},
-        { "Book Stack Tote Bag","38", "5", "true", ":/Bags/assets/Book Stack Tote Bag.jpeg"  ,  "Bag",   " "},
-        { "Medad Merchandise Tote Bag","40", "5", "true", ":/Bags/assets/Screenshot 2024-05-01 145322.png"  ,  "Bag",   " "},
-        { " Bookmark set1","10", "5", "true", ":/BookMarks/assets/Bookmark Set1.jpeg"  ,  "BookMarks",   " "},
-        { " Bookmark set2","10", "5", "true", ":/BookMarks/assets/Bookmark Set3.jpeg"  ,  "BookMarks",   " "},
-        { " Bookmark set3","10", "5", "true", ":/BookMarks/assets/Bookmark Set2.jpeg"  ,  "BookMarks",   " "},
-        { " Bookmark Palestine1","15", "5", "true", ":/BookMarks/assets/Bookmark Set Plaestine 1.jpeg"  ,  "BookMarks",   " "},
-        { " Bookmark Palestine2","15", "5", "true", ":/BookMarks/assets/Bookmark Set Palestine2.jpeg"  ,  "BookMarks",   " "},
-        { " Bookmark HarryPotter","20", "5", "true", ":/BookMarks/assets/Bookmark Set Harry Potter2.jpeg"  ,  "BookMarks",   " "},
-        { " Bookmark Egyptian","25", "5", "true", ":/BookMarks/assets/Bookmark Set Egyptian 2.jpeg"  ,  "BookMarks"," "},
-        { " Bookmark Arabic","30", "5", "true", ":/BookMarks/assets/Bookmark Set Arabic 2.jpeg"  ,  "BookMarks", " "},
-    };
+                                    {"Books Defense Tshirt", "25", "5", "true", ":/Tshirts/assets/Books Defense Tshirt.jpeg", "T-shirt", "M"},
+                                    {"Cool Kids Tshirt", "20", "5", "true", ":/Tshirts/assets/Cool Kids Are Reading.jpeg", "T-shirt", "L"},
+                                    { "I’d Rather Be Reading Tshirt","30", "5", "true", ":/Tshirts/assets/I'd Rather tshirt.jpeg"  ,  "T-shirt",   "S"},
+                                    { " Reading TicketTshirt","30", "5", "true", ":/Tshirts/assets/Reading Ticket Tshirst.jpeg"  ,  "T-shirt",   "XS"},
+                                    { "Raising Readers Tote Bag","36", "5", "true", ":/Bags/assets/Raising Readers Tote Bag.jpeg"  ,  "Bag",   " "},
+                                    { "Book Stack Tote Bag","38", "5", "true", ":/Bags/assets/Book Stack Tote Bag.jpeg"  ,  "Bag",   " "},
+                                    { "Medad Merchandise Tote Bag","40", "5", "true", ":/Bags/assets/Screenshot 2024-05-01 145322.png"  ,  "Bag",   " "},
+                                    { " Bookmark set1","10", "5", "true", ":/BookMarks/assets/Bookmark Set1.jpeg"  ,  "BookMarks",   " "},
+                                    { " Bookmark set2","10", "5", "true", ":/BookMarks/assets/Bookmark Set3.jpeg"  ,  "BookMarks",   " "},
+                                    { " Bookmark set3","10", "5", "true", ":/BookMarks/assets/Bookmark Set2.jpeg"  ,  "BookMarks",   " "},
+                                    { " Bookmark Palestine1","15", "5", "true", ":/BookMarks/assets/Bookmark Set Plaestine 1.jpeg"  ,  "BookMarks",   " "},
+                                    { " Bookmark Palestine2","15", "5", "true", ":/BookMarks/assets/Bookmark Set Palestine2.jpeg"  ,  "BookMarks",   " "},
+                                    { " Bookmark HarryPotter","20", "5", "true", ":/BookMarks/assets/Bookmark Set Harry Potter2.jpeg"  ,  "BookMarks",   " "},
+                                    { " Bookmark Egyptian","25", "5", "true", ":/BookMarks/assets/Bookmark Set Egyptian 2.jpeg"  ,  "BookMarks"," "},
+                                    { " Bookmark Arabic","30", "5", "true", ":/BookMarks/assets/Bookmark Set Arabic 2.jpeg"  ,  "BookMarks", " "},
+                                    };
 
     for (const auto& data : accessoriesData) {
         QString name = data[0];
@@ -305,9 +317,9 @@ vector<Products*> ProductManager::suggestSimilarItems(){
     return suggestions;
 }
 
-vector<Products*> ProductManager::makeFirstPage(){
+void ProductManager::makeFirstPage(){
     showSuggestions();
-    clearLayout(ui->allproductsLayout);
+
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
@@ -317,8 +329,8 @@ vector<Products*> ProductManager::makeFirstPage(){
 
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
 
-vector<Products*> displayedProducts;
-    int maxBooksPerRow = 6;
+    vector<Products*> displayedProducts;
+    int maxBooksPerRow = 10;
     int booksInCurrentRow = 0;
     QHBoxLayout* currentRowLayout = new QHBoxLayout();
 
@@ -358,13 +370,13 @@ vector<Products*> displayedProducts;
 
                 //add the book layout to the current row layout
                 currentRowLayout->addLayout(bookLayout);
-                 displayedProducts.push_back(book);
+                displayedProducts.push_back(book);
+
                 //increment the number of books in the current row
                 booksInCurrentRow++;
 
                 //check if we need to start a new row
-                if (booksInCurrentRow >= maxBooksPerRow)
-                {
+                if (booksInCurrentRow >= maxBooksPerRow) {
                     break;
                 }
                 ui->allproductsLayout->addLayout(bookLayout);
@@ -376,11 +388,196 @@ vector<Products*> displayedProducts;
 
     //add the last row layout to the main layout
     ui->allproductsLayout->addLayout(currentRowLayout);
-
-     return displayedProducts;
 }
 
- vector<Products *> ProductManager::clickSearch()
+void ProductManager::searchProducts(const QString &keyword) {
+    ui->basedonyouLogo->setVisible(false);
+    ui->basedonsearchLogo->setVisible(true);
+
+    clearLayout(ui->recsLayout);
+    clearLayout(ui->allproductsLayout);
+
+    if (keyword.isEmpty()) {
+        ui->basedonsearchLogo->setVisible(false);
+        ui->basedonyouLogo->setVisible(true);
+        makeFirstPage(); //display the default layout when the keyword is empty
+        return;
+    }
+
+    QSet<QString> displayedBooks; //track displayed books to ensure uniqueness
+    int displayedCountinRecs = 0;
+    int displayedCountinAll = 0;
+    int maxBooks = 10;
+
+    for (Products* product : *bookProducts) {
+        Books* book = dynamic_cast<Books*>(product);
+        if (book && (book->getName().contains(keyword, Qt::CaseInsensitive) || book->getGenre().contains(keyword, Qt::CaseInsensitive))){
+            if (displayedBooks.contains(book->getName())) {
+                continue; //skip, book already displayed
+            }
+            if (displayedCountinRecs < maxBooks) {
+                if (book) {
+                    QString name = book->getName();
+                    QPixmap imagePath = book->getImage();
+                    double price = book->getPrice();
+                    if (!imagePath.isNull()) {
+                        QVBoxLayout* bookLayout = new QVBoxLayout();
+
+                        QLabel* imageLabel = new QLabel();
+                        imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+                        QLabel* nameLabel = new QLabel(name);
+                        nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                        nameLabel->setMaximumWidth(imageLabel->width());
+                        nameLabel->setWordWrap(true);
+
+                        QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                        priceLabel->setFont(QFont("Optima", 12));
+
+                        ClickableLabels* addtoCart = new ClickableLabels(this);
+                        QPixmap addPix(":/logos/assets/addtoCart.png");
+                        addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                        connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                        bookLayout->addWidget(imageLabel);
+                        bookLayout->addWidget(nameLabel);
+                        bookLayout->addWidget(priceLabel);
+                        bookLayout->addWidget(addtoCart);
+
+                        bookLayout->setAlignment(Qt::AlignTop);
+
+                        ui->recsLayout->addLayout(bookLayout);
+                        displayedBooks.insert(name);
+                        displayedCountinRecs++;
+                    } else {
+                        qDebug() << "Invalid image path for book: " << name;
+                    }
+                }
+            } else {
+                if (displayedCountinAll < maxBooks) {
+                    if (book) {
+                        QString name = book->getName();
+                        QPixmap imagePath = book->getImage();
+                        double price = book->getPrice();
+                        if (!imagePath.isNull()) {
+                            QVBoxLayout* bookLayout = new QVBoxLayout();
+
+                            QLabel* imageLabel = new QLabel();
+                            imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+                            QLabel* nameLabel = new QLabel(name);
+                            nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                            nameLabel->setMaximumWidth(imageLabel->width());
+                            nameLabel->setWordWrap(true);
+
+                            QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                            priceLabel->setFont(QFont("Optima", 12));
+
+                            ClickableLabels* addtoCart = new ClickableLabels(this);
+                            QPixmap addPix(":/logos/assets/addtoCart.png");
+                            addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                            connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                            bookLayout->addWidget(imageLabel);
+                            bookLayout->addWidget(nameLabel);
+                            bookLayout->addWidget(priceLabel);
+                            bookLayout->addWidget(addtoCart);
+
+                            bookLayout->setAlignment(Qt::AlignTop);
+
+                            ui->allproductsLayout->addLayout(bookLayout);
+                            displayedBooks.insert(name);
+                            displayedCountinAll++;
+                        } else {
+                            qDebug() << "Invalid image path for book: " << name;
+                        }
+                    }
+                } else {
+                    break; //limit reached, stop displaying more in allproductsLayout
+                }
+            }
+        }
+    }
+    ui->recsLayout->setAlignment(Qt::AlignHCenter);
+    ui->allproductsLayout->setAlignment(Qt::AlignHCenter);
+}
+
+
+void ProductManager::showSuggestions(){
+    ui->basedonsearchLogo->setVisible(false);
+    ui->basedonyouLogo->setVisible(true);
+
+    initializeProducts();
+    vector<Products*> recommendations;
+    recommendations = suggestSimilarItems();
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+
+    int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
+
+    //adjusting the size of the parent widget of recsLayout
+    ui->recsLayout->parentWidget()->resize(widthFull-100, recsLayoutHeight);
+
+    int column = 0; //track the column index for the current book
+
+    for (Products* product : recommendations) {
+        Books* book = dynamic_cast<Books*>(product);
+        if (book) {
+            //retrieve book information from the bookProducts vector
+            QString name = book->getName();
+            QPixmap imagePath = book->getImage();
+            double price = book->getPrice();
+
+            if (!imagePath.isNull()) {
+                QVBoxLayout* bookLayout = new QVBoxLayout();
+                //create a QLabel for displaying the book's image
+                QLabel* imageLabel = new QLabel();
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+                //create QLabel for name
+                QLabel* nameLabel = new QLabel(name);
+                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                nameLabel->setMaximumWidth(imageLabel->width());
+                nameLabel->setWordWrap(true);
+
+                //create QLabel for price
+                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                priceLabel->setFont(QFont("Optima", 12));
+
+                //create add to cart label
+                ClickableLabels* addtoCart = new ClickableLabels(this);
+                QPixmap addPix(":/logos/assets/addtoCart.png");
+                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                //add the labels to the book layout
+                bookLayout->addWidget(imageLabel);
+                bookLayout->addWidget(nameLabel);
+                bookLayout->addWidget(priceLabel);
+                bookLayout->addWidget(addtoCart);
+
+                //set alignment for the book layout
+                bookLayout->setAlignment(Qt::AlignTop);
+
+                //add the book layout to the main layout
+                ui->recsLayout->addLayout(bookLayout);
+
+                //increment the column index for the next book
+                column++;
+            } else {
+                qDebug() << "Invalid image path for book: " << name;
+            }
+        }
+    }
+    ui->recsLayout->setAlignment(Qt::AlignHCenter);
+}
+
+
+
+
+/* vector<Products *> ProductManager::clickSearch()
 {
     QString keyword = ui->searchLineEdit->text();
     vector<Products*> searchResults;
@@ -560,5 +757,5 @@ void ProductManager::on_addAdminB_clicked()
     reg -> setWindowTitle("Register new Admin");
     reg->show();
     hide();
-}
+}*/
 

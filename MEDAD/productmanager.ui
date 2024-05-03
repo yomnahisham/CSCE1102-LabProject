@@ -47,10 +47,10 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>70</x>
      <y>190</y>
      <width>1231</width>
-     <height>311</height>
+     <height>301</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="recsLayout"/>
@@ -58,8 +58,8 @@
   <widget class="QWidget" name="horizontalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>560</y>
+     <x>60</x>
+     <y>530</y>
      <width>1231</width>
      <height>451</height>
     </rect>
@@ -85,7 +85,7 @@
   <widget class="QLabel" name="basedonyouLogo">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>150</x>
      <y>120</y>
      <width>381</width>
      <height>61</height>
@@ -151,32 +151,6 @@
     </property>
    </item>
   </widget>
-  <widget class="QPushButton" name="AllProducts">
-   <property name="geometry">
-    <rect>
-     <x>1270</x>
-     <y>510</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>ALL Products</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="otherProducts">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>520</y>
-     <width>351</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>OtherProducts</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="addProductB">
    <property name="geometry">
     <rect>
@@ -203,18 +177,30 @@
     <string>Add Admin</string>
    </property>
   </widget>
+  <widget class="QLabel" name="ourproductsLogo">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>490</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>all prod</string>
+   </property>
+  </widget>
   <zorder>logoCorner</zorder>
-  <zorder>logoSub</zorder>
   <zorder>horizontalLayoutWidget</zorder>
   <zorder>horizontalLayoutWidget_2</zorder>
   <zorder>basedonyouLogo</zorder>
   <zorder>basedonsearchLogo</zorder>
   <zorder>searchLineEdit</zorder>
   <zorder>filterBox</zorder>
-  <zorder>AllProducts</zorder>
-  <zorder>otherProducts</zorder>
   <zorder>addProductB</zorder>
   <zorder>addAdminB</zorder>
+  <zorder>logoSub</zorder>
+  <zorder>ourproductsLogo</zorder>
  </widget>
  <resources/>
  <connections/>
