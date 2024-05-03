@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);
+   <string notr="true">background-color: rgb(255, 255, 252)
 
 </string>
   </property>
@@ -69,11 +69,14 @@
   <widget class="QLineEdit" name="searchLineEdit">
    <property name="geometry">
     <rect>
-     <x>880</x>
-     <y>120</y>
+     <x>770</x>
+     <y>110</y>
      <width>421</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 252); color:  black;</string>
    </property>
    <property name="text">
     <string>Search...</string>
@@ -103,6 +106,19 @@
    </property>
    <property name="text">
     <string>your search</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>1200</x>
+     <y>110</y>
+     <width>101</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 252); color: black;</string>
    </property>
   </widget>
  </widget>
