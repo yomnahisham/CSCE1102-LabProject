@@ -151,7 +151,7 @@ void ProductManager::initializeProducts() {
         { "1984", "19", "5", "true", ":/Books/assets/1984.jpeg" , "Classics" , "George Orwell" , "9780155658110"},
         { "Animal Farm", "18.5", "5", "true", ":/Books/assets/animal farm.jpeg" , "Classics" , "George Orwell" , "9788129116123"},
         { "The Da Vinci Code", "17", "5", "true", ":/Books/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780307277671"},
-        { "Angels and Demons", "16.5", "5", "true", ":/Books/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780743486224"},
+        { "Angels and Demons", "16.5", "5", "true", ":/Books/assets/angels anddemons.jpeg" , "Classics" , "Dan Brown" , "9780743486224"},
         { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
         { "A Room of One’s Own", "24", "5", "true", ":/Books/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
         { "Wuthering Heights", "26", "5", "true", ":/Books/assets/wutheruing heights.jpeg" , "Classics" , "Emily Bronte" , "9780175565757"},
@@ -392,7 +392,7 @@ void ProductManager::searchProducts(const QString &keyword){
                 continue; //skip if book already displayed
             }
 
-            if (displayedCount >= 5) {
+            if (displayedCount >= 10) {
                 break; //limit reached, stop displaying more
             }
             if (book) {
