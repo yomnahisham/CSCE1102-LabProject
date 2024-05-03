@@ -29,18 +29,18 @@ public:
     {
         if (ShoppingCart->objectName().isEmpty())
             ShoppingCart->setObjectName("ShoppingCart");
-        ShoppingCart->resize(687, 589);
+        ShoppingCart->resize(835, 627);
         ShoppingCart->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252);\n"
 "color: rgb(0, 0, 0);"));
         cartTable = new QTableWidget(ShoppingCart);
         cartTable->setObjectName("cartTable");
-        cartTable->setGeometry(QRect(110, 80, 431, 381));
+        cartTable->setGeometry(QRect(190, 90, 431, 381));
         CheckOutButton = new QPushButton(ShoppingCart);
         CheckOutButton->setObjectName("CheckOutButton");
-        CheckOutButton->setGeometry(QRect(360, 500, 171, 51));
+        CheckOutButton->setGeometry(QRect(580, 530, 171, 51));
         DeleteItem = new QPushButton(ShoppingCart);
         DeleteItem->setObjectName("DeleteItem");
-        DeleteItem->setGeometry(QRect(110, 500, 141, 51));
+        DeleteItem->setGeometry(QRect(110, 530, 141, 51));
 
         retranslateUi(ShoppingCart);
 

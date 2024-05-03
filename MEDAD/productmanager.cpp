@@ -384,9 +384,9 @@ void ProductManager::makeFirstPage(){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this, name, price](){
-                    qDebug() << "Item not added";
-                    this->cart->AddItemToCart(name, price, 1);
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
                 });
                 //add the labels to the book layout
                 bookLayout->addWidget(imageLabel);
@@ -480,7 +480,12 @@ void ProductManager::searchProducts(const QString &keyword) {
                         ClickableLabels* addtoCart = new ClickableLabels(this);
                         QPixmap addPix(":/logos/assets/addtoCart.png");
                         addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                        connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                        connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+
+                            this->cart->AddItemToCart(imagePath,name, price, 1);
+                        });
+                        //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
 
                         bookLayout->addWidget(imageLabel);
                         bookLayout->addWidget(nameLabel);
@@ -519,9 +524,9 @@ void ProductManager::searchProducts(const QString &keyword) {
                             ClickableLabels* addtoCart = new ClickableLabels(this);
                             QPixmap addPix(":/logos/assets/addtoCart.png");
                             addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                            connect(addtoCart, &ClickableLabels::clicked, [this, name, price](){
+                            connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
 
-                                this->cart->AddItemToCart(name, price, 1);
+                                this->cart->AddItemToCart(imagePath,name, price, 1);
                             });
 
                             bookLayout->addWidget(imageLabel);
@@ -595,9 +600,9 @@ void ProductManager::showSuggestions(){
                 //create add to cart label
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
-                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));                            connect(addtoCart, &ClickableLabels::clicked, [this, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
 
-                    this->cart->AddItemToCart(name, price, 1);
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
                 });
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
 
@@ -702,9 +707,9 @@ void ProductManager::showRemainingProducts() {
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
 
-                    this->cart->AddItemToCart(name, price, 1);
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
@@ -759,9 +764,9 @@ void ProductManager::showRemainingProducts() {
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
 
-                    this->cart->AddItemToCart(name, price, 1);
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
@@ -814,9 +819,9 @@ void ProductManager::showRemainingProducts() {
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
 
-                    this->cart->AddItemToCart(name, price, 1);
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);

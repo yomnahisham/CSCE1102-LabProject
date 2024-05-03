@@ -17,7 +17,7 @@ class ShoppingCart : public QWidget
 public:
     explicit ShoppingCart(QWidget *parent = nullptr);
     ~ShoppingCart();
-    void AddItemToCart(const QString &ItemName, double price, int quantity);
+    void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
 
 private:
     Ui::ShoppingCart *ui;
