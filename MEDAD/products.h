@@ -3,6 +3,7 @@
 #include<QPixmap>
 #include<Qstring>
 #include<QDebug>
+
 class Products
 {
 protected:

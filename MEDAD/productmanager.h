@@ -6,9 +6,18 @@
 #include "books.h"
 #include "accessories.h"
 #include "techs.h"
+#include"allproducts1.h"
 #include <QWidget>
 #include <vector>
 #include <QLayoutItem>
+#include <QApplication>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QStringList>
+#include <algorithm>
+#include<QScrollArea>
+#include"search.h"
+#include <QMainWindow>
 
 using namespace std;
 
@@ -22,6 +31,8 @@ class ProductManager : public QWidget
 
 public:
     explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers);
+
+
     ~ProductManager();
 
     void setUser(User* loggedUser);
@@ -33,24 +44,31 @@ public:
     vector<Products*> suggestSimilarItems();
 
     void initializeProducts();
-    void makeFirstPage();
+    vector<Products*> makeFirstPage();
     void showSuggestions();
-
     void clearLayout(QLayout* layout);
+
+
 private slots:
     void onCartClicked();
     void onSignOutClicked();
     void onAddToCartClicked();
-    void searchProducts(const QString& keyword);
-private:
+    void sortProducts();
+    vector<Products*> clickSearch();
+
+
+    void on_AllProducts_clicked();
+
+public:
     Ui::ProductManager *ui;
     User* user;
     AllUsers* users;
     QVector<Books*> *bookProducts;
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;
-
     QVector<QLayoutItem*> originalLayoutItems;
+
+
 };
 
 #endif // PRODUCTMANAGER_H

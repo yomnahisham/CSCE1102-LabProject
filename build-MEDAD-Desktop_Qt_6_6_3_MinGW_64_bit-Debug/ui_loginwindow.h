@@ -38,7 +38,7 @@ public:
         if (LoginWindow->objectName().isEmpty())
             LoginWindow->setObjectName("LoginWindow");
         LoginWindow->resize(1305, 764);
-        LoginWindow->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+        LoginWindow->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252);\n"
 ""));
         loginB = new QPushButton(LoginWindow);
         loginB->setObjectName("loginB");

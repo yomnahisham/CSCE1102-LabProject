@@ -28,6 +28,10 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
 
     users = Allusers;
 
+    connect(ui->searchLineEdit, &QLineEdit::returnPressed, this, &ProductManager::clickSearch);
+
+    ui->horizontalLayoutWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
@@ -64,16 +68,20 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     //connecting signoutbutton, its signal from ClickableLabels, this ui, and the function onSignOutClicked to handle the click
     connect(signOutButton, &ClickableLabels::clicked, this, &ProductManager::onSignOutClicked);
 
-    connect(ui->searchLineEdit, &QLineEdit::textChanged, this, &ProductManager::searchProducts);
 
     //prefered to use ui->basedonsearchLogo->size() because it fits the size needed to make the desgin look better
     QPixmap youPix(":/logos/assets/basedonyou.png");
     ui->basedonyouLogo->setPixmap(youPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->basedonyouLogo->setVisible(false);
 
-    QPixmap searchPix(":/logos/assets/basedonsearch.png");
-    ui->basedonsearchLogo->setPixmap(searchPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->basedonsearchLogo->setVisible(false);
+
+    QPixmap otherPix(":/logos/assets/other products.png");
+    ui->otherProducts->setPixmap(otherPix.scaled(ui->otherProducts->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->otherProducts->setVisible(true);
+
+
+    connect(ui->filterBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ProductManager::sortProducts);
+
 
     makeFirstPage();
 }
@@ -291,9 +299,9 @@ vector<Products*> ProductManager::suggestSimilarItems(){
     return suggestions;
 }
 
-void ProductManager::makeFirstPage(){
+vector<Products*> ProductManager::makeFirstPage(){
     showSuggestions();
-
+    clearLayout(ui->allproductsLayout);
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
@@ -303,7 +311,7 @@ void ProductManager::makeFirstPage(){
 
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
 
-
+vector<Products*> displayedProducts;
     int maxBooksPerRow = 6;
     int booksInCurrentRow = 0;
     QHBoxLayout* currentRowLayout = new QHBoxLayout();
@@ -344,21 +352,16 @@ void ProductManager::makeFirstPage(){
 
                 //add the book layout to the current row layout
                 currentRowLayout->addLayout(bookLayout);
-
+                 displayedProducts.push_back(book);
                 //increment the number of books in the current row
                 booksInCurrentRow++;
 
                 //check if we need to start a new row
-                if (booksInCurrentRow >= maxBooksPerRow) {
-                    //ad the current row layout to the main layout
-                    ui->allproductsLayout->addLayout(currentRowLayout);
-
-                    //create a new layout for the next row
-                    currentRowLayout = new QHBoxLayout();
-
-                    //reset the number of books in the current row
-                    booksInCurrentRow = 0;
+                if (booksInCurrentRow >= maxBooksPerRow)
+                {
+                    break;
                 }
+                ui->allproductsLayout->addLayout(bookLayout);
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -367,74 +370,35 @@ void ProductManager::makeFirstPage(){
 
     //add the last row layout to the main layout
     ui->allproductsLayout->addLayout(currentRowLayout);
+
+     return displayedProducts;
 }
 
-void ProductManager::searchProducts(const QString &keyword){
-    ui->basedonyouLogo->setVisible(false);
-    ui->basedonsearchLogo->setVisible(true);
-
-    clearLayout(ui->recsLayout);
-
+ vector<Products *> ProductManager::clickSearch()
+{
+    QString keyword = ui->searchLineEdit->text();
+    vector<Products*> searchResults;
     if (keyword.isEmpty()) {
         ui->basedonsearchLogo->setVisible(false);
         ui->basedonyouLogo->setVisible(true);
         showSuggestions();
-        return;
+        return searchResults ; // Return empty vector if keyword is empty
     }
-
-    QSet<QString> displayedBooks; //track displayed books to ensure uniqueness
-    int displayedCount = 0;
-
     for (Products* product : *bookProducts) {
         Books* book = dynamic_cast<Books*>(product);
-        if (book && (book->getName().contains(keyword, Qt::CaseInsensitive) || book->getGenre().contains(keyword, Qt::CaseInsensitive))){
-            if (displayedBooks.contains(book->getName())) {
-                continue; //skip if book already displayed
-            }
-
-            if (displayedCount >= 10) {
-                break; //limit reached, stop displaying more
-            }
-            if (book) {
-                QString name = book->getName();
-                QPixmap imagePath = book->getImage();
-                double price = book->getPrice();
-                if (!imagePath.isNull()) {
-                    QVBoxLayout* bookLayout = new QVBoxLayout();
-
-                    QLabel* imageLabel = new QLabel();
-                    imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
-                    QLabel* nameLabel = new QLabel(name);
-                    nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
-                    nameLabel->setMaximumWidth(imageLabel->width());
-                    nameLabel->setWordWrap(true);
-
-                    QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
-                    priceLabel->setFont(QFont("Optima", 12));
-
-                    ClickableLabels* addtoCart = new ClickableLabels(this);
-                    QPixmap addPix(":/logos/assets/addtoCart.png");
-                    addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                    connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
-
-                    bookLayout->addWidget(imageLabel);
-                    bookLayout->addWidget(nameLabel);
-                    bookLayout->addWidget(priceLabel);
-                    bookLayout->addWidget(addtoCart);
-
-                    bookLayout->setAlignment(Qt::AlignTop);
-
-                    ui->recsLayout->addLayout(bookLayout);
-                    displayedBooks.insert(name);
-                    displayedCount++;
-                } else {
-                    qDebug() << "Invalid image path for book: " << name;
-                }
-            }
+        if (book && (book->getName().contains(keyword, Qt::CaseInsensitive) || book->getGenre().contains(keyword, Qt::CaseInsensitive))) {
+            searchResults.push_back(book);
         }
     }
-    ui->recsLayout->setAlignment(Qt::AlignHCenter);
+    hide();
+    Search* searchwindow=new Search();
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    searchwindow->setGeometry(screenGeometry);
+    searchwindow->showFullScreen();
+    searchwindow->DisplaySearch(searchResults);
+    return searchResults;
+
 }
 
 void ProductManager::clearLayout(QLayout* layout){
@@ -452,6 +416,9 @@ void ProductManager::clearLayout(QLayout* layout){
 }
 
 void ProductManager::showSuggestions(){
+    if(ui->basedonyouLogo->isVisible()) {
+        return; // Don't update if already showing suggestions
+    }
     ui->basedonsearchLogo->setVisible(false);
     ui->basedonyouLogo->setVisible(true);
 
@@ -520,5 +487,57 @@ void ProductManager::showSuggestions(){
         }
     }
     ui->recsLayout->setAlignment(Qt::AlignHCenter);
+}
+
+
+
+
+void ProductManager::sortProducts()
+{
+    QString sortBy = ui->filterBox->currentText();
+
+    // Sort products based on the selected option
+    if (sortBy == "Lowest to Highest Price")
+    {
+        sort(bookProducts->begin(), bookProducts->end(), []( Books* a,  Books* b)
+             {
+                 return a->getPrice() < b->getPrice();
+             });
+    }
+    else if (sortBy == "Highest to Lowest Price")
+    {
+        sort(bookProducts->begin(), bookProducts->end(), []( Books* a,  Books* b)
+             {
+                 return a->getPrice() > b->getPrice();
+             });
+    }
+    else if (sortBy == "A-Z") {
+        sort(bookProducts->begin(), bookProducts->end(), [](Books* a, Books* b) {
+            return a->getName().toLower() < b->getName().toLower();
+        });
+    }
+    else if (sortBy == "Z-A") {
+        sort(bookProducts->begin(), bookProducts->end(), [](Books* a, Books* b) {
+            return a->getName().toLower() > b->getName().toLower();
+        });
+    }
+
+
+    makeFirstPage();
+
+}
+
+
+void ProductManager::on_AllProducts_clicked()
+{
+    hide();
+    vector<Products*> displayedProducts=makeFirstPage();
+    AllProducts1* allproducts1= new AllProducts1();
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    allproducts1->setGeometry(screenGeometry);
+    allproducts1->showFullScreen();
+    allproducts1->allproductsdisplay(displayedProducts);
+
 }
 

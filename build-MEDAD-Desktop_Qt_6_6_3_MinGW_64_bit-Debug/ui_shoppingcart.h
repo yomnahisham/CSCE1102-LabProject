@@ -24,7 +24,7 @@ public:
         if (ShoppingCart->objectName().isEmpty())
             ShoppingCart->setObjectName("ShoppingCart");
         ShoppingCart->resize(400, 300);
-        ShoppingCart->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+        ShoppingCart->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252);\n"
 ""));
 
         retranslateUi(ShoppingCart);

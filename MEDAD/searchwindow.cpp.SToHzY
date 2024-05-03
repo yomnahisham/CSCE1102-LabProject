@@ -1,0 +1,31 @@
+#include "searchwindow.h"
+#include "ui_searchwindow.h"
+
+SearchWindow::SearchWindow(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::SearchWindow)
+{
+    ui->setupUi(this);
+
+
+    int productLayoutHeight = heightFull + 10;
+    //setting logo in the corner of the shop app
+    QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
+    int w = ui->label->width();
+    int h = ui->label->height();
+    ui-> label -> setPixmap(logoPix.scaled(w,h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->label->move(50, 50);
+}
+
+SearchWindow::~SearchWindow()
+{
+    delete ui;
+}
+
+void SearchWindow::on_pushButton_2_clicked()
+{
+    hide();
+    ProductManager* productmanager=new ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers);
+    productmanager->show();
+}
+
