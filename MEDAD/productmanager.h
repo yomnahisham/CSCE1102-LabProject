@@ -45,6 +45,7 @@ public:
     void makeSecondPage();
     void makeThirdPage();
     void makeFourthPage();
+    void showPrevious();
 
     void initializeProducts();
     void showSuggestions();
@@ -59,14 +60,11 @@ private slots:
     void onSignOutClicked();
     void onAddToCartClicked();
     void onNextClicked();
+    void onPrevClicked();
     void searchProducts(const QString& keyword);
-   //void sortProducts();
-   // vector<Products*> clickSearch();
+    void sortProducts();
 
-
-   // void on_AllProducts_clicked();
-
-   // void on_addAdminB_clicked();
+    void on_addAdminB_clicked();
 
 public:
     Ui::ProductManager *ui;

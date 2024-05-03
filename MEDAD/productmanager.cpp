@@ -1,5 +1,6 @@
 #include "productmanager.h"
 #include "ui_productmanager.h"
+#include "registerwindow.h"
 #include "clickablelabels.h"
 #include "customer.h"
 #include "shoppingcart.h"
@@ -31,7 +32,6 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
-    int heightFull = screenGeometry.height();
 
     //setting logo in the corner of the shop app
     QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
@@ -47,6 +47,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     ClickableLabels* cartLabel = new ClickableLabels(this);
     ClickableLabels* signOutButton = new ClickableLabels(this);
     ClickableLabels* nextButton = new ClickableLabels(this);
+    ClickableLabels* prevButton = new ClickableLabels(this);
 
     //setting image of the clickable shopping cart label
     QPixmap cartPix(":/logos/assets/shoppingcartlogo.png");
@@ -69,10 +70,15 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     //connecting searchLineEdit with the function searchProducts based on a textChanged signal
     connect(ui->searchLineEdit, &QLineEdit::textChanged, this, &ProductManager::searchProducts);
 
-    QPixmap nextPix(":/logos/assets/nextLogo.png");
-    nextButton->setPixmap(nextPix.scaled(70, 60, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    nextButton->move(widthFull/2, 800);
+    QPixmap nextPix(":/logos/assets/nextArrow.png");
+    nextButton->setPixmap(nextPix.scaled(70, 30, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    nextButton->move(widthFull/2 + 20, 800);
     connect(nextButton, &ClickableLabels::clicked, this, &ProductManager::onNextClicked);
+
+    QPixmap prevPix(":/logos/assets/prevArrow.png");
+    prevButton->setPixmap(prevPix.scaled(70, 30, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    prevButton->move(widthFull/2 -20, 800);
+    connect(prevButton, &ClickableLabels::clicked, this, &ProductManager::onPrevClicked);
 
     QPixmap allPix(":/logos/assets/ourproducts.png");
     ui->ourproductsLogo->setPixmap(allPix.scaled(ui->ourproductsLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -151,12 +157,24 @@ void ProductManager::onAddToCartClicked(){
 }
 
 void ProductManager::onNextClicked(){
+    ui->searchLineEdit->setVisible(false);
     if(!secondPage)
         makeSecondPage();
     else if(!thirdPage)
         makeThirdPage();
     else if(!fourthPage)
         makeFourthPage();
+}
+
+void ProductManager::onPrevClicked(){
+    //needs fixing
+    if(fourthPage){
+        makeThirdPage();
+    }else if(thirdPage){
+        makeSecondPage();
+    }else if(secondPage){
+        makeFirstPage();
+    }
 }
 
 Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
@@ -398,6 +416,10 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword) {
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+
     ui->allproductsLayout->parentWidget()->raise();
     ui->basedonyouLogo->setVisible(false);
     ui->ourproductsLogo->setVisible(false);
@@ -405,6 +427,12 @@ void ProductManager::searchProducts(const QString &keyword) {
 
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
+
+    ClickableLabels* nextButton = new ClickableLabels(this);
+    QPixmap nextPix(":/logos/assets/nextLogo.png");
+    nextButton->setPixmap(nextPix.scaled(70, 60, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    nextButton->move(widthFull/2, 800);
+    connect(nextButton, &ClickableLabels::clicked, this, &ProductManager::onNextClicked);
 
     if (keyword.isEmpty()) {
         ui->basedonsearchLogo->setVisible(false);
@@ -835,125 +863,7 @@ bool ProductManager::isProductDisplayed(Products* product) {
     return false;
 }
 
-
-/* vector<Products *> ProductManager::clickSearch()
-{
-    QString keyword = ui->searchLineEdit->text();
-    vector<Products*> searchResults;
-    if (keyword.isEmpty()) {
-        ui->basedonsearchLogo->setVisible(false);
-        ui->basedonyouLogo->setVisible(true);
-        showSuggestions();
-        return searchResults ; // Return empty vector if keyword is empty
-    }
-    for (Products* product : *bookProducts) {
-        Books* book = dynamic_cast<Books*>(product);
-        if (book && (book->getName().contains(keyword, Qt::CaseInsensitive) || book->getGenre().contains(keyword, Qt::CaseInsensitive))) {
-            searchResults.push_back(book);
-        }
-    }
-    hide();
-    Search* searchwindow=new Search();
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    searchwindow->setGeometry(screenGeometry);
-    searchwindow->showFullScreen();
-    searchwindow->DisplaySearch(searchResults);
-    return searchResults;
-
-}
-
-void ProductManager::clearLayout(QLayout* layout){
-    QLayoutItem* item;
-    while ((item = layout->takeAt(0)) != nullptr){
-        if (QWidget* widget = item->widget()) {
-            delete widget;
-        } else {
-            if (QLayout* childLayout = item->layout()) {
-                clearLayout(childLayout); //recursively clear child layouts
-            }
-            delete item;
-        }
-    }
-}
-
-void ProductManager::showSuggestions(){
-    if(ui->basedonyouLogo->isVisible()) {
-        return; // Don't update if already showing suggestions
-    }
-    ui->basedonsearchLogo->setVisible(false);
-    ui->basedonyouLogo->setVisible(true);
-
-    initializeProducts();
-    vector<Products*> recommendations;
-    recommendations = suggestSimilarItems();
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
-    int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
-
-    //adjusting the size of the parent widget of recsLayout
-    ui->recsLayout->parentWidget()->resize(widthFull-100, recsLayoutHeight);
-
-    int column = 0; //track the column index for the current book
-
-    for (Products* product : recommendations) {
-        Books* book = dynamic_cast<Books*>(product);
-        if (book) {
-            //retrieve book information from the bookProducts vector
-            QString name = book->getName();
-            QPixmap imagePath = book->getImage();
-            double price = book->getPrice();
-
-            if (!imagePath.isNull()) {
-                QVBoxLayout* bookLayout = new QVBoxLayout();
-                //create a QLabel for displaying the book's image
-                QLabel* imageLabel = new QLabel();
-                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
-                //create QLabel for name
-                QLabel* nameLabel = new QLabel(name);
-                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
-                nameLabel->setMaximumWidth(imageLabel->width());
-                nameLabel->setWordWrap(true);
-
-                //create QLabel for price
-                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
-                priceLabel->setFont(QFont("Optima", 12));
-
-                //create add to cart label
-                ClickableLabels* addtoCart = new ClickableLabels(this);
-                QPixmap addPix(":/logos/assets/addtoCart.png");
-                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
-
-                //add the labels to the book layout
-                bookLayout->addWidget(imageLabel);
-                bookLayout->addWidget(nameLabel);
-                bookLayout->addWidget(priceLabel);
-                bookLayout->addWidget(addtoCart);
-
-                //set alignment for the book layout
-                bookLayout->setAlignment(Qt::AlignTop);
-
-                //add the book layout to the main layout
-                ui->recsLayout->addLayout(bookLayout);
-
-                //increment the column index for the next book
-                column++;
-            } else {
-                qDebug() << "Invalid image path for book: " << name;
-            }
-        }
-    }
-    ui->recsLayout->setAlignment(Qt::AlignHCenter);
-}
-
-
-
-
+//credits: Menna Zaid
 void ProductManager::sortProducts()
 {
     QString sortBy = ui->filterBox->currentText();
@@ -989,21 +899,6 @@ void ProductManager::sortProducts()
 
 }
 
-
-void ProductManager::on_AllProducts_clicked()
-{
-    hide();
-    vector<Products*> displayedProducts=makeFirstPage();
-    AllProducts1* allproducts1= new AllProducts1();
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    allproducts1->setGeometry(screenGeometry);
-    allproducts1->showFullScreen();
-    allproducts1->allproductsdisplay(displayedProducts);
-
-}
-
-
 void ProductManager::on_addAdminB_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
@@ -1016,5 +911,5 @@ void ProductManager::on_addAdminB_clicked()
     reg -> setWindowTitle("Register new Admin");
     reg->show();
     hide();
-}*/
+}
 

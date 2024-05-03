@@ -11,7 +11,8 @@
         <file>assets/basedonyou.png</file>
         <file>assets/basedonsearch.png</file>
         <file>assets/other products.png</file>
-        <file>assets/nextLogo.png</file>
         <file>assets/ourproducts.png</file>
+        <file>assets/nextArrow.png</file>
+        <file>assets/prevArrow.png</file>
     </qresource>
 </RCC>
