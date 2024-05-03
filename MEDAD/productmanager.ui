@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1310</width>
+    <width>1431</width>
     <height>936</height>
    </rect>
   </property>
@@ -69,8 +69,8 @@
   <widget class="QLineEdit" name="searchLineEdit">
    <property name="geometry">
     <rect>
-     <x>770</x>
-     <y>110</y>
+     <x>780</x>
+     <y>120</y>
      <width>421</width>
      <height>21</height>
     </rect>
@@ -98,9 +98,9 @@
   <widget class="QLabel" name="basedonsearchLogo">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>560</x>
      <y>140</y>
-     <width>361</width>
+     <width>311</width>
      <height>41</height>
     </rect>
    </property>
@@ -108,19 +108,47 @@
     <string>your search</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="filterBox">
    <property name="geometry">
     <rect>
-     <x>1200</x>
-     <y>110</y>
-     <width>101</width>
+     <x>1210</x>
+     <y>120</y>
+     <width>161</width>
      <height>21</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(255, 255, 252); color: black;</string>
    </property>
+   <item>
+    <property name="text">
+     <string>Filter</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lowest to Highest Price</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Highest to Lowest Price</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string/>
+    </property>
+   </item>
   </widget>
+  <zorder>logoCorner</zorder>
+  <zorder>logoSub</zorder>
+  <zorder>horizontalLayoutWidget</zorder>
+  <zorder>horizontalLayoutWidget_2</zorder>
+  <zorder>basedonyouLogo</zorder>
+  <zorder>basedonsearchLogo</zorder>
+  <zorder>searchLineEdit</zorder>
+  <zorder>filterBox</zorder>
  </widget>
  <resources/>
  <connections/>
