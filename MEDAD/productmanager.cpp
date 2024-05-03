@@ -66,6 +66,14 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
 
     connect(ui->searchLineEdit, &QLineEdit::textChanged, this, &ProductManager::searchProducts);
 
+    //prefered to use ui->basedonsearchLogo->size() because it fits the size needed to make the desgin look better
+    QPixmap youPix(":/logos/assets/basedonyou.png");
+    ui->basedonyouLogo->setPixmap(youPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->basedonyouLogo->setVisible(false);
+
+    QPixmap searchPix(":/logos/assets/basedonsearch.png");
+    ui->basedonsearchLogo->setPixmap(searchPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->basedonsearchLogo->setVisible(false);
 
     makeFirstPage();
 }
@@ -362,9 +370,14 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword){
+    ui->basedonyouLogo->setVisible(false);
+    ui->basedonsearchLogo->setVisible(true);
+
     clearLayout(ui->recsLayout);
+
     if (keyword.isEmpty()) {
-        //clear the layout and show suggestions?
+        ui->basedonsearchLogo->setVisible(false);
+        ui->basedonyouLogo->setVisible(true);
         showSuggestions();
         return;
     }
@@ -439,8 +452,8 @@ void ProductManager::clearLayout(QLayout* layout){
 }
 
 void ProductManager::showSuggestions(){
-    QPixmap youPix(":/logos/assets/basedonyou.png");
-    ui-> basedonyouLogo -> setPixmap(youPix.scaled(200, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->basedonsearchLogo->setVisible(false);
+    ui->basedonyouLogo->setVisible(true);
 
     initializeProducts();
     vector<Products*> recommendations;
@@ -449,14 +462,11 @@ void ProductManager::showSuggestions(){
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
-    int heightFull = screenGeometry.height();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
-    int productLayoutHeight = heightFull + 10;
 
     //adjusting the size of the parent widget of recsLayout
     ui->recsLayout->parentWidget()->resize(widthFull-100, recsLayoutHeight);
-    ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
 
     int column = 0; //track the column index for the current book
 

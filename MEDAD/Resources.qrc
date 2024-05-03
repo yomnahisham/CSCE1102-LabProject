@@ -9,5 +9,6 @@
         <file>assets/logosubtitle.png</file>
         <file>assets/addtoCart.png</file>
         <file>assets/basedonyou.png</file>
+        <file>assets/basedonsearch.png</file>
     </qresource>
 </RCC>

@@ -82,14 +82,27 @@
   <widget class="QLabel" name="basedonyouLogo">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>140</y>
+     <x>170</x>
+     <y>120</y>
      <width>381</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>your preferences</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="basedonsearchLogo">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>140</y>
+     <width>361</width>
      <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>your search</string>
    </property>
   </widget>
  </widget>
