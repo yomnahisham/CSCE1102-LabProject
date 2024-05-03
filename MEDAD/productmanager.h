@@ -43,8 +43,12 @@ public:
 
     void initializeProducts();
     void makeFirstPage();
+    void makeSecondPage();
     void showSuggestions();
+    void showRemainingProducts();
     void clearLayout(QLayout* layout);
+
+    bool isProductDisplayed(Books* book);
 
 
 private slots:
@@ -53,7 +57,7 @@ private slots:
     void onAddToCartClicked();
     void onNextClicked();
     void searchProducts(const QString& keyword);
-   // void sortProducts();
+   //void sortProducts();
    // vector<Products*> clickSearch();
 
 
@@ -68,6 +72,7 @@ public:
     QVector<Books*> *bookProducts;
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;
+    vector<Products*> displayedProducts; //to store all displayed products in first page
 };
 
 #endif // PRODUCTMANAGER_H

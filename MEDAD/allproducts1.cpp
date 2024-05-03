@@ -14,6 +14,7 @@
 
 #include<vector>
 
+
 AllProducts1::AllProducts1(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AllProducts1)
@@ -53,10 +54,6 @@ AllProducts1::AllProducts1(QWidget *parent)
     int productLayoutHeight = heightFull + 10;
     ui->firstlayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
     ui->firstlayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
-
-
-
-
 }
 
 ProductManager* ManagerObject;
