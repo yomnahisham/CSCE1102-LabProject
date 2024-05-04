@@ -19,7 +19,8 @@ public:
     ~ShoppingCart();
     void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
     void deleteItem(int);
-    void updateQuantity(int, int);
+    void addQuantity(int);
+
 
 
 private slots:
@@ -36,6 +37,9 @@ private:
     QWidget *buttonWidget;
     QPushButton *addButton;
     QPushButton *subButton;
+
+
+
 
 
 

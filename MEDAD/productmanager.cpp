@@ -600,6 +600,7 @@ void ProductManager::showSuggestions(){
                 //create add to cart label
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
+                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
 
                     this->cart->AddItemToCart(imagePath,name, price, 1);

@@ -25,13 +25,14 @@ ShoppingCart::ShoppingCart(QWidget *parent):
 }
 
 void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity){
+
+    qDebug() << "Item add to cart" ;
     int row = ui->cartTable->rowCount();
 
     itemName = new QTableWidgetItem;
     itemPrice = new QTableWidgetItem;
     itemQuantity = new QTableWidgetItem;
     pic = new QTableWidgetItem;
-
 
     QIcon itemImage(image.scaled(250, 250, Qt::KeepAspectRatio, Qt::SmoothTransformation)) ;
     buttonWidget = new QWidget();
@@ -43,12 +44,17 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
     buttonLayout->setAlignment(Qt::AlignCenter);
     buttonLayout->setSpacing(0);
     buttonWidget->setLayout(buttonLayout);
-
-
     pic->setIcon(itemImage);
+
     itemName->setText(ItemName);
     itemPrice->setText(QString::number(price));
     itemQuantity->setText(QString::number(quantity));
+
+    connect(addButton, &QPushButton::clicked, [this, row](){
+        qDebug() <<"Plus button clicked";
+        this->addQuantity(row);
+    });
+
     ui->cartTable->insertRow(row);
     ui->cartTable->setItem(row, 0, pic);
     ui->cartTable->setItem(row, 1, itemName);
@@ -60,7 +66,13 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
 
 }
 
-
+void ShoppingCart::addQuantity(int row){
+    qDebug() << "Quantity incremented" ;
+    itemQuantity = ui->cartTable->item(row,3);
+    int NewQuantity = itemQuantity->text().toInt();
+    ++NewQuantity;
+    itemQuantity->setText(QString::number(NewQuantity));
+}
 void ShoppingCart::handleItemDeletion(){
 
     QList<QTableWidgetItem *> selectedItems = ui->cartTable->selectedItems();
