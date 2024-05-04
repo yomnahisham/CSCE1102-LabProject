@@ -357,7 +357,6 @@ vector<Products*> ProductManager::suggestSimilarItems(){
         bookProducts->pop_back();
     }
 
-    suggestedProducts=suggestions;
     return suggestions;
 }
 
@@ -365,7 +364,7 @@ void ProductManager::makeFirstPage(){
     firstPage = true;
     showSuggestions();
 
-    firstPageProducts = suggestedProducts;
+    firstPageProducts.clear();
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -404,7 +403,6 @@ void ProductManager::makeFirstPage(){
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
-
                     this->cart->AddItemToCart(imagePath,name, price, 1);
                 });
                 //add the labels to the book layout
@@ -419,6 +417,7 @@ void ProductManager::makeFirstPage(){
                 //add the book layout to the current row layout
                 currentRowLayout->addLayout(bookLayout);
                 displayedProducts.push_back(book);
+                firstPageProducts.push_back(book);
 
                 //increment the number of books in the current row
                 iteminRow++;
@@ -427,9 +426,6 @@ void ProductManager::makeFirstPage(){
                 if (iteminRow >= maxIteminRow) {
                     break;
                 }
-                ui->allproductsLayout->addLayout(bookLayout);
-                displayedProducts.push_back(book);
-                firstPageProducts.push_back(book);
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -881,6 +877,7 @@ void ProductManager::makeSecondPage(){
     secondPage = true;
     thirdPage = false;
     fourthPage = false;
+    secondPageProducts.clear();
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -892,6 +889,7 @@ void ProductManager::makeThirdPage(){
     secondPage = false;
     thirdPage = true;
     fourthPage = false;
+    thirdPageProducts.clear();
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -903,6 +901,7 @@ void ProductManager::makeFourthPage(){
     secondPage = false;
     thirdPage = false;
     fourthPage = true;
+    thirdPageProducts.clear();
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -991,6 +990,12 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(book);
+                if(fourthPage)
+                    fourthPageProducts.push_back(book);
+                if(thirdPage)
+                    thirdPageProducts.push_back(book);
+                if(secondPage)
+                    secondPageProducts.push_back(book);
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -1046,6 +1051,12 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(accessory);
+                if(fourthPage)
+                    fourthPageProducts.push_back(accessory);
+                if(thirdPage)
+                    thirdPageProducts.push_back(accessory);
+                if(secondPage)
+                    secondPageProducts.push_back(accessory);
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -1101,6 +1112,12 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(tech);
+                if(fourthPage)
+                    fourthPageProducts.push_back(tech);
+                if(thirdPage)
+                    thirdPageProducts.push_back(tech);
+                if(secondPage)
+                    secondPageProducts.push_back(tech);
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -1215,6 +1232,7 @@ QWidget* ProductManager::createProductWidget(Products* product) {
 
 void ProductManager::on_filterBox_currentTextChanged(const QString &arg1)
 {
+
     filteractivated = true;
     qDebug() << "filteractivated true";
     if (firstPage)
@@ -1248,7 +1266,7 @@ void ProductManager::on_filterBox_currentTextChanged(const QString &arg1)
         });
     }
 
-    int maxBooksToShow = 8;
+    int maxBooksToShow = 9;
     int booksShown = 0;
     for (Products* product : firstPageProducts) {
         if (booksShown >= maxBooksToShow) {
@@ -1275,25 +1293,25 @@ void ProductManager::on_filterBox_currentTextChanged(const QString &arg1)
 
             if (arg1 == "Lowest to Highest Price")
         {
-            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+            sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
                 return a->getPrice() < b->getPrice();
             });
         }
         else if (arg1 == "Highest to Lowest Price")
         {
-            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+            sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
                 return a->getPrice() > b->getPrice();
             });
         }
         else if (arg1 == "A-Z")
         {
-            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+            sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
                 return a->getName().toLower() < b->getName().toLower();
             });
         }
         else if (arg1 == "Z-A")
         {
-            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+            sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
                 return a->getName().toLower() > b->getName().toLower();
             });
         }
@@ -1410,7 +1428,6 @@ void ProductManager::on_filterBox_currentTextChanged(const QString &arg1)
         ui->recsLayout->update();
         ui->allproductsLayout->update();
     }
-
 }
 
 
