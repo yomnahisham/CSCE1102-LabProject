@@ -18,7 +18,7 @@
 #include <QVBoxLayout>
 
 
-ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers)
+ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage)
     : QWidget(parent)
     , ui(new Ui::ProductManager)
     , bookProducts(new QVector<Books*>())
@@ -30,7 +30,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
 
     users = Allusers;
 
-    cart = new ShoppingCart(nullptr, user, users);
+    cart = cartPage;
     connect(ui->filterBox, &QComboBox::currentTextChanged, this, &ProductManager::on_filterBox_currentTextChanged);
 
     QScreen* screen = QGuiApplication::primaryScreen();

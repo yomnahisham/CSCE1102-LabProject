@@ -32,7 +32,7 @@ class ProductManager : public QWidget
     Q_OBJECT
 
 public:
-    explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers);
+    explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage);
     ~ProductManager();
 
     void setUser(User* loggedUser);

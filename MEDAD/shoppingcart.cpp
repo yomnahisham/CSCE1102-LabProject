@@ -4,11 +4,14 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QIcon>
+#include <QVector>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QScreen>
 
+
+QVector<ShoppingCart::CartItems> ShoppingCart::Cart;
 
 ShoppingCart::ShoppingCart(QWidget *parent, User *logged, AllUsers *all):
     QWidget(parent)
@@ -33,7 +36,7 @@ ShoppingCart::ShoppingCart(QWidget *parent, User *logged, AllUsers *all):
 void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity){
 
     qDebug() << "Items added in vector: " ;
-    Items.append(CartItems(ItemName, price , quantity));
+    Cart.append(CartItems(image, ItemName, price , quantity));
     qDebug() << "Item add to cart" ;
     int row = ui->cartTable->rowCount();
 
@@ -88,9 +91,9 @@ void ShoppingCart::addQuantity(int row){
     ++NewQuantity;
     itemQuantity->setText(QString::number(NewQuantity));
 
-    if(row < Items.size()){
-        Items[row].quantity = NewQuantity;
-        qDebug() << "Quantity changed in vector"  << Items[row].quantity;
+    if(row < Cart.size()){
+        Cart[row].quantity = NewQuantity;
+        qDebug() << "Quantity changed in vector"  << Cart[row].quantity;
     }
 
 }
@@ -111,14 +114,14 @@ void ShoppingCart::subQuantity(int row){
     itemQuantity->setText(QString::number(NewQuantity));
     if(NewQuantity == 0){
         ui->cartTable->removeRow(row);
-        if(row < Items.size()){
+        if(row < Cart.size()){
             qDebug() << "Items removed from vector";
-            Items.removeAt(row);
+            Cart.removeAt(row);
         }
 
-    }else if (row < Items.size()){
-        Items[row].quantity = NewQuantity;
-        qDebug() << "Quantity changed in vector"  << Items[row].quantity;
+    }else if (row < Cart.size()){
+        Cart[row].quantity = NewQuantity;
+        qDebug() << "Quantity changed in vector"  << Cart[row].quantity;
     }
 
 
@@ -137,9 +140,9 @@ void ShoppingCart::handleItemDeletion(){
     for(int i = 0 ; i < RowsInCart.size(); i++){
 
         ui->cartTable->removeRow(RowsInCart[i]);
-        if(RowsInCart[i] < Items.size()){
+        if(RowsInCart[i] < Cart.size()){
 
-            Items.removeAt(RowsInCart[i]);
+            Cart.removeAt(RowsInCart[i]);
             qDebug() << "Items removed from vector" ;
 
         }
@@ -169,7 +172,7 @@ void ShoppingCart::on_returnHome_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    ProductManager *productManager = new ProductManager(nullptr, user, users);
+    ProductManager *productManager = new ProductManager(nullptr, user, users, this);
     productManager->resize(screenGeometry.width(), screenGeometry.height());
     productManager->show();
     this->hide();

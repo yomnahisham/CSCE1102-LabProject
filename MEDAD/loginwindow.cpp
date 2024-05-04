@@ -3,6 +3,7 @@
 #include "registerwindow.h"
 #include "allusers.h"
 #include "productmanager.h"
+#include "shoppingcart.h"
 
 #include <QScreen>
 
@@ -94,8 +95,8 @@ void LoginWindow::on_loginB_clicked()
 
         QScreen* screen = QGuiApplication::primaryScreen();
         QRect screenGeometry = screen->geometry();
-
-        ProductManager* home = new ProductManager(nullptr, loggedUser, users);
+        ShoppingCart *cart = new ShoppingCart(nullptr, loggedUser, users);
+        ProductManager* home = new ProductManager(nullptr, loggedUser, users, cart);
         home->resize(screenGeometry.width(), screenGeometry.height());
         home -> setWindowTitle("Home");
         home-> show();
