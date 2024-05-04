@@ -49,6 +49,7 @@ public:
     void makeFourthPage();
 
     void showPrevious();
+    void showProductsBasedonPage(vector<Products*> neededProducts);
 
     void initializeProducts();
     void showSuggestions();
@@ -84,7 +85,7 @@ public:
     vector<Products*> thirdPageProducts;
     vector<Products*> fourthPageProducts;
     vector<Products*> suggestedProducts;
-    vector<Products*> previousProducts;
+    vector<Products*> allProducts;
 
     bool secondPage = false;
     bool thirdPage = false;

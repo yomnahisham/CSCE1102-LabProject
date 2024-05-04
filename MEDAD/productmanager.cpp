@@ -265,6 +265,7 @@ void ProductManager::initializeProducts() {
 
         Books* product = createBook(name, price, quantity, availability, imagePath, genre, author, ISBN);
         bookProducts->push_back(product);
+        allProducts.push_back(product);
     }
 
     QString accessoriesData[][7] = {
@@ -298,6 +299,7 @@ void ProductManager::initializeProducts() {
 
         Accessories* accessory = createAccessory(name, price, quantity, availability, imagePath, type, sizeChar);
         accessoryProducts->push_back(accessory);
+        allProducts.push_back(accessory);
     }
 
     QString techsData[][6] = { // Change the inner array size to 6
@@ -316,6 +318,7 @@ void ProductManager::initializeProducts() {
 
         Techs* tech = createTech(name, price, quantity, availability, QPixmap(imagePath), type);
         techyProducts->push_back(tech);
+        allProducts.push_back(tech);
     }
 
 }
@@ -648,9 +651,11 @@ void ProductManager::showSuggestions(){
 
 
 void ProductManager::showPrevious() {
+    int startIndex = 0;
+    int endIndex = 0;
+
     if(secondPage){
         secondPage = false;
-        firstPage = true;
 
         nextButton->setVisible(true);
         prevButton->setVisible(true);
@@ -662,9 +667,213 @@ void ProductManager::showPrevious() {
         ui->recsLayout->parentWidget()->lower();
         makeFirstPage();
         return;
+    }else if(thirdPage){
+        //if thirdPage is true, then previous shows secondPage
+        thirdPage = false;
+        secondPage = true;
+        startIndex = 18;
+        endIndex = 38;
+        secondPageProducts.clear();
+        ui->ourproductsLogo->move(67, 150);
+        ui->basedonyouLogo->setVisible(false);
+        ui->basedonsearchLogo->setVisible(false);
+
+        // Populate thirdPageProducts with products from bookProducts
+        for (int i = startIndex; i <= endIndex && i < allProducts.size(); ++i)  // Use at() method to obtain the pointer at index i
+                secondPageProducts.push_back(allProducts.at(i));
+
+        //call show product in different page vector
+        showProductsBasedonPage(secondPageProducts);
+
+
+        // Update the layouts
+       // ui->recsLayout->update();
+       // ui->allproductsLayout->update();
     }
 }
 
+void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
+    //clear existing layouts and widgets
+    clearLayout(ui->recsLayout);
+    clearLayout(ui->allproductsLayout);
+
+    ui->ourproductsLogo->move(67, 150);
+    ui->basedonyouLogo->setVisible(false);
+    ui->basedonsearchLogo->setVisible(false);
+
+    ui->allproductsLayout->parentWidget()->lower();
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+
+    int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
+
+    //adjusting the size of the parent widget of recsLayout
+    ui->recsLayout->parentWidget()->resize(widthFull-100, recsLayoutHeight);
+
+    // Create a grid layout for displaying the remaining products
+    QGridLayout* gridLayout = new QGridLayout();
+    gridLayout->setAlignment(Qt::AlignTop);
+
+    int maxIteminRow = 10;
+    int iteminRow = 0;
+    int row = 0;
+    int col = 0;
+    int productCount = 0;
+
+    for(Products* product: neededProducts){
+        if (productCount >= 20 || row >= 2) {
+            break;
+        }
+        if(Books* book = dynamic_cast<Books*>(product)){
+            QString name = book->getName();
+            QPixmap imagePath = book->getImage();
+            double price = book->getPrice();
+            if (!imagePath.isNull()) {
+                // Create widgets for the book
+                QVBoxLayout* bookLayout = new QVBoxLayout();
+                QLabel* imageLabel = new QLabel();
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                QLabel* nameLabel = new QLabel(name);
+                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                nameLabel->setMaximumWidth(imageLabel->width());
+                nameLabel->setWordWrap(true);
+                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                priceLabel->setFont(QFont("Optima", 12));
+                ClickableLabels* addtoCart = new ClickableLabels(this);
+                QPixmap addPix(":/logos/assets/addtoCart.png");
+                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                });
+
+                //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                bookLayout->addWidget(imageLabel);
+                bookLayout->addWidget(nameLabel);
+                bookLayout->addWidget(priceLabel);
+                bookLayout->addWidget(addtoCart);
+                bookLayout->setAlignment(Qt::AlignTop);
+
+                gridLayout->addLayout(bookLayout, row, col);
+
+                iteminRow++;
+
+                //check if we need to start a new row
+                if (iteminRow >= maxIteminRow) {
+                    row++;
+                    col = 0;
+                    iteminRow = 0;
+                } else {
+                    col++;
+                }
+                productCount++;
+                displayedProducts.push_back(book);
+                if(fourthPage){
+                    fourthPageProducts.push_back(book);
+                }else if(thirdPage){
+                    thirdPageProducts.push_back(book);
+                }else if(secondPage){
+                    secondPageProducts.push_back(book);
+                }
+            }
+        }else if(Accessories* accessory = dynamic_cast<Accessories*>(product)){
+            QString name = accessory->getName();
+            QPixmap imagePath = accessory->getImage();
+            double price = accessory->getPrice();
+            if (!imagePath.isNull()) {
+                QVBoxLayout* accessoryLayout = new QVBoxLayout();
+                QLabel* imageLabel = new QLabel();
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                QLabel* nameLabel = new QLabel(name);
+                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                nameLabel->setMaximumWidth(imageLabel->width());
+                nameLabel->setWordWrap(true);
+                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                priceLabel->setFont(QFont("Optima", 12));
+                ClickableLabels* addtoCart = new ClickableLabels(this);
+                QPixmap addPix(":/logos/assets/addtoCart.png");
+                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                });
+
+                //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                accessoryLayout->addWidget(imageLabel);
+                accessoryLayout->addWidget(nameLabel);
+                accessoryLayout->addWidget(priceLabel);
+                accessoryLayout->addWidget(addtoCart);
+                accessoryLayout->setAlignment(Qt::AlignTop);
+
+                gridLayout->addLayout(accessoryLayout, row, col);
+                iteminRow++;
+
+                if (iteminRow >= 8) {
+                    row++;
+                    col = 0;
+                    iteminRow = 0;
+                } else {
+                    col++;
+                }
+                productCount++;
+                displayedProducts.push_back(accessory);
+                if(fourthPage){
+                    fourthPageProducts.push_back(accessory);
+                }else if(thirdPage){
+                    thirdPageProducts.push_back(accessory);
+                }else if(secondPage){
+                    secondPageProducts.push_back(accessory);
+                }
+            }
+        }else if(Techs* tech = dynamic_cast<Techs*>(product)){
+            QString name = tech->getName();
+            QPixmap imagePath = tech->getImage();
+            double price = tech->getPrice();
+            if (!imagePath.isNull()) {
+                QVBoxLayout* techLayout = new QVBoxLayout();
+                QLabel* imageLabel = new QLabel();
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                QLabel* nameLabel = new QLabel(name);
+                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                nameLabel->setMaximumWidth(imageLabel->width());
+                nameLabel->setWordWrap(true);
+                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                priceLabel->setFont(QFont("Optima", 12));
+                ClickableLabels* addtoCart = new ClickableLabels(this);
+                QPixmap addPix(":/logos/assets/addtoCart.png");
+                addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+
+                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                });
+
+                //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
+
+                techLayout->addWidget(imageLabel);
+                techLayout->addWidget(nameLabel);
+                techLayout->addWidget(priceLabel);
+                techLayout->addWidget(addtoCart);
+                techLayout->setAlignment(Qt::AlignTop);
+
+                gridLayout->addLayout(techLayout, row, col);
+                iteminRow++;
+
+                if (iteminRow >= 8) {
+                    row++;
+                    col = 0;
+                    iteminRow = 0;
+                } else {
+                    col++;
+                }
+                productCount++;
+            }
+        }
+    }
+}
 
 
 void ProductManager::makeSecondPage(){
@@ -782,13 +991,6 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(book);
-                if(fourthPage){
-                    fourthPageProducts.push_back(book);
-                }else if(thirdPage){
-                    thirdPageProducts.push_back(book);
-                }else if(secondPage){
-                    secondPageProducts.push_back(book);
-                }
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -844,13 +1046,6 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(accessory);
-                if(fourthPage){
-                    fourthPageProducts.push_back(accessory);
-                }else if(thirdPage){
-                    thirdPageProducts.push_back(accessory);
-                }else if(secondPage){
-                    secondPageProducts.push_back(accessory);
-                }
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -906,13 +1101,6 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(tech);
-                if(fourthPage){
-                    fourthPageProducts.push_back(tech);
-                }else if(thirdPage){
-                    thirdPageProducts.push_back(tech);
-                }else if(secondPage){
-                    secondPageProducts.push_back(tech);
-                }
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
