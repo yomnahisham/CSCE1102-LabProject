@@ -97,6 +97,11 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     ui->basedonsearchLogo->setPixmap(searchPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->basedonsearchLogo->setVisible(false);
 
+    if(Customer* cus = dynamic_cast<Customer*>(user)){
+        ui->addAdminB->setVisible(false);
+        ui->addProductB->setVisible(false);
+    }
+
     makeFirstPage();
 }
 
@@ -171,24 +176,7 @@ void ProductManager::onNextClicked(){
 }
 
 void ProductManager::onPrevClicked(){
-   /* if (fourthPage) {
-        //update previous products to contain the products from the third page
-        previousProducts.clear();
-        previousProducts = thirdPageProducts;
-        fourthPage = false;
-    } else if (thirdPage) {
-        //update previous products to contain the products from the second page
-        previousProducts.clear();
-        previousProducts = secondPageProducts;
-        thirdPage = false;
-    } else if (secondPage) {
-        //update previous products to contain the products from the first page
-        //previousProducts.clear();
-        //previousProducts = firstPageProducts;
-        //secondPage = false;
-        remakeFirstPage();
-    }*/
-    //show the previous products
+    ui->searchLineEdit->setVisible(true);
     showPrevious();
 }
 
@@ -459,6 +447,8 @@ void ProductManager::searchProducts(const QString &keyword) {
         ui->basedonsearchLogo->setVisible(false);
         ui->basedonyouLogo->setVisible(true);
         ui->ourproductsLogo->setVisible(true);
+        nextButton->setVisible(true);
+        prevButton->setVisible(true);
         makeFirstPage(); //display the default layout when the keyword is empty
         return;
     }
@@ -658,6 +648,7 @@ void ProductManager::showPrevious() {
 
         clearLayout(ui->recsLayout);
         clearLayout(ui->allproductsLayout);
+        displayedProducts.clear();
 
         ui->ourproductsLogo->move(67, 480);
         ui->recsLayout->parentWidget()->lower();
