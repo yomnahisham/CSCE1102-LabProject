@@ -18,6 +18,11 @@ public:
     explicit ShoppingCart(QWidget *parent = nullptr);
     ~ShoppingCart();
     void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
+    void deleteRow();
+
+
+private slots:
+    void on_DeleteItem_clicked();
 
 private:
     Ui::ShoppingCart *ui;

@@ -13,6 +13,9 @@ ShoppingCart::ShoppingCart(QWidget *parent):
     QStringList Headers = {"Image: " , "Item Name: ", "Price: ", "Quantity:"};
     ui->cartTable->setHorizontalHeaderLabels(Headers);
 
+    ui->cartTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->cartTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->cartTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
 }
@@ -40,7 +43,32 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
 
 }
 
+
+
 ShoppingCart::~ShoppingCart()
 {
     delete ui;
 }
+
+
+
+
+void ShoppingCart::on_DeleteItem_clicked()
+{
+
+    QList<QTableWidgetItem *> selectedItems = ui->cartTable->selectedItems();
+    QSet<int> NumOfRows;
+    for(int i = 0; i < selectedItems.size(); i++){
+        NumOfRows.insert(selectedItems[i]->row());
+
+    }
+    QList<int> RowsInCart(NumOfRows.begin(), NumOfRows.end());
+    std::sort(RowsInCart.begin(), RowsInCart.end());
+    std::reverse(RowsInCart.begin(), RowsInCart.end());
+    for(int i = 0 ; i < RowsInCart.size(); i++){
+        ui->cartTable->removeRow(RowsInCart[i]);
+    }
+
+
+}
+
