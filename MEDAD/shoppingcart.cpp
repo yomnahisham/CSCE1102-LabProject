@@ -57,30 +57,10 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
     ui->cartTable->setCellWidget(row, 4, buttonWidget);
     ui->cartTable->setRowHeight(row, 50);
 
-    connect(addButton, &QPushButton::clicked, [this, row](){
-        updateQuantity(row, 1);
-    });
-    connect(subButton, &QPushButton::clicked, [this, row](){
-        updateQuantity(row, -1);
-    });
-
-
 
 }
 
-void ShoppingCart::updateQuantity(int row, int change){
 
-    QTableWidgetItem *item = ui->cartTable->item(row,3);
-    int NewQuantity = item->text().toInt() + change;
-    /*
-    if(NewQuantity <= 0){
-        deleteItem(row);
-    }else{
-        item->setText(QString::number(NewQuantity));
-    }*/
-     item->setText(QString::number(NewQuantity));
-
-}
 void ShoppingCart::handleItemDeletion(){
 
     QList<QTableWidgetItem *> selectedItems = ui->cartTable->selectedItems();
@@ -97,16 +77,8 @@ void ShoppingCart::handleItemDeletion(){
     }
 
 }
-void ShoppingCart::deleteItem(int row){
-
-    if(ui->cartTable->rowCount() > 0 && row >= 0 && row < ui->cartTable->rowCount()){
-        ui->cartTable->removeRow(row);
-
-    }
 
 
-
-}
 ShoppingCart::~ShoppingCart()
 {
 
