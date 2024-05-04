@@ -35,6 +35,8 @@ public:
         if (AllProducts1->objectName().isEmpty())
             AllProducts1->setObjectName("AllProducts1");
         AllProducts1->resize(1110, 609);
+        AllProducts1->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252)\n"
+""));
         logo = new QLabel(AllProducts1);
         logo->setObjectName("logo");
         logo->setGeometry(QRect(10, 10, 111, 51));

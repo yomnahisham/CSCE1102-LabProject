@@ -31,6 +31,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     users = Allusers;
 
     cart = new ShoppingCart();
+    connect(ui->filterBox, &QComboBox::currentTextChanged, this, &ProductManager::on_filterBox_currentTextChanged);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -208,8 +209,8 @@ void ProductManager::initializeProducts() {
         { "Animal Farm", "18.5", "5", "true", ":/Books/assets/animal farm.jpeg" , "Classics" , "George Orwell" , "9788129116123"},
         { "The Da Vinci Code", "17", "5", "true", ":/Books/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780307277671"},
         { "Angels and Demons", "16.5", "5", "true", ":/Books/assets/angels anddemons.jpeg" , "Classics" , "Dan Brown" , "9780743486224"},
-        { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
-        { "A Room of One’s Own", "24", "5", "true", ":/Books/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
+        { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
+        { "A Room of One’s Own", "24", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
         { "Wuthering Heights", "26", "5", "true", ":/Books/assets/wutheruing heights.jpeg" , "Classics" , "Emily Bronte" , "9780175565757"},
         { "Jane Eyre", "27", "5", "true", ":/Books/assets/jane eyre.jpeg" , "Classics" , "Charlotte Bronte" , "9780785294788"},
         { "Villette", "24", "5", "true", ":/Books/assets/villette.jpeg" , "Classics" , "Charlotte Bronte" , "9781853260193"},
@@ -345,9 +346,10 @@ vector<Products*> ProductManager::suggestSimilarItems(){
     return suggestions;
 }
 
-void ProductManager::makeFirstPage(){
+void ProductManager::makeFirstPage()
+{
     showSuggestions();
-
+    firstPage=true;
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
@@ -357,7 +359,7 @@ void ProductManager::makeFirstPage(){
 
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
 
-    int maxIteminRow = 10;
+    int maxIteminRow = 8;
     int iteminRow = 0;
     QHBoxLayout* currentRowLayout = new QHBoxLayout();
 
@@ -400,6 +402,7 @@ void ProductManager::makeFirstPage(){
                 //add the book layout to the current row layout
                 currentRowLayout->addLayout(bookLayout);
                 displayedProducts.push_back(book);
+                firstPageProducts.push_back(product);
 
                 //increment the number of books in the current row
                 iteminRow++;
@@ -416,9 +419,12 @@ void ProductManager::makeFirstPage(){
         }
     }
 
+
     //add the last row layout to the main layout
     ui->allproductsLayout->addLayout(currentRowLayout);
+
 }
+
 
 void ProductManager::searchProducts(const QString &keyword) {
     QScreen* screen = QGuiApplication::primaryScreen();
@@ -630,26 +636,139 @@ void ProductManager::showSuggestions(){
 }
 
 void ProductManager::makeSecondPage(){
+    firstPage=false;
     secondPage = true;
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
+    ui->ourproductsLogo->move(67, 150);
+    ui->basedonyouLogo->setVisible(false);
+    ui->basedonsearchLogo->setVisible(false);
+    int maxBooksToShow = 8;
+    int booksShownInRecs = 0;
+    int booksShownInAllProducts = 0;
 
-    showRemainingProducts();
+    // Create a copy of the second page products vector
+    for (int i = 0; i < secondPageProducts.size(); ++i) {
+        // Break if both layouts have reached their maximum count
+        if (booksShownInRecs >= maxBooksToShow && booksShownInAllProducts >= maxBooksToShow) {
+            break;
+        }
+
+        // Create a widget for the product in recsLayout
+        if (booksShownInRecs < maxBooksToShow) {
+            QWidget* productWidgetForRecs = createProductWidget(secondPageProducts[i]);
+            ui->recsLayout->addWidget(productWidgetForRecs);
+            booksShownInRecs++;
+        } else {
+            // Create a widget for the product in allproductsLayout
+            QWidget* productWidgetForAllProducts = createProductWidget(secondPageProducts[i]);
+            ui->allproductsLayout->addWidget(productWidgetForAllProducts);
+            booksShownInAllProducts++;
+        }
+    }
+        // Clear the second page products vector
+        secondPageProducts.clear();
+
+        // Define the range of indices for the second page
+        int startIndex = 8; // Adjust this according to your needs
+        int endIndex = 25;   // Adjust this according to your needs
+
+        // Populate the second page products vector with products from the bookProducts vector within the defined range
+        for (int i = startIndex; i <= endIndex && i < bookProducts->size(); ++i) {
+            Books* book = bookProducts->at(i); // Use at() method to obtain the pointer at index i
+            secondPageProducts.push_back(book);
+        }
+        for (int i = 0; i < secondPageProducts.size(); ++i) {
+            // Break if both layouts have reached their maximum count
+            if (booksShownInRecs >= maxBooksToShow && booksShownInAllProducts >= maxBooksToShow) {
+                break;
+            }
+
+            // Create a widget for the product in recsLayout
+            if (booksShownInRecs < maxBooksToShow) {
+                QWidget* productWidgetForRecs = createProductWidget(secondPageProducts[i]);
+                ui->recsLayout->addWidget(productWidgetForRecs);
+                booksShownInRecs++;
+            } else {
+                // Create a widget for the product in allproductsLayout
+                QWidget* productWidgetForAllProducts = createProductWidget(secondPageProducts[i]);
+                ui->allproductsLayout->addWidget(productWidgetForAllProducts);
+                booksShownInAllProducts++;
+            }
+        }
+        // Update the layouts
+        ui->recsLayout->update();
+        ui->allproductsLayout->update();
+
+
 }
 
-void ProductManager::makeThirdPage(){
+void ProductManager::makeThirdPage() {
+    firstPage = false;
+    secondPage = false;
     thirdPage = true;
+
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
-    showRemainingProducts();
+    ui->ourproductsLogo->move(67, 150);
+    ui->basedonyouLogo->setVisible(false);
+    ui->basedonsearchLogo->setVisible(false);
+
+    int maxProductsToShow = 8;
+    int productsShownInRecs = 0;
+    int productsShownInAllProducts = 0;
+
+    // Clear the third page products vector
+    thirdPageProducts.clear();
+
+    // Populate the third page products vector with products from both bookProducts and techyProducts vectors
+    int startIndex = 26; // Adjust this according to your needs
+    int endIndex = 40;   // Adjust this according to your needs
+
+    // Populate thirdPageProducts with products from bookProducts
+    for (int i = startIndex; i <= endIndex && i < bookProducts->size(); ++i) {
+        Books* book = bookProducts->at(i); // Use at() method to obtain the pointer at index i
+        thirdPageProducts.push_back(book);
+    }
+
+    // Populate thirdPageProducts with products from techyProducts
+    for (int i = startIndex; i <= endIndex && i < techyProducts->size(); ++i) {
+        Techs* tech = techyProducts->at(i); // Use at() method to obtain the pointer at index i
+        thirdPageProducts.push_back(tech);
+    }
+
+    // Iterate over thirdPageProducts to display products in the layouts
+    for (int i = 0; i < thirdPageProducts.size(); ++i) {
+        // Break if both layouts have reached their maximum count
+        if (productsShownInRecs >= maxProductsToShow && productsShownInAllProducts >= maxProductsToShow) {
+            break;
+        }
+
+        // Create a widget for the product in recsLayout
+        if (productsShownInRecs < maxProductsToShow) {
+            QWidget* productWidgetForRecs = createProductWidget(thirdPageProducts[i]);
+            ui->recsLayout->addWidget(productWidgetForRecs);
+            productsShownInRecs++;
+        } else {
+            // Create a widget for the product in allproductsLayout
+            QWidget* productWidgetForAllProducts = createProductWidget(thirdPageProducts[i]);
+            ui->allproductsLayout->addWidget(productWidgetForAllProducts);
+            productsShownInAllProducts++;
+        }
+    }
+
+    // Update the layouts
+    ui->recsLayout->update();
+    ui->allproductsLayout->update();
 }
 
+
 void ProductManager::makeFourthPage(){
+    firstPage=false;
     fourthPage = true;
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
-
     showRemainingProducts();
 }
 
@@ -677,7 +796,7 @@ void ProductManager::showRemainingProducts() {
     QGridLayout* gridLayout = new QGridLayout();
     gridLayout->setAlignment(Qt::AlignTop);
 
-    int maxIteminRow = 10;
+    int maxIteminRow = 8;
     int iteminRow = 0;
     int row = 0;
     int col = 0;
@@ -853,7 +972,13 @@ void ProductManager::showRemainingProducts() {
 
     //add the grid layout to both recsLayout and allproductsLayout
     ui->recsLayout->addLayout(gridLayout);
-    ui->allproductsLayout->addLayout(gridLayout);
+   // ui->allproductsLayout->addLayout(gridLayout);
+    QVBoxLayout* allProductsVBoxLayout = new QVBoxLayout();
+    allProductsVBoxLayout->addLayout(gridLayout);
+
+    // Add the QVBoxLayout to ui->allproductsLayout
+    ui->allproductsLayout->addLayout(allProductsVBoxLayout);
+   \
 }
 
 
@@ -896,41 +1021,8 @@ bool ProductManager::isProductDisplayed(Products* product) {
     return false;
 }
 
-//credits: Menna Zaid
-void ProductManager::sortProducts()
-{
-    QString sortBy = ui->filterBox->currentText();
-
-    // Sort products based on the selected option
-    if (sortBy == "Lowest to Highest Price")
-    {
-        sort(bookProducts->begin(), bookProducts->end(), []( Books* a,  Books* b)
-             {
-                 return a->getPrice() < b->getPrice();
-             });
-    }
-    else if (sortBy == "Highest to Lowest Price")
-    {
-        sort(bookProducts->begin(), bookProducts->end(), []( Books* a,  Books* b)
-             {
-                 return a->getPrice() > b->getPrice();
-             });
-    }
-    else if (sortBy == "A-Z") {
-        sort(bookProducts->begin(), bookProducts->end(), [](Books* a, Books* b) {
-            return a->getName().toLower() < b->getName().toLower();
-        });
-    }
-    else if (sortBy == "Z-A") {
-        sort(bookProducts->begin(), bookProducts->end(), [](Books* a, Books* b) {
-            return a->getName().toLower() > b->getName().toLower();
-        });
-    }
 
 
-    makeFirstPage();
-
-}
 
 void ProductManager::on_addAdminB_clicked()
 {
@@ -945,4 +1037,252 @@ void ProductManager::on_addAdminB_clicked()
     reg->show();
     hide();
 }
+
+QWidget* ProductManager::createProductWidget(Products* product) {
+    // Create a widget to display product information
+    QWidget* productWidget = new QWidget;
+
+    // Create labels for product name and price
+    QLabel* nameLabel = new QLabel(product->getName());
+    nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+    nameLabel->setWordWrap(true);
+
+    QLabel* priceLabel = new QLabel(QString::number(product->getPrice()) + " EGP");
+    priceLabel->setFont(QFont("Optima", 12));
+
+    // Create a QLabel to display the product image
+    QLabel* imageLabel = new QLabel();
+    QPixmap imagePixmap = product->getImage();
+
+    // Set the maximum width and height for the image label
+    int imageWidth = 200; // Adjust as needed
+    int imageHeight = 200; // Adjust as needed
+    imageLabel->setMaximumSize(imageWidth, imageHeight);
+
+    // Scale the image to fit within the maximum size while preserving aspect ratio
+    imageLabel->setPixmap(imagePixmap.scaled(imageWidth, imageHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    // Assuming you have a QLabel for "Add to Cart" button
+    QLabel* addToCartLabel = new QLabel();
+    QPixmap addToCartPixmap(":/logos/assets/addtoCart.png");
+    addToCartLabel->setPixmap(addToCartPixmap.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    // Set up a layout for the product widget
+    QVBoxLayout* layout = new QVBoxLayout;
+    layout->addWidget(imageLabel);
+    layout->addWidget(nameLabel);
+    layout->addWidget(priceLabel);
+    layout->addWidget(addToCartLabel);
+
+    // Set alignment and spacing for the layout
+    layout->setAlignment(Qt::AlignTop);
+    layout->setSpacing(10);
+
+    // Set up the product widget
+    productWidget->setLayout(layout);
+
+    return productWidget;
+}
+
+void ProductManager::on_filterBox_currentTextChanged(const QString &arg1)
+{
+    filteractivated = true;
+    qDebug() << "filteractivated true";
+    if (firstPage)
+    {
+    // Clear the layout
+    clearLayout(ui->allproductsLayout);
+
+    // Sort the products based on the selected filter criteria
+    if (arg1 == "Lowest to Highest Price")
+    {
+        std::sort(firstPageProducts.begin(), firstPageProducts.end(), [](Products* a, Products* b) {
+            return a->getPrice() < b->getPrice();
+        });
+    }
+    else if (arg1 == "Highest to Lowest Price")
+    {
+        std::sort(firstPageProducts.begin(), firstPageProducts.end(), [](Products* a, Products* b) {
+            return a->getPrice() > b->getPrice();
+        });
+    }
+    else if (arg1 == "A-Z")
+    {
+        std::sort(firstPageProducts.begin(), firstPageProducts.end(), [](Products* a, Products* b) {
+            return a->getName().toLower() < b->getName().toLower();
+        });
+    }
+    else if (arg1 == "Z-A")
+    {
+        std::sort(firstPageProducts.begin(), firstPageProducts.end(), [](Products* a, Products* b) {
+            return a->getName().toLower() > b->getName().toLower();
+        });
+    }
+
+    int maxBooksToShow = 8;
+    int booksShown = 0;
+    for (Products* product : firstPageProducts) {
+        if (booksShown >= maxBooksToShow) {
+            break; // Stop adding more books once the maximum count is reached
+        }
+
+        // Create a widget for the product
+        QWidget* productWidget = createProductWidget(product);
+        ui->allproductsLayout->addWidget(productWidget);
+
+        // Increment the counter for books shown
+        booksShown++;
+    }
+
+    // Update the layout
+    ui->allproductsLayout->update();
+    }
+    if (secondPage)
+    {
+        // Clear the layouts
+        clearLayout(ui->recsLayout);
+        clearLayout(ui->allproductsLayout);
+
+
+            if (arg1 == "Lowest to Highest Price")
+        {
+            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+                return a->getPrice() < b->getPrice();
+            });
+        }
+        else if (arg1 == "Highest to Lowest Price")
+        {
+            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+                return a->getPrice() > b->getPrice();
+            });
+        }
+        else if (arg1 == "A-Z")
+        {
+            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+                return a->getName().toLower() < b->getName().toLower();
+            });
+        }
+        else if (arg1 == "Z-A")
+        {
+            std::sort(secondPageProducts.begin(), secondPageProducts.end(), [](Products* a, Products* b) {
+                return a->getName().toLower() > b->getName().toLower();
+            });
+        }
+
+
+        int maxBooksToShow = 8;
+        int booksShownInRecs = 0;
+        int booksShownInAllProducts = 0;
+
+        // Iterate over the second page products
+        for (int i = 0; i < secondPageProducts.size(); ++i) {
+            // Break if both layouts have reached their maximum count
+            if (booksShownInRecs >= maxBooksToShow && booksShownInAllProducts >= maxBooksToShow) {
+                break;
+            }
+
+            // Create a widget for the product in recsLayout
+            if (booksShownInRecs < maxBooksToShow) {
+                QWidget* productWidgetForRecs = createProductWidget(secondPageProducts[i]);
+                ui->recsLayout->addWidget(productWidgetForRecs);
+                booksShownInRecs++;
+            } else {
+                // Create a widget for the product in allproductsLayout
+                QWidget* productWidgetForAllProducts = createProductWidget(secondPageProducts[i]);
+                ui->allproductsLayout->addWidget(productWidgetForAllProducts);
+                booksShownInAllProducts++;
+            }
+        }
+        // Update the layouts
+        ui->recsLayout->update();
+        ui->allproductsLayout->update();
+    }
+    if (thirdPage)
+    {
+        // Clear the layouts
+        clearLayout(ui->recsLayout);
+        clearLayout(ui->allproductsLayout);
+        if (arg1.isEmpty()) {
+            // If no sorting option is selected, display products without sorting
+            int maxBooksToShow = 8;
+            int booksShownInRecs = 0;
+            int booksShownInAllProducts = 0;
+
+            // Iterate over the second page products
+            for (int i = 0; i < thirdPageProducts.size(); ++i) {
+                // Break if both layouts have reached their maximum count
+                if (booksShownInRecs >= maxBooksToShow && booksShownInAllProducts >= maxBooksToShow) {
+                    break;
+                }
+
+                // Create a widget for the product in recsLayout
+                if (booksShownInRecs < maxBooksToShow) {
+                    QWidget* productWidgetForRecs = createProductWidget(thirdPageProducts[i]);
+                    ui->recsLayout->addWidget(productWidgetForRecs);
+                    booksShownInRecs++;
+                } else {
+                    // Create a widget for the product in allproductsLayout
+                    QWidget* productWidgetForAllProducts = createProductWidget(thirdPageProducts[i]);
+                    ui->allproductsLayout->addWidget(productWidgetForAllProducts);
+                    booksShownInAllProducts++;
+                }
+            }
+        } else
+        if (arg1 == "Lowest to Highest Price")
+        {
+            std::sort(thirdPageProducts.begin(), thirdPageProducts.end(), [](Products* a, Products* b) {
+                return a->getPrice() < b->getPrice();
+            });
+        }
+        else if (arg1 == "Highest to Lowest Price")
+        {
+            std::sort(thirdPageProducts.begin(), thirdPageProducts.end(), [](Products* a, Products* b) {
+                return a->getPrice() > b->getPrice();
+            });
+        }
+        else if (arg1 == "A-Z")
+        {
+            std::sort(thirdPageProducts.begin(), thirdPageProducts.end(), [](Products* a, Products* b) {
+                return a->getName().toLower() < b->getName().toLower();
+            });
+        }
+        else if (arg1 == "Z-A")
+        {
+            std::sort(thirdPageProducts.begin(), thirdPageProducts.end(), [](Products* a, Products* b) {
+                return a->getName().toLower() > b->getName().toLower();
+            });
+        }
+
+
+        int maxBooksToShow = 8;
+        int booksShownInRecs = 0;
+        int booksShownInAllProducts = 0;
+
+        // Iterate over the second page products
+        for (int i = 0; i < thirdPageProducts.size(); ++i) {
+            // Break if both layouts have reached their maximum count
+            if (booksShownInRecs >= maxBooksToShow && booksShownInAllProducts >= maxBooksToShow) {
+                break;
+            }
+
+            // Create a widget for the product in recsLayout
+            if (booksShownInRecs < maxBooksToShow) {
+                QWidget* productWidgetForRecs = createProductWidget(thirdPageProducts[i]);
+                ui->recsLayout->addWidget(productWidgetForRecs);
+                booksShownInRecs++;
+            } else {
+                // Create a widget for the product in allproductsLayout
+                QWidget* productWidgetForAllProducts = createProductWidget(thirdPageProducts[i]);
+                ui->allproductsLayout->addWidget(productWidgetForAllProducts);
+                booksShownInAllProducts++;
+            }
+        }
+        // Update the layouts
+        ui->recsLayout->update();
+        ui->allproductsLayout->update();
+    }
+
+}
+
+
 

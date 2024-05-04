@@ -43,23 +43,37 @@ constexpr auto qt_meta_stringdata_CLASSProductManagerENDCLASS = QtMocHelpers::st
     "",
     "onSignOutClicked",
     "onAddToCartClicked",
-    "sortProducts",
-    "clickSearch",
-    "vector<Products*>",
-    "on_AllProducts_clicked"
+    "onNextClicked",
+    "onPrevClicked",
+    "searchProducts",
+    "keyword",
+    "createProductWidget",
+    "QWidget*",
+    "Products*",
+    "product",
+    "on_addAdminB_clicked",
+    "on_filterBox_currentTextChanged",
+    "arg1"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSProductManagerENDCLASS_t {
-    uint offsetsAndSizes[18];
+    uint offsetsAndSizes[32];
     char stringdata0[15];
     char stringdata1[14];
     char stringdata2[1];
     char stringdata3[17];
     char stringdata4[19];
-    char stringdata5[13];
-    char stringdata6[12];
-    char stringdata7[18];
-    char stringdata8[23];
+    char stringdata5[14];
+    char stringdata6[14];
+    char stringdata7[15];
+    char stringdata8[8];
+    char stringdata9[20];
+    char stringdata10[9];
+    char stringdata11[10];
+    char stringdata12[8];
+    char stringdata13[21];
+    char stringdata14[32];
+    char stringdata15[5];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSProductManagerENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -70,20 +84,34 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSProductManagerENDCLASS_t qt_met
         QT_MOC_LITERAL(29, 0),  // ""
         QT_MOC_LITERAL(30, 16),  // "onSignOutClicked"
         QT_MOC_LITERAL(47, 18),  // "onAddToCartClicked"
-        QT_MOC_LITERAL(66, 12),  // "sortProducts"
-        QT_MOC_LITERAL(79, 11),  // "clickSearch"
-        QT_MOC_LITERAL(91, 17),  // "vector<Products*>"
-        QT_MOC_LITERAL(109, 22)   // "on_AllProducts_clicked"
+        QT_MOC_LITERAL(66, 13),  // "onNextClicked"
+        QT_MOC_LITERAL(80, 13),  // "onPrevClicked"
+        QT_MOC_LITERAL(94, 14),  // "searchProducts"
+        QT_MOC_LITERAL(109, 7),  // "keyword"
+        QT_MOC_LITERAL(117, 19),  // "createProductWidget"
+        QT_MOC_LITERAL(137, 8),  // "QWidget*"
+        QT_MOC_LITERAL(146, 9),  // "Products*"
+        QT_MOC_LITERAL(156, 7),  // "product"
+        QT_MOC_LITERAL(164, 20),  // "on_addAdminB_clicked"
+        QT_MOC_LITERAL(185, 31),  // "on_filterBox_currentTextChanged"
+        QT_MOC_LITERAL(217, 4)   // "arg1"
     },
     "ProductManager",
     "onCartClicked",
     "",
     "onSignOutClicked",
     "onAddToCartClicked",
-    "sortProducts",
-    "clickSearch",
-    "vector<Products*>",
-    "on_AllProducts_clicked"
+    "onNextClicked",
+    "onPrevClicked",
+    "searchProducts",
+    "keyword",
+    "createProductWidget",
+    "QWidget*",
+    "Products*",
+    "product",
+    "on_addAdminB_clicked",
+    "on_filterBox_currentTextChanged",
+    "arg1"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -95,7 +123,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProductManagerENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -103,20 +131,26 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProductManagerENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   50,    2, 0x08,    1 /* Private */,
-       3,    0,   51,    2, 0x08,    2 /* Private */,
-       4,    0,   52,    2, 0x08,    3 /* Private */,
-       5,    0,   53,    2, 0x08,    4 /* Private */,
-       6,    0,   54,    2, 0x08,    5 /* Private */,
-       8,    0,   55,    2, 0x08,    6 /* Private */,
+       1,    0,   68,    2, 0x08,    1 /* Private */,
+       3,    0,   69,    2, 0x08,    2 /* Private */,
+       4,    0,   70,    2, 0x08,    3 /* Private */,
+       5,    0,   71,    2, 0x08,    4 /* Private */,
+       6,    0,   72,    2, 0x08,    5 /* Private */,
+       7,    1,   73,    2, 0x08,    6 /* Private */,
+       9,    1,   76,    2, 0x08,    8 /* Private */,
+      13,    0,   79,    2, 0x08,   10 /* Private */,
+      14,    1,   80,    2, 0x08,   11 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    0x80000000 | 7,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,    8,
+    0x80000000 | 10, 0x80000000 | 11,   12,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   15,
 
        0        // eod
 };
@@ -136,12 +170,21 @@ Q_CONSTINIT const QMetaObject ProductManager::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'onAddToCartClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'sortProducts'
+        // method 'onNextClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'clickSearch'
-        QtPrivate::TypeAndForceComplete<vector<Products*>, std::false_type>,
-        // method 'on_AllProducts_clicked'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>
+        // method 'onPrevClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'searchProducts'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
+        // method 'createProductWidget'
+        QtPrivate::TypeAndForceComplete<QWidget *, std::false_type>,
+        QtPrivate::TypeAndForceComplete<Products *, std::false_type>,
+        // method 'on_addAdminB_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_filterBox_currentTextChanged'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>
     >,
     nullptr
 } };
@@ -155,10 +198,13 @@ void ProductManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 0: _t->onCartClicked(); break;
         case 1: _t->onSignOutClicked(); break;
         case 2: _t->onAddToCartClicked(); break;
-        case 3: _t->sortProducts(); break;
-        case 4: { vector<Products*> _r = _t->clickSearch();
-            if (_a[0]) *reinterpret_cast< vector<Products*>*>(_a[0]) = std::move(_r); }  break;
-        case 5: _t->on_AllProducts_clicked(); break;
+        case 3: _t->onNextClicked(); break;
+        case 4: _t->onPrevClicked(); break;
+        case 5: _t->searchProducts((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 6: { QWidget* _r = _t->createProductWidget((*reinterpret_cast< std::add_pointer_t<Products*>>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QWidget**>(_a[0]) = std::move(_r); }  break;
+        case 7: _t->on_addAdminB_clicked(); break;
+        case 8: _t->on_filterBox_currentTextChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     }
@@ -183,13 +229,13 @@ int ProductManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 6;
+        _id -= 9;
     }
     return _id;
 }

@@ -46,13 +46,13 @@ public:
     void makeSecondPage();
     void makeThirdPage();
     void makeFourthPage();
+
     void showPrevious();
 
     void initializeProducts();
     void showSuggestions();
     void showRemainingProducts();
     void clearLayout(QLayout* layout);
-
     bool isProductDisplayed(Products* product);
     ShoppingCart *cart;
 
@@ -64,9 +64,11 @@ private slots:
     void onNextClicked();
     void onPrevClicked();
     void searchProducts(const QString& keyword);
-    void sortProducts();
+    QWidget* createProductWidget(Products* product);
 
     void on_addAdminB_clicked();
+
+    void on_filterBox_currentTextChanged(const QString &arg1);
 
 public:
     Ui::ProductManager *ui;
@@ -76,9 +78,16 @@ public:
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;
     vector<Products*> displayedProducts; //to store all displayed products in first page
+    QVector<Products*> firstPageProducts;
+    QVector<Products*> secondPageProducts;
+    QVector<Products*> thirdPageProducts;
+    QVector<Products*> fourthPageProducts;
+
     bool secondPage = false;
     bool thirdPage = false;
     bool fourthPage = false;
+    bool filteractivated=false;
+    bool firstPage=false;
 };
 
 #endif // PRODUCTMANAGER_H
