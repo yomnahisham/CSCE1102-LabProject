@@ -4,6 +4,7 @@
 #include "allusers.h"
 #include "loginwindow.h"
 #include "productmanager.h"
+#include "shoppingcart.h"
 
 #include <QDebug>
 #include <QScreen>
@@ -115,7 +116,8 @@ void RegisterWindow::on_regB_clicked()
         if (type == AllUsers::customer)
         {    QScreen* screen = QGuiApplication::primaryScreen();
             QRect screenGeometry = screen->geometry();
-            ProductManager* home = new ProductManager(nullptr, user, users);
+            ShoppingCart *cart = new ShoppingCart(nullptr, user, users);
+            ProductManager* home = new ProductManager(nullptr, user, users, cart);
             home -> setWindowTitle("Home");
             home->resize(screenGeometry.width(), screenGeometry.height());
             home-> show();
@@ -158,7 +160,8 @@ void RegisterWindow::on_returnB_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    ProductManager* home = new ProductManager(nullptr, admin, users);
+    ShoppingCart *cart = new ShoppingCart(nullptr, admin, users);
+    ProductManager* home = new ProductManager(nullptr, admin, users, cart);
     home -> setWindowTitle("Home");
     home->resize(screenGeometry.width(), screenGeometry.height());
     home-> show();
@@ -170,7 +173,8 @@ void RegisterWindow::on_loginB_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    ProductManager* home = new ProductManager(nullptr, user, users);
+    ShoppingCart *cart = new ShoppingCart(nullptr, user, users);
+    ProductManager* home = new ProductManager(nullptr, user, users, cart);
     home -> setWindowTitle("Home");
     home->resize(screenGeometry.width(), screenGeometry.height());
     home-> show();

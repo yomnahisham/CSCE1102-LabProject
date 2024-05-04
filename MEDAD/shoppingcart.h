@@ -20,18 +20,22 @@ public:
     ~ShoppingCart();
     AllUsers *users;
     User *user;
-    void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
-    void deleteItem(int);
-    void addQuantity(int);
-    void subQuantity(int);
     struct CartItems{
+        QPixmap pic;
         QString name;
         double price;
         int quantity;
 
-        CartItems(const QString n, double p, int q ) : name(n) , price(p), quantity(q) {} ;
+        CartItems(const QPixmap &pp, const QString &n, double p, int q ) :pic(pp), name(n) , price(p), quantity(q) {} ;
     };
-    QVector<CartItems> Items;
+    static QVector<CartItems> Cart;
+    bool isExist;
+    void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
+    void updateTable();
+    void deleteItem(int);
+    void addQuantity(int);
+    void subQuantity(int);
+
 
 
 
