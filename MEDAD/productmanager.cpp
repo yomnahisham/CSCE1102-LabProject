@@ -50,8 +50,8 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     //creating custom clickable labels and buttons
     ClickableLabels* cartLabel = new ClickableLabels(this);
     ClickableLabels* signOutButton = new ClickableLabels(this);
-    ClickableLabels* nextButton = new ClickableLabels(this);
-    ClickableLabels* prevButton = new ClickableLabels(this);
+    nextButton = new ClickableLabels(this);
+    prevButton = new ClickableLabels(this);
 
     //setting image of the clickable shopping cart label
     QPixmap cartPix(":/logos/assets/shoppingcartlogo.png");
@@ -75,12 +75,12 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     connect(ui->searchLineEdit, &QLineEdit::textChanged, this, &ProductManager::searchProducts);
 
     QPixmap nextPix(":/logos/assets/nextArrow.png");
-    nextButton->setPixmap(nextPix.scaled(70, 30, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    nextButton->setPixmap(nextPix.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     nextButton->move(widthFull/2 + 20, 800);
     connect(nextButton, &ClickableLabels::clicked, this, &ProductManager::onNextClicked);
 
     QPixmap prevPix(":/logos/assets/prevArrow.png");
-    prevButton->setPixmap(prevPix.scaled(70, 30, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    prevButton->setPixmap(prevPix.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     prevButton->move(widthFull/2 -20, 800);
     connect(prevButton, &ClickableLabels::clicked, this, &ProductManager::onPrevClicked);
 
@@ -171,14 +171,25 @@ void ProductManager::onNextClicked(){
 }
 
 void ProductManager::onPrevClicked(){
-    //needs fixing
-    if(fourthPage){
-        makeThirdPage();
-    }else if(thirdPage){
-        makeSecondPage();
-    }else if(secondPage){
-        makeFirstPage();
-    }
+   /* if (fourthPage) {
+        //update previous products to contain the products from the third page
+        previousProducts.clear();
+        previousProducts = thirdPageProducts;
+        fourthPage = false;
+    } else if (thirdPage) {
+        //update previous products to contain the products from the second page
+        previousProducts.clear();
+        previousProducts = secondPageProducts;
+        thirdPage = false;
+    } else if (secondPage) {
+        //update previous products to contain the products from the first page
+        //previousProducts.clear();
+        //previousProducts = firstPageProducts;
+        //secondPage = false;
+        remakeFirstPage();
+    }*/
+    //show the previous products
+    showPrevious();
 }
 
 Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
@@ -209,8 +220,8 @@ void ProductManager::initializeProducts() {
         { "Animal Farm", "18.5", "5", "true", ":/Books/assets/animal farm.jpeg" , "Classics" , "George Orwell" , "9788129116123"},
         { "The Da Vinci Code", "17", "5", "true", ":/Books/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780307277671"},
         { "Angels and Demons", "16.5", "5", "true", ":/Books/assets/angels anddemons.jpeg" , "Classics" , "Dan Brown" , "9780743486224"},
-        { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
-        { "A Room of One’s Own", "24", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
+        { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
+        { "A Room of One’s Own", "24", "5", "true", ":/Books/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009"},
         { "Wuthering Heights", "26", "5", "true", ":/Books/assets/wutheruing heights.jpeg" , "Classics" , "Emily Bronte" , "9780175565757"},
         { "Jane Eyre", "27", "5", "true", ":/Books/assets/jane eyre.jpeg" , "Classics" , "Charlotte Bronte" , "9780785294788"},
         { "Villette", "24", "5", "true", ":/Books/assets/villette.jpeg" , "Classics" , "Charlotte Bronte" , "9781853260193"},
@@ -343,13 +354,16 @@ vector<Products*> ProductManager::suggestSimilarItems(){
         bookProducts->pop_back();
     }
 
+    suggestedProducts=suggestions;
     return suggestions;
 }
 
-void ProductManager::makeFirstPage()
-{
+void ProductManager::makeFirstPage(){
+    firstPage = true;
     showSuggestions();
-    firstPage=true;
+
+    firstPageProducts = suggestedProducts;
+
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     int widthFull = screenGeometry.width();
@@ -359,7 +373,7 @@ void ProductManager::makeFirstPage()
 
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
 
-    int maxIteminRow = 8;
+    int maxIteminRow = 10;
     int iteminRow = 0;
     QHBoxLayout* currentRowLayout = new QHBoxLayout();
 
@@ -402,7 +416,6 @@ void ProductManager::makeFirstPage()
                 //add the book layout to the current row layout
                 currentRowLayout->addLayout(bookLayout);
                 displayedProducts.push_back(book);
-                firstPageProducts.push_back(product);
 
                 //increment the number of books in the current row
                 iteminRow++;
@@ -413,18 +426,16 @@ void ProductManager::makeFirstPage()
                 }
                 ui->allproductsLayout->addLayout(bookLayout);
                 displayedProducts.push_back(book);
+                firstPageProducts.push_back(book);
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
         }
     }
 
-
     //add the last row layout to the main layout
     ui->allproductsLayout->addLayout(currentRowLayout);
-
 }
-
 
 void ProductManager::searchProducts(const QString &keyword) {
     QScreen* screen = QGuiApplication::primaryScreen();
@@ -635,140 +646,57 @@ void ProductManager::showSuggestions(){
     ui->recsLayout->setAlignment(Qt::AlignHCenter);
 }
 
-void ProductManager::makeSecondPage(){
-    firstPage=false;
-    secondPage = true;
-    clearLayout(ui->recsLayout);
-    clearLayout(ui->allproductsLayout);
-    ui->ourproductsLogo->move(67, 150);
-    ui->basedonyouLogo->setVisible(false);
-    ui->basedonsearchLogo->setVisible(false);
-    int maxBooksToShow = 8;
-    int booksShownInRecs = 0;
-    int booksShownInAllProducts = 0;
 
-    // Create a copy of the second page products vector
-    for (int i = 0; i < secondPageProducts.size(); ++i) {
-        // Break if both layouts have reached their maximum count
-        if (booksShownInRecs >= maxBooksToShow && booksShownInAllProducts >= maxBooksToShow) {
-            break;
-        }
+void ProductManager::showPrevious() {
+    if(secondPage){
+        secondPage = false;
+        firstPage = true;
 
-        // Create a widget for the product in recsLayout
-        if (booksShownInRecs < maxBooksToShow) {
-            QWidget* productWidgetForRecs = createProductWidget(secondPageProducts[i]);
-            ui->recsLayout->addWidget(productWidgetForRecs);
-            booksShownInRecs++;
-        } else {
-            // Create a widget for the product in allproductsLayout
-            QWidget* productWidgetForAllProducts = createProductWidget(secondPageProducts[i]);
-            ui->allproductsLayout->addWidget(productWidgetForAllProducts);
-            booksShownInAllProducts++;
-        }
+        nextButton->setVisible(true);
+        prevButton->setVisible(true);
+
+        clearLayout(ui->recsLayout);
+        clearLayout(ui->allproductsLayout);
+
+        ui->ourproductsLogo->move(67, 480);
+        ui->recsLayout->parentWidget()->lower();
+        makeFirstPage();
+        return;
     }
-        // Clear the second page products vector
-        secondPageProducts.clear();
-
-        // Define the range of indices for the second page
-        int startIndex = 8; // Adjust this according to your needs
-        int endIndex = 25;   // Adjust this according to your needs
-
-        // Populate the second page products vector with products from the bookProducts vector within the defined range
-        for (int i = startIndex; i <= endIndex && i < bookProducts->size(); ++i) {
-            Books* book = bookProducts->at(i); // Use at() method to obtain the pointer at index i
-            secondPageProducts.push_back(book);
-        }
-        for (int i = 0; i < secondPageProducts.size(); ++i) {
-            // Break if both layouts have reached their maximum count
-            if (booksShownInRecs >= maxBooksToShow && booksShownInAllProducts >= maxBooksToShow) {
-                break;
-            }
-
-            // Create a widget for the product in recsLayout
-            if (booksShownInRecs < maxBooksToShow) {
-                QWidget* productWidgetForRecs = createProductWidget(secondPageProducts[i]);
-                ui->recsLayout->addWidget(productWidgetForRecs);
-                booksShownInRecs++;
-            } else {
-                // Create a widget for the product in allproductsLayout
-                QWidget* productWidgetForAllProducts = createProductWidget(secondPageProducts[i]);
-                ui->allproductsLayout->addWidget(productWidgetForAllProducts);
-                booksShownInAllProducts++;
-            }
-        }
-        // Update the layouts
-        ui->recsLayout->update();
-        ui->allproductsLayout->update();
-
-
 }
 
-void ProductManager::makeThirdPage() {
+
+
+void ProductManager::makeSecondPage(){
+    firstPage = false;
+    secondPage = true;
+    thirdPage = false;
+    fourthPage = false;
+    clearLayout(ui->recsLayout);
+    clearLayout(ui->allproductsLayout);
+
+    showRemainingProducts();
+}
+
+void ProductManager::makeThirdPage(){
     firstPage = false;
     secondPage = false;
     thirdPage = true;
-
+    fourthPage = false;
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
-    ui->ourproductsLogo->move(67, 150);
-    ui->basedonyouLogo->setVisible(false);
-    ui->basedonsearchLogo->setVisible(false);
-
-    int maxProductsToShow = 8;
-    int productsShownInRecs = 0;
-    int productsShownInAllProducts = 0;
-
-    // Clear the third page products vector
-    thirdPageProducts.clear();
-
-    // Populate the third page products vector with products from both bookProducts and techyProducts vectors
-    int startIndex = 26; // Adjust this according to your needs
-    int endIndex = 40;   // Adjust this according to your needs
-
-    // Populate thirdPageProducts with products from bookProducts
-    for (int i = startIndex; i <= endIndex && i < bookProducts->size(); ++i) {
-        Books* book = bookProducts->at(i); // Use at() method to obtain the pointer at index i
-        thirdPageProducts.push_back(book);
-    }
-
-    // Populate thirdPageProducts with products from techyProducts
-    for (int i = startIndex; i <= endIndex && i < techyProducts->size(); ++i) {
-        Techs* tech = techyProducts->at(i); // Use at() method to obtain the pointer at index i
-        thirdPageProducts.push_back(tech);
-    }
-
-    // Iterate over thirdPageProducts to display products in the layouts
-    for (int i = 0; i < thirdPageProducts.size(); ++i) {
-        // Break if both layouts have reached their maximum count
-        if (productsShownInRecs >= maxProductsToShow && productsShownInAllProducts >= maxProductsToShow) {
-            break;
-        }
-
-        // Create a widget for the product in recsLayout
-        if (productsShownInRecs < maxProductsToShow) {
-            QWidget* productWidgetForRecs = createProductWidget(thirdPageProducts[i]);
-            ui->recsLayout->addWidget(productWidgetForRecs);
-            productsShownInRecs++;
-        } else {
-            // Create a widget for the product in allproductsLayout
-            QWidget* productWidgetForAllProducts = createProductWidget(thirdPageProducts[i]);
-            ui->allproductsLayout->addWidget(productWidgetForAllProducts);
-            productsShownInAllProducts++;
-        }
-    }
-
-    // Update the layouts
-    ui->recsLayout->update();
-    ui->allproductsLayout->update();
+    showRemainingProducts();
 }
 
-
 void ProductManager::makeFourthPage(){
-    firstPage=false;
+    firstPage = false;
+    secondPage = false;
+    thirdPage = false;
     fourthPage = true;
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
+
     showRemainingProducts();
 }
 
@@ -796,7 +724,7 @@ void ProductManager::showRemainingProducts() {
     QGridLayout* gridLayout = new QGridLayout();
     gridLayout->setAlignment(Qt::AlignTop);
 
-    int maxIteminRow = 8;
+    int maxIteminRow = 10;
     int iteminRow = 0;
     int row = 0;
     int col = 0;
@@ -854,6 +782,13 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(book);
+                if(fourthPage){
+                    fourthPageProducts.push_back(book);
+                }else if(thirdPage){
+                    thirdPageProducts.push_back(book);
+                }else if(secondPage){
+                    secondPageProducts.push_back(book);
+                }
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -909,6 +844,13 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(accessory);
+                if(fourthPage){
+                    fourthPageProducts.push_back(accessory);
+                }else if(thirdPage){
+                    thirdPageProducts.push_back(accessory);
+                }else if(secondPage){
+                    secondPageProducts.push_back(accessory);
+                }
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -964,6 +906,13 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(tech);
+                if(fourthPage){
+                    fourthPageProducts.push_back(tech);
+                }else if(thirdPage){
+                    thirdPageProducts.push_back(tech);
+                }else if(secondPage){
+                    secondPageProducts.push_back(tech);
+                }
             } else {
                 qDebug() << "Invalid image path for book: " << name;
             }
@@ -972,13 +921,7 @@ void ProductManager::showRemainingProducts() {
 
     //add the grid layout to both recsLayout and allproductsLayout
     ui->recsLayout->addLayout(gridLayout);
-   // ui->allproductsLayout->addLayout(gridLayout);
-    QVBoxLayout* allProductsVBoxLayout = new QVBoxLayout();
-    allProductsVBoxLayout->addLayout(gridLayout);
-
-    // Add the QVBoxLayout to ui->allproductsLayout
-    ui->allproductsLayout->addLayout(allProductsVBoxLayout);
-   \
+    ui->allproductsLayout->addLayout(gridLayout);
 }
 
 
@@ -1020,8 +963,6 @@ bool ProductManager::isProductDisplayed(Products* product) {
     }
     return false;
 }
-
-
 
 
 void ProductManager::on_addAdminB_clicked()

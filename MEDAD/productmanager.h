@@ -8,6 +8,7 @@
 #include "techs.h"
 #include"allproducts1.h"
 #include "shoppingcart.h"
+#include "clickablelabels.h"
 #include <QWidget>
 #include <vector>
 #include <QLayoutItem>
@@ -78,16 +79,20 @@ public:
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;
     vector<Products*> displayedProducts; //to store all displayed products in first page
-    QVector<Products*> firstPageProducts;
-    QVector<Products*> secondPageProducts;
-    QVector<Products*> thirdPageProducts;
-    QVector<Products*> fourthPageProducts;
+    vector<Products*> firstPageProducts;
+    vector<Products*> secondPageProducts;
+    vector<Products*> thirdPageProducts;
+    vector<Products*> fourthPageProducts;
+    vector<Products*> suggestedProducts;
+    vector<Products*> previousProducts;
 
     bool secondPage = false;
     bool thirdPage = false;
     bool fourthPage = false;
     bool filteractivated=false;
     bool firstPage=false;
+    ClickableLabels* nextButton;
+    ClickableLabels* prevButton;
 };
 
 #endif // PRODUCTMANAGER_H
