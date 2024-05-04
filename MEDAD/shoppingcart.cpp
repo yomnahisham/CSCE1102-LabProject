@@ -1,4 +1,5 @@
 #include "shoppingcart.h"
+#include "productmanager.h"
 #include "ui_shoppingcart.h"
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -6,12 +7,15 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QDebug>
+#include <QScreen>
 
 
-ShoppingCart::ShoppingCart(QWidget *parent):
+ShoppingCart::ShoppingCart(QWidget *parent, User *logged, AllUsers *all):
     QWidget(parent)
     , ui(new Ui::ShoppingCart)
 {
+    user = logged;
+    users = all;
     ui->setupUi(this);
     ui->cartTable->setColumnCount(5);
     QStringList Headers = {"Image: " , "Item Name: ", "Price: ", "Quantity:", "+/-"};
@@ -163,6 +167,11 @@ void ShoppingCart::on_DeleteItem_clicked()
 
 void ShoppingCart::on_returnHome_clicked()
 {
-    //ProductManager *productManager = new ProductManager();
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    ProductManager *productManager = new ProductManager(nullptr, user, users);
+    productManager->resize(screenGeometry.width(), screenGeometry.height());
+    productManager->show();
+    this->hide();
 }
 

@@ -1,8 +1,8 @@
 #ifndef SHOPPINGCART_H
 #define SHOPPINGCART_H
 
-
-
+#include "user.h"
+#include "allusers.h"
 #include <QWidget>
 #include <QTableWidget>
 #include <QPushButton>
@@ -16,8 +16,10 @@ class ShoppingCart : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShoppingCart(QWidget *parent = nullptr);
+    explicit ShoppingCart(QWidget *parent, User *logged, AllUsers * all);
     ~ShoppingCart();
+    AllUsers *users;
+    User *user;
     void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
     void deleteItem(int);
     void addQuantity(int);
@@ -49,6 +51,7 @@ private:
     QWidget *buttonWidget;
     QPushButton *addButton;
     QPushButton *subButton;
+
 
 
 

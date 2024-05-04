@@ -30,7 +30,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
 
     users = Allusers;
 
-    cart = new ShoppingCart();
+    cart = new ShoppingCart(nullptr, user, users);
     connect(ui->filterBox, &QComboBox::currentTextChanged, this, &ProductManager::on_filterBox_currentTextChanged);
 
     QScreen* screen = QGuiApplication::primaryScreen();

@@ -23,7 +23,7 @@ public:
     {
         if (Checkout->objectName().isEmpty())
             Checkout->setObjectName("Checkout");
-        Checkout->resize(400, 300);
+        Checkout->resize(729, 572);
         Checkout->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
 ""));
 

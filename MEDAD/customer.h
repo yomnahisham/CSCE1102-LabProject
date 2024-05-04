@@ -2,7 +2,7 @@
 #define CUSTOMER_H
 
 #include "user.h"
-#include "shoppingcart.h"
+
 
 #include <vector>
 
@@ -22,7 +22,7 @@ private:
     vector<QString> preferredGenres;
    // static vector<std::string> preferredAuthors;
 
-    ShoppingCart MyCart;
+
 
     //need to add credit cards??
 };
