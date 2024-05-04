@@ -80,6 +80,23 @@ background-color: rgb(249, 184, 158);</string>
     <string>ShoppingCartLogo</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="returnHome">
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>370</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(249, 184, 158);</string>
+   </property>
+   <property name="text">
+    <string>Return To Home Page</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

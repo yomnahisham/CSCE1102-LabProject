@@ -1,11 +1,12 @@
 #include "shoppingcart.h"
 #include "ui_shoppingcart.h"
-#include<QTableWidget>
+#include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QIcon>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QDebug>
+
 
 ShoppingCart::ShoppingCart(QWidget *parent):
     QWidget(parent)
@@ -22,10 +23,13 @@ ShoppingCart::ShoppingCart(QWidget *parent):
     ui->cartTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
+
 }
 
 void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity){
 
+    qDebug() << "Items added in vector: " ;
+    Items.append(CartItems(ItemName, price , quantity));
     qDebug() << "Item add to cart" ;
     int row = ui->cartTable->rowCount();
 
@@ -50,18 +54,8 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
     itemPrice->setText(QString::number(price));
     itemQuantity->setText(QString::number(quantity));
 
-    connect(addButton, &QPushButton::clicked, [this, row](){
-        qDebug() <<"Plus button clicked";
-        this->addQuantity(row);
-    });
-    connect(subButton , &QPushButton::clicked, [this, row](){
-        qDebug() << "Minus button clicked";
-
-            this->subQuantity(row);
 
 
-
-    });
     ui->cartTable->insertRow(row);
     ui->cartTable->setItem(row, 0, pic);
     ui->cartTable->setItem(row, 1, itemName);
@@ -69,6 +63,16 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
     ui->cartTable->setItem(row, 3, itemQuantity);
     ui->cartTable->setCellWidget(row, 4, buttonWidget);
     ui->cartTable->setRowHeight(row, 50);
+
+    connect(addButton, &QPushButton::clicked, [this, row](){
+        qDebug() <<"Plus button clicked";
+        this->addQuantity(row);
+    });
+    connect(subButton , &QPushButton::clicked, [this, row](){
+        qDebug() << "Minus button clicked";
+        this->subQuantity(row);
+
+    });
 
 
 }
@@ -79,6 +83,12 @@ void ShoppingCart::addQuantity(int row){
     int NewQuantity = itemQuantity->text().toInt();
     ++NewQuantity;
     itemQuantity->setText(QString::number(NewQuantity));
+
+    if(row < Items.size()){
+        Items[row].quantity = NewQuantity;
+        qDebug() << "Quantity changed in vector"  << Items[row].quantity;
+    }
+
 }
 
 void ShoppingCart::subQuantity(int row){
@@ -91,15 +101,20 @@ void ShoppingCart::subQuantity(int row){
     qDebug() << "Quantity before decrementation" << NewQuantity;
 
     --NewQuantity;
+
     qDebug() << "Quantity after decrememtation" << NewQuantity;
 
     itemQuantity->setText(QString::number(NewQuantity));
     if(NewQuantity == 0){
-        qDebug() << "Quantity is: " << NewQuantity << ", Row is: " << row ;
-        qDebug() << "Row count before removal is: " << ui->cartTable->rowCount();
         ui->cartTable->removeRow(row);
-        qDebug() << "Row count after removal is: " << ui->cartTable->rowCount();
+        if(row < Items.size()){
+            qDebug() << "Items removed from vector";
+            Items.removeAt(row);
+        }
 
+    }else if (row < Items.size()){
+        Items[row].quantity = NewQuantity;
+        qDebug() << "Quantity changed in vector"  << Items[row].quantity;
     }
 
 
@@ -116,7 +131,14 @@ void ShoppingCart::handleItemDeletion(){
     std::sort(RowsInCart.begin(), RowsInCart.end());
     std::reverse(RowsInCart.begin(), RowsInCart.end());
     for(int i = 0 ; i < RowsInCart.size(); i++){
+
         ui->cartTable->removeRow(RowsInCart[i]);
+        if(RowsInCart[i] < Items.size()){
+
+            Items.removeAt(RowsInCart[i]);
+            qDebug() << "Items removed from vector" ;
+
+        }
     }
 
 }
@@ -136,5 +158,11 @@ void ShoppingCart::on_DeleteItem_clicked()
 
     handleItemDeletion();
 
+}
+
+
+void ShoppingCart::on_returnHome_clicked()
+{
+    //ProductManager *productManager = new ProductManager();
 }
 

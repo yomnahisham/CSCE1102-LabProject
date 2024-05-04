@@ -26,6 +26,7 @@ public:
     QPushButton *CheckOutButton;
     QPushButton *DeleteItem;
     QLabel *ShoppingCartLogo;
+    QPushButton *returnHome;
 
     void setupUi(QWidget *ShoppingCart)
     {
@@ -54,6 +55,11 @@ public:
         ShoppingCartLogo = new QLabel(ShoppingCart);
         ShoppingCartLogo->setObjectName("ShoppingCartLogo");
         ShoppingCartLogo->setGeometry(QRect(40, 30, 151, 41));
+        returnHome = new QPushButton(ShoppingCart);
+        returnHome->setObjectName("returnHome");
+        returnHome->setGeometry(QRect(730, 370, 171, 51));
+        returnHome->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"background-color: rgb(249, 184, 158);"));
 
         retranslateUi(ShoppingCart);
 
@@ -66,6 +72,7 @@ public:
         CheckOutButton->setText(QCoreApplication::translate("ShoppingCart", "Proceed to checkout", nullptr));
         DeleteItem->setText(QCoreApplication::translate("ShoppingCart", "Delete", nullptr));
         ShoppingCartLogo->setText(QCoreApplication::translate("ShoppingCart", "ShoppingCartLogo", nullptr));
+        returnHome->setText(QCoreApplication::translate("ShoppingCart", "Return To Home Page", nullptr));
     } // retranslateUi
 
 };

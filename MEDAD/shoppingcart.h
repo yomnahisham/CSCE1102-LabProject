@@ -2,10 +2,11 @@
 #define SHOPPINGCART_H
 
 
-#include "products.h"
+
 #include <QWidget>
 #include <QTableWidget>
 #include <QPushButton>
+#include <QVector>
 namespace Ui {
 class ShoppingCart;
 }
@@ -21,6 +22,14 @@ public:
     void deleteItem(int);
     void addQuantity(int);
     void subQuantity(int);
+    struct CartItems{
+        QString name;
+        double price;
+        int quantity;
+
+        CartItems(const QString n, double p, int q ) : name(n) , price(p), quantity(q) {} ;
+    };
+    QVector<CartItems> Items;
 
 
 
@@ -28,6 +37,8 @@ private slots:
     void on_DeleteItem_clicked();
     void handleItemDeletion();
 
+
+    void on_returnHome_clicked();
 
 private:
     Ui::ShoppingCart *ui;
@@ -38,6 +49,7 @@ private:
     QWidget *buttonWidget;
     QPushButton *addButton;
     QPushButton *subButton;
+
 
 
 
