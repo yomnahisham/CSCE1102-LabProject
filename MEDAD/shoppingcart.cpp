@@ -54,7 +54,14 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
         qDebug() <<"Plus button clicked";
         this->addQuantity(row);
     });
+    connect(subButton , &QPushButton::clicked, [this, row](){
+        qDebug() << "Minus button clicked";
 
+            this->subQuantity(row);
+
+
+
+    });
     ui->cartTable->insertRow(row);
     ui->cartTable->setItem(row, 0, pic);
     ui->cartTable->setItem(row, 1, itemName);
@@ -72,6 +79,30 @@ void ShoppingCart::addQuantity(int row){
     int NewQuantity = itemQuantity->text().toInt();
     ++NewQuantity;
     itemQuantity->setText(QString::number(NewQuantity));
+}
+
+void ShoppingCart::subQuantity(int row){
+    qDebug() << "Quantity decremented";
+
+    itemQuantity = ui->cartTable->item(row, 3);
+
+    int NewQuantity = itemQuantity->text().toInt();
+
+    qDebug() << "Quantity before decrementation" << NewQuantity;
+
+    --NewQuantity;
+    qDebug() << "Quantity after decrememtation" << NewQuantity;
+
+    itemQuantity->setText(QString::number(NewQuantity));
+    if(NewQuantity == 0){
+        qDebug() << "Quantity is: " << NewQuantity << ", Row is: " << row ;
+        qDebug() << "Row count before removal is: " << ui->cartTable->rowCount();
+        ui->cartTable->removeRow(row);
+        qDebug() << "Row count after removal is: " << ui->cartTable->rowCount();
+
+    }
+
+
 }
 void ShoppingCart::handleItemDeletion(){
 

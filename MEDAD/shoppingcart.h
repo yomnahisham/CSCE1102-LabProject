@@ -20,6 +20,7 @@ public:
     void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
     void deleteItem(int);
     void addQuantity(int);
+    void subQuantity(int);
 
 
 
