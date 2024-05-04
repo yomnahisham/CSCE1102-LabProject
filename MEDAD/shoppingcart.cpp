@@ -3,14 +3,18 @@
 #include<QTableWidget>
 #include <QTableWidgetItem>
 #include <QIcon>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QDebug>
 
 ShoppingCart::ShoppingCart(QWidget *parent):
     QWidget(parent)
     , ui(new Ui::ShoppingCart)
 {
     ui->setupUi(this);
-    ui->cartTable->setColumnCount(4);
-    QStringList Headers = {"Image: " , "Item Name: ", "Price: ", "Quantity:"};
+    ui->cartTable->setColumnCount(5);
+    QStringList Headers = {"Image: " , "Item Name: ", "Price: ", "Quantity:", "+/-"};
+
     ui->cartTable->setHorizontalHeaderLabels(Headers);
 
     ui->cartTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -23,12 +27,24 @@ ShoppingCart::ShoppingCart(QWidget *parent):
 void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity){
     int row = ui->cartTable->rowCount();
 
-    QTableWidgetItem *itemName = new QTableWidgetItem;
-    QTableWidgetItem *itemPrice = new QTableWidgetItem;
-    QTableWidgetItem *itemQuantity = new QTableWidgetItem;
-    QTableWidgetItem *pic = new QTableWidgetItem;
+    itemName = new QTableWidgetItem;
+    itemPrice = new QTableWidgetItem;
+    itemQuantity = new QTableWidgetItem;
+    pic = new QTableWidgetItem;
+
 
     QIcon itemImage(image.scaled(250, 250, Qt::KeepAspectRatio, Qt::SmoothTransformation)) ;
+    buttonWidget = new QWidget();
+    addButton = new QPushButton("+", buttonWidget);
+    subButton = new QPushButton("-", buttonWidget);
+    QHBoxLayout *buttonLayout = new QHBoxLayout(buttonWidget);
+    buttonLayout->addWidget(addButton);
+    buttonLayout->addWidget(subButton);
+    buttonLayout->setAlignment(Qt::AlignCenter);
+    buttonLayout->setSpacing(0);
+    buttonWidget->setLayout(buttonLayout);
+
+
     pic->setIcon(itemImage);
     itemName->setText(ItemName);
     itemPrice->setText(QString::number(price));
@@ -38,23 +54,34 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
     ui->cartTable->setItem(row, 1, itemName);
     ui->cartTable->setItem(row, 2, itemPrice);
     ui->cartTable->setItem(row, 3, itemQuantity);
+    ui->cartTable->setCellWidget(row, 4, buttonWidget);
+    ui->cartTable->setRowHeight(row, 50);
+
+    connect(addButton, &QPushButton::clicked, [this, row](){
+        updateQuantity(row, 1);
+    });
+    connect(subButton, &QPushButton::clicked, [this, row](){
+        updateQuantity(row, -1);
+    });
 
 
 
 }
 
+void ShoppingCart::updateQuantity(int row, int change){
 
+    QTableWidgetItem *item = ui->cartTable->item(row,3);
+    int NewQuantity = item->text().toInt() + change;
+    /*
+    if(NewQuantity <= 0){
+        deleteItem(row);
+    }else{
+        item->setText(QString::number(NewQuantity));
+    }*/
+     item->setText(QString::number(NewQuantity));
 
-ShoppingCart::~ShoppingCart()
-{
-    delete ui;
 }
-
-
-
-
-void ShoppingCart::on_DeleteItem_clicked()
-{
+void ShoppingCart::handleItemDeletion(){
 
     QList<QTableWidgetItem *> selectedItems = ui->cartTable->selectedItems();
     QSet<int> NumOfRows;
@@ -69,6 +96,30 @@ void ShoppingCart::on_DeleteItem_clicked()
         ui->cartTable->removeRow(RowsInCart[i]);
     }
 
+}
+void ShoppingCart::deleteItem(int row){
+
+    if(ui->cartTable->rowCount() > 0 && row >= 0 && row < ui->cartTable->rowCount()){
+        ui->cartTable->removeRow(row);
+
+    }
+
+
+
+}
+ShoppingCart::~ShoppingCart()
+{
+
+    delete ui;
+}
+
+
+
+
+void ShoppingCart::on_DeleteItem_clicked()
+{
+
+    handleItemDeletion();
 
 }
 

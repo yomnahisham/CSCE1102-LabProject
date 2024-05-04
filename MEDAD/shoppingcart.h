@@ -5,7 +5,7 @@
 #include "products.h"
 #include <QWidget>
 #include <QTableWidget>
-
+#include <QPushButton>
 namespace Ui {
 class ShoppingCart;
 }
@@ -18,14 +18,25 @@ public:
     explicit ShoppingCart(QWidget *parent = nullptr);
     ~ShoppingCart();
     void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
-    void deleteRow();
+    void deleteItem(int);
+    void updateQuantity(int, int);
 
 
 private slots:
     void on_DeleteItem_clicked();
+    void handleItemDeletion();
+
 
 private:
     Ui::ShoppingCart *ui;
+    QTableWidgetItem *itemName ;
+    QTableWidgetItem *itemPrice ;
+    QTableWidgetItem *itemQuantity;
+    QTableWidgetItem *pic;
+    QWidget *buttonWidget;
+    QPushButton *addButton;
+    QPushButton *subButton;
+
 
 
 };
