@@ -664,7 +664,8 @@ void ProductManager::showPrevious() {
         ui->ourproductsLogo->move(67, 480);
         ui->recsLayout->parentWidget()->lower();
         makeFirstPage();
-        return;}
+        return;
+    }
     if (thirdPage) {
 
         thirdPage = false;
@@ -686,7 +687,8 @@ void ProductManager::showPrevious() {
 
         //show the products based on the second page vector
         showProductsBasedonPage(secondPageProducts);
-        return;}
+        return;
+    }
     if(fourthPage){
         fourthPage = false;
         thirdPage = true;
