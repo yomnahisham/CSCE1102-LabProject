@@ -21,6 +21,29 @@ public:
 
         UserCart(const QString &n, int q) :name(n), quant(q) {};
     };
+    struct UserCreditCard{
+        int CVV;
+        QString CardNum;
+        int Month;
+        int Year;
+
+        UserCreditCard(int c, const QString& card, int m, int y) : CVV(c), CardNum(card), Month(m), Year(y){};
+
+    };
+    struct UserAddress{
+
+        QString Province;
+        QString Area;
+        QString Street;
+        QString Building;
+        int Floor;
+        int Apartment;
+        QString PhoneNumber;
+
+        UserAddress(const QString& p, const QString& a,const QString& s, const QString& b, int f, int ap, const QString& ph):
+            Province(p) , Area(a), Street(s), Building(b), Floor(f), Apartment(ap), PhoneNumber(ph) {};
+
+    };
 
     void setShopingCart(const vector <UserCart> Cart);
     const vector <UserCart>& getShopingCart() const;
@@ -30,6 +53,10 @@ private:
     vector<QString> preferredGenres;
     bool emptyCart;
     vector <UserCart> userCart;
+    vector <UserCreditCard> userCredit;
+    vector <UserAddress> userAddress;
+
+
 
    // static vector<std::string> preferredAuthors;
 

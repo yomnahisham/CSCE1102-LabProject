@@ -185,7 +185,7 @@ void ShoppingCart::on_CheckOutButton_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    Checkout *check = new Checkout(nullptr, Cart);
+    Checkout *check = new Checkout(nullptr, this , Cart, user, users);
     check->resize(screenGeometry.width(), screenGeometry.height());
     check->show();
     this->hide();
