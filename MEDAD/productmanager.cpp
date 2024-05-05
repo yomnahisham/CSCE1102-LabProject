@@ -674,6 +674,26 @@ void ProductManager::showPrevious() {
 
         //show the products based on the second page vector
         showProductsBasedonPage(secondPageProducts);
+    }else if(fourthPage){
+        thirdPage = true;
+        fourthPage = false;
+
+        startIndex = 30;
+        endIndex = 49;
+
+        thirdPageProducts.clear();
+
+        qDebug() << "Start Index: " << startIndex << ", End Index: " << endIndex;
+
+        //populate secondPageProducts with products from allProducts
+        for (int i = startIndex; i <= endIndex && i < allProducts.size(); ++i) {
+            thirdPageProducts.push_back(allProducts.at(i));
+        }
+
+        qDebug() << "Number of products in secondPageProducts: " << thirdPageProducts.size();
+
+        //show the products based on the second page vector
+        showProductsBasedonPage(thirdPageProducts);
     }
 }
 
@@ -757,14 +777,6 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
                     col++;
                 }
                 productCount++;
-                displayedProducts.push_back(book);
-                if(fourthPage){
-                    fourthPageProducts.push_back(book);
-                }else if(thirdPage){
-                    thirdPageProducts.push_back(book);
-                }else if(secondPage){
-                    secondPageProducts.push_back(book);
-                }
             }
         }else if(Accessories* accessory = dynamic_cast<Accessories*>(product)){
             QString name = accessory->getName();
@@ -807,14 +819,6 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
                     col++;
                 }
                 productCount++;
-                displayedProducts.push_back(accessory);
-                if(fourthPage){
-                    fourthPageProducts.push_back(accessory);
-                }else if(thirdPage){
-                    thirdPageProducts.push_back(accessory);
-                }else if(secondPage){
-                    secondPageProducts.push_back(accessory);
-                }
             }
         }else if(Techs* tech = dynamic_cast<Techs*>(product)){
             QString name = tech->getName();
