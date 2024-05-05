@@ -37,9 +37,7 @@ Checkout::Checkout(QWidget *parent, QVector<ShoppingCart::CartItems>itemsInCart)
         this->ui->CreditWidget->setVisible(checked);
     });
 
-    if(ui->SaveCredit->isChecked()){
-      //  saveCreditInfo();
-    }
+
 
 }
 
@@ -64,6 +62,8 @@ Checkout::~Checkout()
 
 void Checkout::on_pushButton_clicked()
 {
-
+    if(ui->SaveCredit->isChecked()){
+          SaveCreditInfo();
+    }
 }
 
