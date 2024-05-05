@@ -1,6 +1,7 @@
 #include "shoppingcart.h"
 #include "productmanager.h"
 #include "ui_shoppingcart.h"
+#include "checkout.h"
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QIcon>
@@ -175,6 +176,17 @@ void ShoppingCart::on_returnHome_clicked()
     ProductManager *productManager = new ProductManager(nullptr, user, users, this);
     productManager->resize(screenGeometry.width(), screenGeometry.height());
     productManager->show();
+    this->hide();
+}
+
+
+void ShoppingCart::on_CheckOutButton_clicked()
+{
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    Checkout *check = new Checkout(nullptr, Cart);
+    check->resize(screenGeometry.width(), screenGeometry.height());
+    check->show();
     this->hide();
 }
 

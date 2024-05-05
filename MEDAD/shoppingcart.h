@@ -46,6 +46,8 @@ private slots:
 
     void on_returnHome_clicked();
 
+    void on_CheckOutButton_clicked();
+
 private:
     Ui::ShoppingCart *ui;
     QTableWidgetItem *itemName ;
