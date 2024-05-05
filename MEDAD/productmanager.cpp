@@ -165,6 +165,7 @@ void ProductManager::onAddToCartClicked(){
 }
 
 void ProductManager::onNextClicked(){
+    beforeCallProducts.clear();
     ui->searchLineEdit->setVisible(false);
     if(!secondPage)
         makeSecondPage();
@@ -175,8 +176,17 @@ void ProductManager::onNextClicked(){
 }
 
 void ProductManager::onPrevClicked(){
+    remarkItemsBeforeCall();
     ui->searchLineEdit->setVisible(true);
     showPrevious();
+}
+
+void ProductManager::remarkItemsBeforeCall(){
+    for(Products* prod: beforeCallProducts){
+        //remove_if to move the items to be removed to the end of the vector
+        displayedProducts.erase(remove_if(displayedProducts.begin(), displayedProducts.end(),
+            [&](Products* p) { return p == prod; }), displayedProducts.end());
+    }
 }
 
 Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
@@ -405,6 +415,7 @@ void ProductManager::makeFirstPage(){
                 currentRowLayout->addLayout(bookLayout);
                 displayedProducts.push_back(book);
                 firstPageProducts.push_back(book);
+                beforeCallProducts.push_back(book);
 
                 //increment the number of books in the current row
                 iteminRow++;
@@ -988,6 +999,7 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(book);
+                beforeCallProducts.push_back(book);
                 if(fourthPage)
                     fourthPageProducts.push_back(book);
                 if(thirdPage)
@@ -1049,6 +1061,7 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(accessory);
+                beforeCallProducts.push_back(accessory);
                 if(fourthPage)
                     fourthPageProducts.push_back(accessory);
                 if(thirdPage)
@@ -1110,6 +1123,7 @@ void ProductManager::showRemainingProducts() {
                 }
                 productCount++;
                 displayedProducts.push_back(tech);
+                beforeCallProducts.push_back(tech);
                 if(fourthPage)
                     fourthPageProducts.push_back(tech);
                 if(thirdPage)

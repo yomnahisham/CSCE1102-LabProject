@@ -56,6 +56,7 @@ public:
     void showRemainingProducts();
     void clearLayout(QLayout* layout);
     bool isProductDisplayed(Products* product);
+    void remarkItemsBeforeCall();
     ShoppingCart *cart;
 
 
@@ -84,14 +85,16 @@ public:
     vector<Products*> secondPageProducts;
     vector<Products*> thirdPageProducts;
     vector<Products*> fourthPageProducts;
-    vector<Products*> suggestedProducts;
+    vector<Products*> beforeCallProducts;
     vector<Products*> allProducts;
 
     bool secondPage = false;
     bool thirdPage = false;
     bool fourthPage = false;
+    bool calledPrevious = false;
     bool filteractivated=false;
     bool firstPage=false;
+
     ClickableLabels* nextButton;
     ClickableLabels* prevButton;
 };
