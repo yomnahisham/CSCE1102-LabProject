@@ -358,6 +358,7 @@ vector<Products*> ProductManager::suggestSimilarItems(){
 }
 
 void ProductManager::makeFirstPage(){
+    displayedProducts.clear();
     firstPage = true;
     showSuggestions();
 
