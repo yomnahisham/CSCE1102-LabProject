@@ -7,8 +7,8 @@
 #include "accessories.h"
 #include "techs.h"
 #include"allproducts1.h"
-#include "shoppingcart.h"
 #include "clickablelabels.h"
+#include "shoppingcart.h"
 #include <QWidget>
 #include <vector>
 #include <QLayoutItem>
@@ -32,7 +32,7 @@ class ProductManager : public QWidget
     Q_OBJECT
 
 public:
-    explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage = nullptr);
+    explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers,ShoppingCart *cartPage = nullptr);
     ~ProductManager();
 
     Books* createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN);
@@ -56,7 +56,6 @@ public:
     bool isProductDisplayed(Products* product);
     void remarkItemsBeforeCall();
     ShoppingCart *cart;
-
 
 private slots:
     void onCartClicked();

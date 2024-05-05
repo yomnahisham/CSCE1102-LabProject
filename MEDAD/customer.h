@@ -1,9 +1,7 @@
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
 
-
 #include "user.h"
-//#include "shoppingcart.h"
 
 #include <vector>
 
