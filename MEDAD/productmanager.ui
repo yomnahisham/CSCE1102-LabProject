@@ -79,7 +79,7 @@
     <string notr="true">background-color: rgb(255, 255, 252); color:  black;</string>
    </property>
    <property name="text">
-    <string>Search...</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="basedonyouLogo">
@@ -118,7 +118,8 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 252); color: black;</string>
+    <string notr="true">background-color: rgb(255, 255, 252); color: black;
+font: italic 13pt &quot;Helvetica&quot;;</string>
    </property>
    <item>
     <property name="text">
