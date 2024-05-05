@@ -68,11 +68,12 @@ private slots:
     void onPrevClicked();
     void searchProducts(const QString& keyword);
     QWidget* createProductWidget(Products* product);
-
+    QPixmap resizeImage(const QPixmap& originalPixmap, int maxWidth, int maxHeight);
     void on_addAdminB_clicked();
-
-    void on_filterBox_currentTextChanged(const QString &arg1);
-
+   void sortPage(QLayout* layout, const QString &arg1, vector<Products*> &products , int startIndex, int maxBooksToShow);
+   void on_filterBox_currentTextChanged(const QString &arg1);
+    void updateLayout(QLayout* layout);
+   void sortProducts(vector<Products*>& products, const QString& arg1);
 public:
     Ui::ProductManager *ui;
     User* user;
