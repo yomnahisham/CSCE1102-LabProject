@@ -4,6 +4,7 @@
 #include "user.h"
 #include "allusers.h"
 #include "products.h"
+#include "customer.h"
 #include <QWidget>
 #include <QTableWidget>
 #include <QPushButton>

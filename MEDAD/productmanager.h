@@ -56,6 +56,7 @@ public:
     bool isProductDisplayed(Products* product);
     void remarkItemsBeforeCall();
     ShoppingCart *cart;
+    Customer *customer;
 
 private slots:
     void onCartClicked();
