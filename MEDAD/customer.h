@@ -47,8 +47,17 @@ public:
 
     void setShopingCart(const vector <UserCart> Cart);
     const vector <UserCart>& getShopingCart() const;
-    void virtualfunc();
     void addToCartVec(const UserCart& items);
+
+    void setCreditCards(const vector<UserCreditCard> Credit);
+    const vector <UserCreditCard>& getCreditCards() const;
+    void addToCreditVec(const UserCreditCard& creditItems);
+
+    void setAddress(const vector<UserAddress> Address);
+    const vector<UserAddress>& getAddress() const;
+    void addToAddressVec(const UserAddress& addressItems);
+
+    void virtualfunc();
 private:
     vector<QString> preferredGenres;
     bool emptyCart;
