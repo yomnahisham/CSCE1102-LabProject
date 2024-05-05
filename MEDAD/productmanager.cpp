@@ -164,7 +164,8 @@ void ProductManager::onSignOutClicked(){
     Customer *customer = dynamic_cast<Customer *>(user);
     if(customer){
         for(const auto& item : ShoppingCart::Cart){
-            customer->userCart.push_back({item.name, item.quantity});
+            Customer::UserCart cart(item.name, item.quantity);
+            customer->addToCartVec(cart);
 
         }
     }
@@ -341,7 +342,7 @@ void ProductManager::initializeProducts() {
         bookProducts->push_back(product);
         allProducts.push_back(product);
         Customer *customer = dynamic_cast<Customer*>(user);
-        for(const auto &item : customer->userCart){
+        for(const auto &item : customer->getShopingCart()){
 
             if(item.name == name){
                 cart->AddItemToCart(imagePath, name, price,item.quant);
@@ -385,7 +386,7 @@ void ProductManager::initializeProducts() {
         allProducts.push_back(accessory);
 
         Customer *customer = dynamic_cast<Customer*>(user);
-        for(const auto &item : customer->userCart){
+        for(const auto &item : customer->getShopingCart()){
 
             if(item.name == name){
                 cart->AddItemToCart(imagePath, name, price,item.quant);
@@ -415,7 +416,7 @@ void ProductManager::initializeProducts() {
         allProducts.push_back(tech);
 
         Customer *customer = dynamic_cast<Customer*>(user);
-        for(const auto &item : customer->userCart){
+        for(const auto &item : customer->getShopingCart()){
 
             if(item.name == name){
                 cart->AddItemToCart(imagePath, name, price,item.quant);

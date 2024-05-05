@@ -20,6 +20,20 @@ void Customer::virtualfunc()
 
 }
 
+void Customer::setShopingCart(const vector <Customer::UserCart> Cart){
+    userCart = Cart;
+
+
+}
+const vector<Customer::UserCart>& Customer::getShopingCart() const{
+    return userCart;
+}
+
+void Customer::addToCartVec(const UserCart& items){
+    userCart.push_back(items);
+
+}
+
 /*void Customer::setShopingCart(const QVector <ShoppingCart::CartItems> Cart){
     cart = Cart;
 }

@@ -18,14 +18,18 @@ public:
     struct UserCart{
         QString name;
         int quant;
+
+        UserCart(const QString &n, int q) :name(n), quant(q) {};
     };
-    vector <UserCart> userCart;
-    //void setShopingCart(const QVector <ShoppingCart::CartItems> cart);
-    //const QVector <ShoppingCart::CartItems>& getShopingCart() const;
+
+    void setShopingCart(const vector <UserCart> Cart);
+    const vector <UserCart>& getShopingCart() const;
     void virtualfunc();
+    void addToCartVec(const UserCart& items);
 private:
     vector<QString> preferredGenres;
     bool emptyCart;
+    vector <UserCart> userCart;
 
    // static vector<std::string> preferredAuthors;
 
