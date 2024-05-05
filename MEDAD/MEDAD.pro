@@ -24,6 +24,7 @@ SOURCES += \
     products.cpp \
     registerwindow.cpp \
     search.cpp \
+    seller.cpp \
     shoppingcart.cpp \
     techs.cpp \
     user.cpp
@@ -43,6 +44,7 @@ HEADERS += \
     products.h \
     registerwindow.h \
     search.h \
+    seller.h \
     shoppingcart.h \
     techs.h \
     user.h

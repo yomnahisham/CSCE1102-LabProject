@@ -51,5 +51,6 @@
         <file>assets/oliver.jpeg</file>
         <file>assets/tale of two.jpeg</file>
         <file>assets/warandpeace.png</file>
+        <file>bookData.txt</file>
     </qresource>
 </RCC>

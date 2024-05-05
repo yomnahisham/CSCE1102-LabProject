@@ -10,12 +10,12 @@
 #include <QScreen>
 using namespace std;
 
-RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers, AllUsers::Type type, Admin* ogAdmin)
+RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers, AllUsers::Type type, User* ogUser)
     : QWidget(parent)
     , ui(new Ui::RegisterWindow)
     ,users(Allusers)
     , type(type)
-    ,admin (ogAdmin)
+    ,ogUser (ogUser)
 {
     ui->setupUi(this);
     ui -> userError -> hide();
@@ -23,24 +23,15 @@ RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers, AllUsers::Ty
     ui->preferenceError->hide();
     ui -> loginB -> hide();
     ui -> returnB -> hide();
-    if (users)
-    {
-        qDebug()<< "coppied in reg successfully";
-    }
 
     if (type == AllUsers::admin)
     {
         ui -> genreL -> hide();
-        ui ->arabAmerican -> hide();
-        ui ->classics -> hide();
-        ui ->philo -> hide();
-        ui ->comic -> hide();
-        ui ->palestine -> hide();
-        ui ->poetry -> hide();
-        ui ->arabLit -> hide();
-        ui -> loginB -> show();
-        ui -> returnB -> show();
-
+        ui -> genreLab -> hide();
+    } else if (type == AllUsers::seller)
+    {
+        ui -> genreL -> hide();
+        ui -> genreLab -> hide();
     }
 }
 
@@ -54,18 +45,26 @@ void RegisterWindow::on_backB_clicked()
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
 
-    LoginWindow* login = new LoginWindow(nullptr, users);
-    login->resize(screenGeometry.width(), screenGeometry.height());
-    login -> setWindowTitle("Login");
-    login -> show();
-    hide();
+    if (type == AllUsers::customer)
+    {    LoginWindow* login = new LoginWindow(nullptr, users);
+        login->resize(screenGeometry.width(), screenGeometry.height());
+        login -> setWindowTitle("Login");
+        login -> show();
+        hide();
+    }else{
+        ProductManager* home = new ProductManager(nullptr, ogUser, users);
+        home -> setWindowTitle("Home");
+        home->resize(screenGeometry.width(), screenGeometry.height());
+        home-> show();
+        hide();
+    }
 }
 
 
 void RegisterWindow::on_regB_clicked()
 {
     QString username = ui -> userLE -> text();
-    bool uniqueUser = !users -> userExists(AllUsers::customer, username);
+    bool uniqueUser = !users -> userExists(type, username);
 
     bool repeatedPass;
     QString password = ui-> passLE -> text() ;
@@ -73,6 +72,7 @@ void RegisterWindow::on_regB_clicked()
         repeatedPass = true;
     else
         repeatedPass = false;
+
 
     bool hasChecks = false;
     vector<QString> genres;
@@ -105,16 +105,18 @@ void RegisterWindow::on_regB_clicked()
         hasChecks = true;
     }
 
-    if (type == AllUsers::admin)
+    if (type != AllUsers::customer)
         hasChecks = true;
 
     if (uniqueUser && repeatedPass && hasChecks)
     {
         users -> insert (type, username, password, genres);
         user = users -> authenticateUser (type, username, password);
+        qDebug()<< "entered conditions";
 
         if (type == AllUsers::customer)
-        {    QScreen* screen = QGuiApplication::primaryScreen();
+        {
+            QScreen* screen = QGuiApplication::primaryScreen();
             QRect screenGeometry = screen->geometry();
             ShoppingCart *cart = new ShoppingCart(nullptr, user, users);
             ProductManager* home = new ProductManager(nullptr, user, users, cart);
@@ -122,8 +124,10 @@ void RegisterWindow::on_regB_clicked()
             home->resize(screenGeometry.width(), screenGeometry.height());
             home-> show();
             hide();
-        }else if (type == AllUsers::admin)
+        }else
         {
+            ui-> loginB -> show();
+            ui -> returnB -> show();
             ui -> userError -> hide();
             ui -> userL -> hide();
             ui -> userLE -> hide();
@@ -134,10 +138,9 @@ void RegisterWindow::on_regB_clicked()
             ui -> passRLE -> hide();
             ui -> backB -> hide();
             ui -> regB -> hide();
-            ui-> loginB -> show();
-            ui -> returnB -> show();
         }
     }else {
+
         if (!uniqueUser)
         {   ui -> userError -> show();
             ui -> userLE -> setText("");
@@ -160,8 +163,7 @@ void RegisterWindow::on_returnB_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    ShoppingCart *cart = new ShoppingCart(nullptr, admin, users);
-    ProductManager* home = new ProductManager(nullptr, admin, users, cart);
+    ProductManager* home = new ProductManager(nullptr, ogUser, users);
     home -> setWindowTitle("Home");
     home->resize(screenGeometry.width(), screenGeometry.height());
     home-> show();
@@ -173,8 +175,7 @@ void RegisterWindow::on_loginB_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    ShoppingCart *cart = new ShoppingCart(nullptr, user, users);
-    ProductManager* home = new ProductManager(nullptr, user, users, cart);
+    ProductManager* home = new ProductManager(nullptr, user, users);
     home -> setWindowTitle("Home");
     home->resize(screenGeometry.width(), screenGeometry.height());
     home-> show();

@@ -32,10 +32,8 @@ class ProductManager : public QWidget
     Q_OBJECT
 
 public:
-    explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage);
+    explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage = nullptr);
     ~ProductManager();
-
-    void setUser(User* loggedUser);
 
     Books* createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN);
     Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size);
@@ -74,6 +72,7 @@ private slots:
    void on_filterBox_currentTextChanged(const QString &arg1);
     void updateLayout(QLayout* layout);
    void sortProducts(vector<Products*>& products, const QString& arg1);
+    //void loadProducts();
 public:
     Ui::ProductManager *ui;
     User* user;

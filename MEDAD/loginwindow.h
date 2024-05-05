@@ -25,6 +25,8 @@ private slots:
 
     void on_loginB_clicked();
 
+    void on_sellerB_clicked();
+
 private:
     Ui::LoginWindow *ui;
     AllUsers* users;

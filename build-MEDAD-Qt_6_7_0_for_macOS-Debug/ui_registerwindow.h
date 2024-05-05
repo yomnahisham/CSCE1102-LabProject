@@ -26,7 +26,7 @@ public:
     QLabel *userL;
     QLabel *passL;
     QLabel *passRL;
-    QLabel *authorL_2;
+    QLabel *genreLab;
     QGroupBox *genreL;
     QCheckBox *classics;
     QCheckBox *arabLit;
@@ -35,8 +35,6 @@ public:
     QCheckBox *palestine;
     QCheckBox *arabAmerican;
     QCheckBox *comic;
-    QPushButton *returnB;
-    QPushButton *loginB;
     QLineEdit *userLE;
     QLineEdit *passLE;
     QLineEdit *passRLE;
@@ -45,6 +43,8 @@ public:
     QLabel *userError;
     QLabel *passError;
     QLabel *preferenceError;
+    QPushButton *returnB;
+    QPushButton *loginB;
 
     void setupUi(QWidget *RegisterWindow)
     {
@@ -57,18 +57,25 @@ public:
         userL = new QLabel(RegisterWindow);
         userL->setObjectName("userL");
         userL->setGeometry(QRect(250, 80, 71, 16));
+        userL->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         passL = new QLabel(RegisterWindow);
         passL->setObjectName("passL");
         passL->setGeometry(QRect(250, 110, 71, 16));
+        passL->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         passRL = new QLabel(RegisterWindow);
         passRL->setObjectName("passRL");
         passRL->setGeometry(QRect(210, 140, 111, 16));
-        authorL_2 = new QLabel(RegisterWindow);
-        authorL_2->setObjectName("authorL_2");
-        authorL_2->setGeometry(QRect(210, 190, 191, 16));
+        passRL->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        genreLab = new QLabel(RegisterWindow);
+        genreLab->setObjectName("genreLab");
+        genreLab->setGeometry(QRect(210, 190, 191, 16));
+        genreLab->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         genreL = new QGroupBox(RegisterWindow);
         genreL->setObjectName("genreL");
         genreL->setGeometry(QRect(210, 210, 461, 80));
+        genreL->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"selection-background-color: rgb(0, 0, 0);\n"
+"selection-color: rgb(0, 0, 0);"));
         classics = new QCheckBox(genreL);
         classics->setObjectName("classics");
         classics->setGeometry(QRect(10, 20, 85, 20));
@@ -90,36 +97,43 @@ public:
         comic = new QCheckBox(genreL);
         comic->setObjectName("comic");
         comic->setGeometry(QRect(350, 20, 101, 20));
-        returnB = new QPushButton(genreL);
-        returnB->setObjectName("returnB");
-        returnB->setGeometry(QRect(60, 10, 141, 32));
-        loginB = new QPushButton(genreL);
-        loginB->setObjectName("loginB");
-        loginB->setGeometry(QRect(260, 10, 181, 32));
         userLE = new QLineEdit(RegisterWindow);
         userLE->setObjectName("userLE");
         userLE->setGeometry(QRect(320, 80, 113, 21));
+        userLE->setStyleSheet(QString::fromUtf8(""));
         passLE = new QLineEdit(RegisterWindow);
         passLE->setObjectName("passLE");
         passLE->setGeometry(QRect(320, 110, 113, 21));
+        passLE->setStyleSheet(QString::fromUtf8(""));
         passRLE = new QLineEdit(RegisterWindow);
         passRLE->setObjectName("passRLE");
         passRLE->setGeometry(QRect(320, 140, 113, 21));
+        passRLE->setStyleSheet(QString::fromUtf8(""));
         regB = new QPushButton(RegisterWindow);
         regB->setObjectName("regB");
         regB->setGeometry(QRect(510, 330, 100, 32));
+        regB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         backB = new QPushButton(RegisterWindow);
         backB->setObjectName("backB");
         backB->setGeometry(QRect(260, 330, 100, 32));
+        backB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         userError = new QLabel(RegisterWindow);
         userError->setObjectName("userError");
-        userError->setGeometry(QRect(460, 80, 131, 16));
+        userError->setGeometry(QRect(460, 80, 141, 16));
         passError = new QLabel(RegisterWindow);
         passError->setObjectName("passError");
         passError->setGeometry(QRect(450, 140, 271, 16));
         preferenceError = new QLabel(RegisterWindow);
         preferenceError->setObjectName("preferenceError");
         preferenceError->setGeometry(QRect(410, 190, 271, 16));
+        returnB = new QPushButton(RegisterWindow);
+        returnB->setObjectName("returnB");
+        returnB->setGeometry(QRect(260, 420, 141, 32));
+        returnB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        loginB = new QPushButton(RegisterWindow);
+        loginB->setObjectName("loginB");
+        loginB->setGeometry(QRect(460, 420, 181, 32));
+        loginB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
 
         retranslateUi(RegisterWindow);
 
@@ -132,7 +146,7 @@ public:
         userL->setText(QCoreApplication::translate("RegisterWindow", "Username:", nullptr));
         passL->setText(QCoreApplication::translate("RegisterWindow", "Password:", nullptr));
         passRL->setText(QCoreApplication::translate("RegisterWindow", "Repeat Password:", nullptr));
-        authorL_2->setText(QCoreApplication::translate("RegisterWindow", "Select Your Preffered Genres:", nullptr));
+        genreLab->setText(QCoreApplication::translate("RegisterWindow", "Select Your Preffered Genres:", nullptr));
         genreL->setTitle(QCoreApplication::translate("RegisterWindow", "Genre", nullptr));
         classics->setText(QCoreApplication::translate("RegisterWindow", "Classics", nullptr));
         arabLit->setText(QCoreApplication::translate("RegisterWindow", "Arabic Literature", nullptr));
@@ -141,13 +155,13 @@ public:
         palestine->setText(QCoreApplication::translate("RegisterWindow", "Palestine", nullptr));
         arabAmerican->setText(QCoreApplication::translate("RegisterWindow", "Arab-American", nullptr));
         comic->setText(QCoreApplication::translate("RegisterWindow", "Comic Books", nullptr));
-        returnB->setText(QCoreApplication::translate("RegisterWindow", "Return to Home Page", nullptr));
-        loginB->setText(QCoreApplication::translate("RegisterWindow", "Login as Registered Admin", nullptr));
         regB->setText(QCoreApplication::translate("RegisterWindow", "Register", nullptr));
         backB->setText(QCoreApplication::translate("RegisterWindow", "Back", nullptr));
         userError->setText(QCoreApplication::translate("RegisterWindow", "<html><head/><body><p><span style=\" color:#941100;\">user already exists</span></p></body></html>", nullptr));
         passError->setText(QCoreApplication::translate("RegisterWindow", "<html><head/><body><p><span style=\" color:#941100;\">password does not match</span></p></body></html>", nullptr));
         preferenceError->setText(QCoreApplication::translate("RegisterWindow", "<html><head/><body><p><span style=\" color:#941100;\">* Please select at least one preference</span></p></body></html>", nullptr));
+        returnB->setText(QCoreApplication::translate("RegisterWindow", "Return to Home Page", nullptr));
+        loginB->setText(QCoreApplication::translate("RegisterWindow", "Login as Registered Admin", nullptr));
     } // retranslateUi
 
 };

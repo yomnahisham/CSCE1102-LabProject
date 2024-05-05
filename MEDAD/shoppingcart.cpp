@@ -17,21 +17,25 @@ QVector<ShoppingCart::CartItems> ShoppingCart::Cart;
 ShoppingCart::ShoppingCart(QWidget *parent, User *logged, AllUsers *all):
     QWidget(parent)
     , ui(new Ui::ShoppingCart)
+    ,user(logged)
+    ,users (all)
 {
-    user = logged;
-    users = all;
     ui->setupUi(this);
+
+    //Setting up Cart Table
     ui->cartTable->setColumnCount(5);
     QStringList Headers = {"Image: " , "Item Name: ", "Price: ", "Quantity:", "+/-"};
 
     ui->cartTable->setHorizontalHeaderLabels(Headers);
-
     ui->cartTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->cartTable->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->cartTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+}
 
-
+void ShoppingCart::setCart (QVector<Products*> CART)
+{
+    cart = CART;
 }
 
 void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity){

@@ -9,7 +9,12 @@
 #include "techs.h"
 #include "loginwindow.h"
 
-
+#include <QFile>
+#include <QDir>
+#include <QFileInfo>
+#include <QTextStream>
+#include <QStandardPaths>
+#include <QCoreApplication>
 #include <QApplication>
 #include <QScreen>
 #include <QScreen>
@@ -21,16 +26,16 @@
 ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage)
     : QWidget(parent)
     , ui(new Ui::ProductManager)
-    , bookProducts(new QVector<Books*>())
-    , accessoryProducts(new QVector<Accessories*>())
-    , techyProducts(new QVector<Techs*>())
     , user(loggedUser)
+    , users (Allusers)
+    ,cart (cartPage)
+    , techyProducts(new QVector<Techs*>())
+    , accessoryProducts(new QVector<Accessories*>())
+    , bookProducts(new QVector<Books*>())
+
 {
     ui->setupUi(this);
 
-    users = Allusers;
-
-    cart = cartPage;
     connect(ui->filterBox, &QComboBox::currentTextChanged, this, &ProductManager::on_filterBox_currentTextChanged);
 
     ui->searchLineEdit->setPlaceholderText("Search by genre or title...");
@@ -104,6 +109,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
         ui->addProductB->setVisible(false);
         makeFirstPage();
     }
+    //loadProducts();
 }
 
 ProductManager::~ProductManager()
@@ -136,6 +142,7 @@ void ProductManager::clearLayout(QLayout* layout){
             delete item;
         }
     }
+
 }
 
 void ProductManager::onCartClicked(){
@@ -152,6 +159,7 @@ void ProductManager::onCartClicked(){
 
 void ProductManager::onSignOutClicked(){
     qDebug() << "signing out!";
+    users-> SaveUsers();
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     LoginWindow* login = new LoginWindow(nullptr, users);
@@ -206,6 +214,64 @@ Techs* ProductManager::createTech(const QString& name, double price, int quantit
     return new Techs(name, price, quantity, availability, image, type);
 }
 
+/*
+QString cachedResource(const QString &resPath) {
+    // Not a resource -> done
+    if (!resPath.startsWith(":"))
+        return resPath;
+
+    // Get the cache directory of your app relative to the executable
+    QString executablePath = QCoreApplication::applicationDirPath();
+    QString cacheDir = executablePath + "/cache";
+
+    // Construct the path for the cached resource
+    QString subPath = cacheDir + resPath.mid(1); // cache folder plus resource without the leading ':'
+
+    // Check if the resource is already cached
+    if (QFile::exists(subPath)) // File exists -> done
+    {   qDebug()<< "file exists";
+        return subPath;}
+
+    // Ensure the cache directory exists
+    if (!QFileInfo(cacheDir).dir().mkpath("."))
+    {   qDebug()<< "couldn't create cache folder";
+        return {}; // Failed to create dir
+    }
+
+    // Copy the resource file to the cache directory
+    if (!QFile::copy(resPath, subPath))
+    {   qDebug()<< "couldn't copy file";
+        return {}; // Failed to copy file
+    }
+
+    // Make the copied file writable
+    QFile::setPermissions(subPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
+
+    return subPath;
+}
+
+void ProductManager::loadProducts(){
+    //load all user data
+    qDebug() << "loading users:";
+
+    QFile bookData (cachedResource(":/Books/bookData.txt"));
+
+    if (bookData.setPermissions(QFile::ReadOwner))
+        qDebug() << "Permissions updated successfully for file:";
+    else
+        qDebug() << "Error updating permissions for file:" ;
+
+    bookData.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream in(&bookData);
+    while(!in.atEnd()) {
+        QString data = in.readLine();
+        qDebug()<< data;
+        QStringList splitdata = data.split ("{");
+        qDebug()<< splitdata[0];
+    }
+}
+*/
 void ProductManager::initializeProducts() {
     QString productsData[][8] = {
         {"War and Peace", "12.5", "5", "true", ":/Books/assets/warandpeace.png", "Classics", "Leo Tolstoy", "9780393042375"},

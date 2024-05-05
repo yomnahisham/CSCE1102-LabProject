@@ -3,6 +3,7 @@
 #include "user.h"
 #include "customer.h"
 #include "admin.h"
+#include "seller.h"
 
 
 class AllUsers
@@ -10,9 +11,10 @@ class AllUsers
 public:
     AllUsers();
     AllUsers& operator=(AllUsers& other);
-    enum Type {admin, customer};
+    enum Type {admin, customer, seller};
     Customer* AllCustomers;
     Admin* AllAdmins;
+    Seller* AllSellers;
     void SaveUsers ();
     void LoadUsers();
     User* authenticateUser(Type type , QString u, QString p);
@@ -21,6 +23,7 @@ public:
 private:
     static int m;
     static int n;
+    static int l;
     static int hash (Type type, QString u, int att = 0);
     bool finishedloading;
     void checkTable (Type type);

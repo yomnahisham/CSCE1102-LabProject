@@ -1,8 +1,9 @@
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
 
-#include "user.h"
 
+#include "user.h"
+//#include "shoppingcart.h"
 
 #include <vector>
 
@@ -14,12 +15,14 @@ public:
     Customer();
     ~Customer();
     void setPreferredGenres(const vector<QString>& genres);
-   // static void setPreferredAuthors(const vector<string>& authors);
     const vector<QString>& getPreferredGenres() const;
-    // static const vector<string>& getPreferredAuthors();
+    //void setShopingCart(const QVector <ShoppingCart::CartItems> cart);
+    //const QVector <ShoppingCart::CartItems>& getShopingCart() const;
     void virtualfunc();
 private:
     vector<QString> preferredGenres;
+    bool emptyCart;
+    //QVector <ShoppingCart::CartItems> cart;
    // static vector<std::string> preferredAuthors;
 
 

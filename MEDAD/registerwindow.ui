@@ -66,7 +66,7 @@
     <string>Repeat Password:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="authorL_2">
+  <widget class="QLabel" name="genreLab">
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -190,38 +190,6 @@ selection-color: rgb(0, 0, 0);</string>
      <string>Comic Books</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="returnB">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>10</y>
-      <width>141</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>Return to Home Page</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="loginB">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>10</y>
-      <width>181</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>Login as Registered Admin</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QLineEdit" name="userLE">
    <property name="geometry">
@@ -331,6 +299,38 @@ selection-color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#941100;&quot;&gt;* Please select at least one preference&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="returnB">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>420</y>
+     <width>141</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>Return to Home Page</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="loginB">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>420</y>
+     <width>181</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>Login as Registered Admin</string>
    </property>
   </widget>
  </widget>

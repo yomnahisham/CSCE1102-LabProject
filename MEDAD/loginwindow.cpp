@@ -10,6 +10,7 @@
 LoginWindow::LoginWindow(QWidget *parent, AllUsers* Allusers)
     : QDialog(parent)
     , ui(new Ui::LoginWindow)
+    , users(Allusers)
 {
     ui->setupUi(this);
     ui-> userL -> hide();
@@ -20,11 +21,6 @@ LoginWindow::LoginWindow(QWidget *parent, AllUsers* Allusers)
     ui -> userError -> hide();
     ui -> regB -> hide();
     ui -> loginB -> hide();
-    users = Allusers;
-    if (users)
-    {
-        qDebug()<< "coppied successfully";
-    }
 }
 
 LoginWindow::~LoginWindow()
@@ -37,6 +33,7 @@ void LoginWindow::on_customerB_clicked()
     UserType = AllUsers::customer;
     ui ->LoginAsL -> hide();
     ui -> adminB -> hide();
+    ui -> sellerB -> hide();
     ui -> customerB -> hide();
     ui-> userL -> show();
     ui -> passL -> show();
@@ -52,6 +49,7 @@ void LoginWindow::on_adminB_clicked()
     UserType = AllUsers::admin;
     ui ->LoginAsL -> hide();
     ui -> adminB -> hide();
+    ui -> sellerB -> hide();
     ui -> customerB -> hide();
     ui-> userL -> show();
     ui -> passL -> show();
@@ -89,7 +87,7 @@ void LoginWindow::on_loginB_clicked()
 
 
     //if both apply then go to productmanager window
-    if (userExists&&loggedUser)
+    if (userExists&&loggedUser && password != "")
     {
         qDebug()<< "user found";
 
@@ -111,7 +109,7 @@ void LoginWindow::on_loginB_clicked()
             ui -> userLE -> setText("");
 
         }
-        if (!loggedUser)
+        if (!loggedUser || password == "")
         {
             qDebug()<< "null ptr";
             ui -> passError -> show();
@@ -120,5 +118,20 @@ void LoginWindow::on_loginB_clicked()
         }
 
     }
+}
+
+
+void LoginWindow::on_sellerB_clicked()
+{
+    UserType = AllUsers::seller;
+    ui ->LoginAsL -> hide();
+    ui -> adminB -> hide();
+    ui -> customerB -> hide();
+    ui -> sellerB -> hide();
+    ui-> userL -> show();
+    ui -> passL -> show();
+    ui -> userLE -> show();
+    ui -> passLE -> show();
+    ui -> loginB -> show();
 }
 

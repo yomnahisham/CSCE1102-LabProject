@@ -3,6 +3,7 @@
 
 #include "user.h"
 #include "allusers.h"
+#include "products.h"
 #include <QWidget>
 #include <QTableWidget>
 #include <QPushButton>
@@ -29,15 +30,14 @@ public:
         CartItems(const QPixmap &pp, const QString &n, double p, int q ) :pic(pp), name(n) , price(p), quantity(q) {} ;
     };
     static QVector<CartItems> Cart;
+    QVector <Products*> cart;
     bool isExist;
     void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
     void updateTable();
     void deleteItem(int);
     void addQuantity(int);
     void subQuantity(int);
-
-
-
+    void setCart (QVector<Products*> CART);
 
 private slots:
     void on_DeleteItem_clicked();
