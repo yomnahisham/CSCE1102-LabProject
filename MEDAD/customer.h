@@ -15,13 +15,18 @@ public:
     ~Customer();
     void setPreferredGenres(const vector<QString>& genres);
     const vector<QString>& getPreferredGenres() const;
+    struct UserCart{
+        QString name;
+        int quant;
+    };
+    vector <UserCart> userCart;
     //void setShopingCart(const QVector <ShoppingCart::CartItems> cart);
     //const QVector <ShoppingCart::CartItems>& getShopingCart() const;
     void virtualfunc();
 private:
     vector<QString> preferredGenres;
     bool emptyCart;
-    vector <QString> UserCart;
+
    // static vector<std::string> preferredAuthors;
 
 

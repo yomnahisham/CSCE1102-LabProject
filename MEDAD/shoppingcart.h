@@ -30,7 +30,6 @@ public:
         CartItems(const QPixmap &pp, const QString &n, double p, int q ) :pic(pp), name(n) , price(p), quantity(q) {} ;
     };
     static QVector<CartItems> Cart;
-    QVector <Products*> cart;
     bool isExist;
     void AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity);
     void updateTable();

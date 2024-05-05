@@ -160,6 +160,15 @@ void ProductManager::onCartClicked(){
 void ProductManager::onSignOutClicked(){
     qDebug() << "signing out!";
     users-> SaveUsers();
+
+    Customer *customer = dynamic_cast<Customer *>(user);
+    if(customer){
+        for(const auto& item : ShoppingCart::Cart){
+            customer->userCart.push_back({item.name, item.quantity});
+
+        }
+    }
+
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     LoginWindow* login = new LoginWindow(nullptr, users);
@@ -331,6 +340,15 @@ void ProductManager::initializeProducts() {
         Books* product = createBook(name, price, quantity, availability, imagePath, genre, author, ISBN);
         bookProducts->push_back(product);
         allProducts.push_back(product);
+        Customer *customer = dynamic_cast<Customer*>(user);
+        for(const auto &item : customer->userCart){
+
+            if(item.name == name){
+                cart->AddItemToCart(imagePath, name, price,item.quant);
+            }
+
+
+        }
     }
 
     QString accessoriesData[][7] = {
@@ -365,6 +383,17 @@ void ProductManager::initializeProducts() {
         Accessories* accessory = createAccessory(name, price, quantity, availability, imagePath, type, sizeChar);
         accessoryProducts->push_back(accessory);
         allProducts.push_back(accessory);
+
+        Customer *customer = dynamic_cast<Customer*>(user);
+        for(const auto &item : customer->userCart){
+
+            if(item.name == name){
+                cart->AddItemToCart(imagePath, name, price,item.quant);
+            }
+
+
+
+        }
     }
 
     QString techsData[][6] = { // Change the inner array size to 6
@@ -384,6 +413,16 @@ void ProductManager::initializeProducts() {
         Techs* tech = createTech(name, price, quantity, availability, QPixmap(imagePath), type);
         techyProducts->push_back(tech);
         allProducts.push_back(tech);
+
+        Customer *customer = dynamic_cast<Customer*>(user);
+        for(const auto &item : customer->userCart){
+
+            if(item.name == name){
+                cart->AddItemToCart(imagePath, name, price,item.quant);
+            }
+
+
+        }
     }
 
 }

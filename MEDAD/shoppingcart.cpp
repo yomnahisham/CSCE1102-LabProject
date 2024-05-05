@@ -33,10 +33,7 @@ ShoppingCart::ShoppingCart(QWidget *parent, User *logged, AllUsers *all):
 
 }
 
-void ShoppingCart::setCart (QVector<Products*> CART)
-{
-    cart = CART;
-}
+
 
 void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, double price, int quantity){
 
