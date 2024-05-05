@@ -34,6 +34,28 @@ void Customer::addToCartVec(const UserCart& items){
 
 }
 
+
+void Customer::setCreditCards(const vector<UserCreditCard> Credit){
+    userCredit = Credit;
+}
+const vector <Customer::UserCreditCard>& Customer::getCreditCards() const{
+    return userCredit;
+}
+void Customer::addToCreditVec(const UserCreditCard& creditItems){
+    userCredit.push_back(creditItems);
+}
+
+void Customer::setAddress(const vector<UserAddress> Address){
+    userAddress = Address;
+
+}
+const vector<Customer::UserAddress>& Customer::getAddress() const{
+    return userAddress;
+}
+void Customer::addToAddressVec(const UserAddress &addressItems){
+    userAddress.push_back(addressItems);
+}
+
 /*void Customer::setShopingCart(const QVector <ShoppingCart::CartItems> Cart){
     cart = Cart;
 }

@@ -62,8 +62,9 @@ public:
    void updateAddressTable();
    QTableWidgetItem *areaTableItem;
    QTableWidgetItem *phoneTableItem;
-
+   void LoadDataIntoCreditCard(Customer *customer);
    ShoppingCart *cartt;
+   Customer *customer;
 
 private slots:
     void on_pushButton_clicked();

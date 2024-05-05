@@ -2,6 +2,7 @@
 #include "ui_checkout.h"
 #include "productmanager.h"
 #include "shoppingcart.h"
+#include "customer.h"
 
 
 #include <QVector>
@@ -69,6 +70,11 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
        }
    });
 
+    if (Customer *customer = dynamic_cast<Customer *>(user)) {
+        LoadDataIntoCreditCard(customer);
+       // loadAddresses(customer);
+    }
+
     CreditCardSystem();
     AddressSystem();
 
@@ -98,6 +104,10 @@ void Checkout::SaveAddressInfo(){
     int apt = ui->Apt->text().toInt();
     QString phone = ui->PhoneNum->text();
 
+    Customer *newCustomer = dynamic_cast<Customer*>(user);
+    Customer::UserAddress newAdd(province, area, street, building, floor, apt, phone);
+    newCustomer->addToAddressVec(newAdd);
+
     Address newAddress(province, area, street, building, floor, apt, phone );
     userAddress.push_back(newAddress);
 
@@ -121,6 +131,8 @@ void Checkout::updateAddressTable(){
 
 
 }
+
+
 void Checkout::CreditCardSystem(){
 
     connect(ui->CreditButton, &QRadioButton::toggled, [this](bool checked){
@@ -134,7 +146,9 @@ void Checkout::CreditCardSystem(){
 
     connect(ui->SavedCredtButton, &QRadioButton::toggled, [this](bool checked){
         this->ui->CreditCardsGroup->setVisible(checked);
+        this->ui->CreditCardsTableWidget->setVisible(checked);
     });
+
 
 }
 
@@ -144,18 +158,12 @@ void Checkout::SaveCreditInfo(){
     QString cardnum = ui->CreditNum->text();
     int Month = ui->Month->currentIndex() + 1;
     int Year = ui->Year->currentText().toInt();
-
-
     if(cardnum.length() == 16 && cvvText.length() == 3 && (Month > 0 && Month <= 12) && (Year >= 2024)){
-
         int cvv = cvvText.toInt();
         CreditCard newCard(cvv, cardnum, Month, Year);
         userCreditCards.push_back(newCard);
+
     }
-
-
-
-
 
 }
 
@@ -177,6 +185,25 @@ void Checkout::updateCreditTable(){
 
 
 }
+
+void Checkout::LoadDataIntoCreditCard(Customer *customer){
+    ui->CreditCardsTableWidget->clear();
+    ui->CreditCardsTableWidget->setRowCount(0);
+
+    for (const auto &creditCard : customer->getCreditCards()) {
+        int row = ui->CreditCardsTableWidget->rowCount();
+        ui->CreditCardsTableWidget->insertRow(row);
+
+        QTableWidgetItem *numItem = new QTableWidgetItem("****" + creditCard.CardNum.right(4));
+        QTableWidgetItem *cvvItem = new QTableWidgetItem(QString::number(creditCard.CVV));
+
+        ui->CreditCardsTableWidget->setItem(row, 0, numItem);
+        ui->CreditCardsTableWidget->setItem(row, 1, cvvItem);
+    }
+
+
+
+}
 Checkout::~Checkout()
 {
     delete ui;
@@ -186,6 +213,13 @@ void Checkout::on_pushButton_clicked()
 {
     if(ui->SaveCredit->isChecked()){
           SaveCreditInfo();
+    }
+    Customer *customer = dynamic_cast<Customer *>(user);
+    if(customer){
+        for(const auto& card : userCreditCards){
+            Customer::UserCreditCard credit(card.CVV, card.CardNum, card.Month, card.Year);
+            customer->addToCreditVec(credit);
+        }
     }
 }
 
@@ -211,6 +245,7 @@ double Checkout::getSubTotal() const{
 
 void Checkout::on_enterCredit_clicked()
 {
+
     if(ui->SaveCredit->isChecked()){
         SaveCreditInfo();
     }
