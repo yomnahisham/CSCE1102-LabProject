@@ -640,9 +640,8 @@ void ProductManager::showPrevious() {
     int startIndex = 0;
     int endIndex = 0;
 
-    if(secondPage){
+    if (secondPage) {
         secondPage = false;
-
         nextButton->setVisible(true);
         prevButton->setVisible(true);
 
@@ -654,28 +653,27 @@ void ProductManager::showPrevious() {
         ui->recsLayout->parentWidget()->lower();
         makeFirstPage();
         return;
-    }else if(thirdPage){
-        //if thirdPage is true, then previous shows secondPage
+    } else if (thirdPage) {
+
         thirdPage = false;
         secondPage = true;
-        startIndex = 18;
-        endIndex = 38;
+
+        startIndex = 10;
+        endIndex = 29;
+
         secondPageProducts.clear();
-        ui->ourproductsLogo->move(67, 150);
-        ui->basedonyouLogo->setVisible(false);
-        ui->basedonsearchLogo->setVisible(false);
 
-        // Populate thirdPageProducts with products from bookProducts
-        for (int i = startIndex; i <= endIndex && i < allProducts.size(); ++i)  // Use at() method to obtain the pointer at index i
-                secondPageProducts.push_back(allProducts.at(i));
+        qDebug() << "Start Index: " << startIndex << ", End Index: " << endIndex;
 
-        //call show product in different page vector
+        //populate secondPageProducts with products from allProducts
+        for (int i = startIndex; i <= endIndex && i < allProducts.size(); ++i) {
+            secondPageProducts.push_back(allProducts.at(i));
+        }
+
+        qDebug() << "Number of products in secondPageProducts: " << secondPageProducts.size();
+
+        //show the products based on the second page vector
         showProductsBasedonPage(secondPageProducts);
-
-
-        // Update the layouts
-       // ui->recsLayout->update();
-       // ui->allproductsLayout->update();
     }
 }
 
@@ -684,11 +682,13 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
+    nextButton->setVisible(true);
+    prevButton->setVisible(true);
+
     ui->ourproductsLogo->move(67, 150);
     ui->basedonyouLogo->setVisible(false);
     ui->basedonsearchLogo->setVisible(false);
 
-    ui->allproductsLayout->parentWidget()->lower();
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -859,7 +859,9 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
                 productCount++;
             }
         }
+        //ui->recsLayout->addLayout(gridLayout);
     }
+    ui->recsLayout->addLayout(gridLayout);
 }
 
 
