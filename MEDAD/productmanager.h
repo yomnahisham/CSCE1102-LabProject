@@ -6,9 +6,9 @@
 #include "books.h"
 #include "accessories.h"
 #include "techs.h"
-#include"allproducts1.h"
 #include "clickablelabels.h"
 #include "shoppingcart.h"
+
 #include <QWidget>
 #include <vector>
 #include <QLayoutItem>
@@ -18,7 +18,6 @@
 #include <QStringList>
 #include <algorithm>
 #include<QScrollArea>
-#include"search.h"
 #include <QMainWindow>
 
 using namespace std;

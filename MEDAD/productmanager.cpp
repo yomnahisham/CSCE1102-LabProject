@@ -108,6 +108,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
         ui->addAdminB->setVisible(false);
         ui->addProductB->setVisible(false);
         makeFirstPage();
+        return;
     }
     //loadProducts();
 }
@@ -998,6 +999,7 @@ void ProductManager::makeSecondPage(){
     thirdPage = false;
     fourthPage = false;
     secondPageProducts.clear();
+    ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -1010,6 +1012,7 @@ void ProductManager::makeThirdPage(){
     thirdPage = true;
     fourthPage = false;
     thirdPageProducts.clear();
+    ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -1023,6 +1026,7 @@ void ProductManager::makeFourthPage(){
     fourthPage = true;
     thirdPageProducts.clear();
     nextButton->setVisible(false);
+    ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
