@@ -34,6 +34,8 @@ private slots:
 private:
     Ui::Checkout *ui;
     double Total;
+    double subTotal;
+    double deliveryFee;
 
 };
 

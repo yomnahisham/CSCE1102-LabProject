@@ -18,7 +18,6 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -27,12 +26,12 @@ class Ui_Checkout
 {
 public:
     QWidget *PaymentWidget;
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *PaymentLayout;
-    QLabel *subTotal;
+    QLabel *DeliveryFee;
+    QLabel *Total;
     QGroupBox *groupBox;
     QRadioButton *CashButton;
     QRadioButton *CreditButton;
+    QLabel *subTotal;
     QWidget *CreditWidget;
     QGroupBox *CreditCardInfoGroupBox;
     QLabel *CreditNumLabel;
@@ -54,33 +53,38 @@ public:
 ""));
         PaymentWidget = new QWidget(Checkout);
         PaymentWidget->setObjectName("PaymentWidget");
-        PaymentWidget->setGeometry(QRect(60, 200, 601, 451));
-        verticalLayoutWidget = new QWidget(PaymentWidget);
-        verticalLayoutWidget->setObjectName("verticalLayoutWidget");
-        verticalLayoutWidget->setGeometry(QRect(80, 20, 371, 341));
-        PaymentLayout = new QVBoxLayout(verticalLayoutWidget);
-        PaymentLayout->setObjectName("PaymentLayout");
-        PaymentLayout->setContentsMargins(0, 0, 0, 0);
-        subTotal = new QLabel(verticalLayoutWidget);
-        subTotal->setObjectName("subTotal");
+        PaymentWidget->setGeometry(QRect(60, 70, 601, 781));
+        DeliveryFee = new QLabel(PaymentWidget);
+        DeliveryFee->setObjectName("DeliveryFee");
+        DeliveryFee->setGeometry(QRect(20, 380, 509, 61));
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Minimum);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(DeliveryFee->sizePolicy().hasHeightForWidth());
+        DeliveryFee->setSizePolicy(sizePolicy);
         QFont font;
-        font.setPointSize(20);
         font.setBold(true);
-        font.setKerning(true);
-        subTotal->setFont(font);
-        subTotal->setLayoutDirection(Qt::LeftToRight);
-        subTotal->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
-""));
-        subTotal->setWordWrap(false);
-
-        PaymentLayout->addWidget(subTotal);
-
-        groupBox = new QGroupBox(verticalLayoutWidget);
-        groupBox->setObjectName("groupBox");
+        DeliveryFee->setFont(font);
+        DeliveryFee->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        Total = new QLabel(PaymentWidget);
+        Total->setObjectName("Total");
+        Total->setGeometry(QRect(20, 440, 291, 111));
         QFont font1;
-        font1.setPointSize(15);
+        font1.setPointSize(20);
         font1.setBold(true);
-        groupBox->setFont(font1);
+        font1.setKerning(true);
+        Total->setFont(font1);
+        Total->setLayoutDirection(Qt::LeftToRight);
+        Total->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+""));
+        Total->setWordWrap(false);
+        groupBox = new QGroupBox(PaymentWidget);
+        groupBox->setObjectName("groupBox");
+        groupBox->setGeometry(QRect(30, 60, 321, 191));
+        QFont font2;
+        font2.setPointSize(15);
+        font2.setBold(true);
+        groupBox->setFont(font2);
         groupBox->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 ""));
         CashButton = new QRadioButton(groupBox);
@@ -93,24 +97,31 @@ public:
         CreditButton->setGeometry(QRect(10, 80, 181, 26));
         CreditButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 ""));
-
-        PaymentLayout->addWidget(groupBox);
-
+        subTotal = new QLabel(PaymentWidget);
+        subTotal->setObjectName("subTotal");
+        subTotal->setGeometry(QRect(20, 420, 509, 61));
+        QSizePolicy sizePolicy1(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Ignored);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(subTotal->sizePolicy().hasHeightForWidth());
+        subTotal->setSizePolicy(sizePolicy1);
+        QFont font3;
+        font3.setPointSize(10);
+        font3.setBold(true);
+        subTotal->setFont(font3);
+        subTotal->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         CreditWidget = new QWidget(Checkout);
         CreditWidget->setObjectName("CreditWidget");
-        CreditWidget->setGeometry(QRect(710, 210, 511, 451));
+        CreditWidget->setGeometry(QRect(700, 60, 511, 451));
         CreditCardInfoGroupBox = new QGroupBox(CreditWidget);
         CreditCardInfoGroupBox->setObjectName("CreditCardInfoGroupBox");
-        CreditCardInfoGroupBox->setGeometry(QRect(30, 50, 459, 319));
-        CreditCardInfoGroupBox->setFont(font1);
+        CreditCardInfoGroupBox->setGeometry(QRect(30, 60, 459, 319));
+        CreditCardInfoGroupBox->setFont(font2);
         CreditCardInfoGroupBox->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         CreditNumLabel = new QLabel(CreditCardInfoGroupBox);
         CreditNumLabel->setObjectName("CreditNumLabel");
         CreditNumLabel->setGeometry(QRect(10, 50, 181, 20));
-        QFont font2;
-        font2.setPointSize(10);
-        font2.setBold(true);
-        CreditNumLabel->setFont(font2);
+        CreditNumLabel->setFont(font3);
         CreditNumLabel->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         CreditNum = new QLineEdit(CreditCardInfoGroupBox);
         CreditNum->setObjectName("CreditNum");
@@ -118,14 +129,14 @@ public:
         CVVLabel = new QLabel(CreditCardInfoGroupBox);
         CVVLabel->setObjectName("CVVLabel");
         CVVLabel->setGeometry(QRect(10, 110, 71, 20));
-        CVVLabel->setFont(font2);
+        CVVLabel->setFont(font3);
         CVV = new QLineEdit(CreditCardInfoGroupBox);
         CVV->setObjectName("CVV");
         CVV->setGeometry(QRect(10, 140, 113, 28));
         ExpDateLabel = new QLabel(CreditCardInfoGroupBox);
         ExpDateLabel->setObjectName("ExpDateLabel");
         ExpDateLabel->setGeometry(QRect(10, 190, 181, 20));
-        ExpDateLabel->setFont(font2);
+        ExpDateLabel->setFont(font3);
         Month = new QComboBox(CreditCardInfoGroupBox);
         Month->addItem(QString());
         Month->addItem(QString());
@@ -161,10 +172,8 @@ public:
         SaveCredit->setGeometry(QRect(20, 280, 311, 26));
         pushButton = new QPushButton(Checkout);
         pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(470, 790, 391, 71));
-        QFont font3;
-        font3.setBold(true);
-        pushButton->setFont(font3);
+        pushButton->setGeometry(QRect(780, 690, 391, 71));
+        pushButton->setFont(font);
         pushButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(249, 184, 158);"));
 
@@ -176,10 +185,12 @@ public:
     void retranslateUi(QWidget *Checkout)
     {
         Checkout->setWindowTitle(QCoreApplication::translate("Checkout", "Form", nullptr));
-        subTotal->setText(QCoreApplication::translate("Checkout", "Subtotal:  $20.00", nullptr));
+        DeliveryFee->setText(QCoreApplication::translate("Checkout", "Delievery Fee: EGP 50.00", nullptr));
+        Total->setText(QCoreApplication::translate("Checkout", "Total:  EGP 20.00", nullptr));
         groupBox->setTitle(QCoreApplication::translate("Checkout", "Pick Payment Method", nullptr));
         CashButton->setText(QCoreApplication::translate("Checkout", "Cash on Delievery", nullptr));
         CreditButton->setText(QCoreApplication::translate("Checkout", "Credit Card", nullptr));
+        subTotal->setText(QCoreApplication::translate("Checkout", "Subtotal: EGP 20.00", nullptr));
         CreditCardInfoGroupBox->setTitle(QCoreApplication::translate("Checkout", "Credit Card Info", nullptr));
         CreditNumLabel->setText(QCoreApplication::translate("Checkout", "Credit Card Num:", nullptr));
         CVVLabel->setText(QCoreApplication::translate("Checkout", "CVV", nullptr));

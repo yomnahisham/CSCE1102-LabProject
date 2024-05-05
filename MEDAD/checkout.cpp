@@ -9,20 +9,28 @@ Checkout::Checkout(QWidget *parent, QVector<ShoppingCart::CartItems>itemsInCart)
     , ui(new Ui::Checkout)
 {
     ui->setupUi(this);
+    deliveryFee = 20.00;
+
     for(const auto& item: itemsInCart){
-        Total += item.price * item.quantity;
+        subTotal += item.price * item.quantity ;
 
     }
+    Total = subTotal + deliveryFee;
+    ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+    ui->DeliveryFee->setText("Delivery Fee: " + QString("EGP %1").arg(deliveryFee, 0, 'f', 2));
+    ui->subTotal->setText("SubTotal: " + QString("EGP %1").arg(subTotal, 0, 'f', 2));
+
     QVBoxLayout *creditLayout = new QVBoxLayout;
     creditLayout->setAlignment(Qt::AlignLeft);
     ui->CreditWidget->setVisible(false);
     ui->CreditWidget->setLayout(creditLayout);
 
-    ui->PaymentLayout->setAlignment(Qt::AlignLeft);
-    ui->PaymentWidget->setLayout(ui->PaymentLayout);
+    QVBoxLayout *paymentLayout = new QVBoxLayout;
+    paymentLayout->setAlignment(Qt::AlignLeft);
     ui->PaymentWidget->setVisible(true);
+    ui->PaymentWidget->setLayout(paymentLayout);
 
-    ui->subTotal->setText("SubTotal: " + QString("$%1").arg(Total, 0, 'f', 2));
+
 
     ui->CVV->setPlaceholderText("E.g 123");
     ui->CreditNum->setPlaceholderText("E.g 7788 2773 8322");
