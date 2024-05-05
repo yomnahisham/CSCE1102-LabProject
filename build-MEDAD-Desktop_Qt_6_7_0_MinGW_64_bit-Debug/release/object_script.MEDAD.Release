@@ -5,6 +5,7 @@ release/allusers.o
 release/books.o
 release/checkout.o
 release/clickablelabels.o
+release/confirm.o
 release/customer.o
 release/discounts.o
 release/loginwindow.o
@@ -26,6 +27,7 @@ release/qrc_Tshirts.o
 release/moc_allproducts1.o
 release/moc_checkout.o
 release/moc_clickablelabels.o
+release/moc_confirm.o
 release/moc_loginwindow.o
 release/moc_productmanager.o
 release/moc_registerwindow.o

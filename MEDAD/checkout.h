@@ -63,6 +63,7 @@ public:
    QTableWidgetItem *areaTableItem;
    QTableWidgetItem *phoneTableItem;
    void LoadDataIntoCreditCard(Customer *customer);
+   void LoadDataIntoAddress(Customer *customer);
    ShoppingCart *cartt;
    Customer *customer;
 
@@ -74,6 +75,8 @@ private slots:
     void on_ReTurnHome_clicked();
 
     void on_enterAddress_clicked();
+
+    void on_ConfirmButton_clicked();
 
 protected:
     vector<CreditCard> userCreditCards;

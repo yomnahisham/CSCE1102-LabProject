@@ -5,6 +5,7 @@ debug/allusers.o
 debug/books.o
 debug/checkout.o
 debug/clickablelabels.o
+debug/confirm.o
 debug/customer.o
 debug/discounts.o
 debug/loginwindow.o
@@ -26,6 +27,7 @@ debug/qrc_Tshirts.o
 debug/moc_allproducts1.o
 debug/moc_checkout.o
 debug/moc_clickablelabels.o
+debug/moc_confirm.o
 debug/moc_loginwindow.o
 debug/moc_productmanager.o
 debug/moc_registerwindow.o
