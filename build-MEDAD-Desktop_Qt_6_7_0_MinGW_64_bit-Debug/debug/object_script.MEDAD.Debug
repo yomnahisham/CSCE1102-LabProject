@@ -13,6 +13,7 @@ debug/productmanager.o
 debug/products.o
 debug/registerwindow.o
 debug/search.o
+debug/seller.o
 debug/shoppingcart.o
 debug/techs.o
 debug/user.o

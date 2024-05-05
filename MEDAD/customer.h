@@ -3,6 +3,7 @@
 
 #include "user.h"
 
+
 #include <vector>
 
 using namespace std;
@@ -20,7 +21,7 @@ public:
 private:
     vector<QString> preferredGenres;
     bool emptyCart;
-    //QVector <ShoppingCart::CartItems> cart;
+    vector <QString> UserCart;
    // static vector<std::string> preferredAuthors;
 
 

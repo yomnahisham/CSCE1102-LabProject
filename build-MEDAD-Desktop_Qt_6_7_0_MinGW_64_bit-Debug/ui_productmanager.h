@@ -82,7 +82,8 @@ public:
         filterBox->addItem(QString());
         filterBox->setObjectName("filterBox");
         filterBox->setGeometry(QRect(1210, 120, 161, 21));
-        filterBox->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252); color: black;"));
+        filterBox->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252); color: black;\n"
+"font: italic 13pt \"Helvetica\";"));
         addProductB = new QPushButton(ProductManager);
         addProductB->setObjectName("addProductB");
         addProductB->setGeometry(QRect(580, 30, 100, 32));
@@ -116,7 +117,7 @@ public:
         ProductManager->setWindowTitle(QCoreApplication::translate("ProductManager", "Form", nullptr));
         logoCorner->setText(QCoreApplication::translate("ProductManager", "MEDAD LOGO", nullptr));
         logoSub->setText(QCoreApplication::translate("ProductManager", "subtitle", nullptr));
-        searchLineEdit->setText(QCoreApplication::translate("ProductManager", "Search...", nullptr));
+        searchLineEdit->setText(QString());
         basedonyouLogo->setText(QCoreApplication::translate("ProductManager", "your preferences", nullptr));
         basedonsearchLogo->setText(QCoreApplication::translate("ProductManager", "your search", nullptr));
         filterBox->setItemText(0, QCoreApplication::translate("ProductManager", "Filter", nullptr));

@@ -13,6 +13,7 @@ release/productmanager.o
 release/products.o
 release/registerwindow.o
 release/search.o
+release/seller.o
 release/shoppingcart.o
 release/techs.o
 release/user.o
