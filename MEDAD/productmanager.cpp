@@ -100,9 +100,8 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     if(Customer* cus = dynamic_cast<Customer*>(user)){
         ui->addAdminB->setVisible(false);
         ui->addProductB->setVisible(false);
+        makeFirstPage();
     }
-
-    makeFirstPage();
 }
 
 ProductManager::~ProductManager()
@@ -642,6 +641,7 @@ void ProductManager::showPrevious() {
 
     if (secondPage) {
         secondPage = false;
+        firstPage = true;
         nextButton->setVisible(true);
         prevButton->setVisible(true);
 
@@ -652,8 +652,8 @@ void ProductManager::showPrevious() {
         ui->ourproductsLogo->move(67, 480);
         ui->recsLayout->parentWidget()->lower();
         makeFirstPage();
-        return;
-    } else if (thirdPage) {
+        return;}
+    if (thirdPage) {
 
         thirdPage = false;
         secondPage = true;
@@ -674,9 +674,10 @@ void ProductManager::showPrevious() {
 
         //show the products based on the second page vector
         showProductsBasedonPage(secondPageProducts);
-    }else if(fourthPage){
-        thirdPage = true;
+        return;}
+    if(fourthPage){
         fourthPage = false;
+        thirdPage = true;
 
         startIndex = 30;
         endIndex = 49;
@@ -694,6 +695,7 @@ void ProductManager::showPrevious() {
 
         //show the products based on the second page vector
         showProductsBasedonPage(thirdPageProducts);
+        return;
     }
 }
 
@@ -863,7 +865,6 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
                 productCount++;
             }
         }
-        //ui->recsLayout->addLayout(gridLayout);
     }
     ui->recsLayout->addLayout(gridLayout);
 }
