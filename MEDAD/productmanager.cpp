@@ -159,75 +159,27 @@ void ProductManager::createAdminAccessPage(){
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addStretch();
 
-    QHBoxLayout *horizontalLay = new QHBoxLayout(this);
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    QPushButton *registerAdminButton = new QPushButton("Register Admin");
+    QPushButton *registerSellerButton = new QPushButton("Register Seller");
 
+    connect(registerAdminButton, &QPushButton::clicked, this, &ProductManager::onRegisterAdminClicked);
+    connect(registerSellerButton, &QPushButton::clicked, this, &ProductManager::onRegisterSellerClicked);
 
-    //create a layout for the registration area alone
-    QVBoxLayout *regArea = new QVBoxLayout();
+    buttonLayout->addWidget(registerAdminButton);
+    buttonLayout->addWidget(registerSellerButton);
 
-    QLabel *regAdminLabel = new QLabel("Register New Admin:");
-    regArea->addWidget(regAdminLabel);
-
-    QLineEdit *nameLineEdit = new QLineEdit();
-    nameLineEdit->setPlaceholderText("Enter username");
-    nameLineEdit->setFixedWidth(600); // Set fixed width for username input
-    regArea->addWidget(nameLineEdit);
-    QLineEdit *passLineEdit = new QLineEdit();
-    passLineEdit->setPlaceholderText("Enter password");
-    passLineEdit->setEchoMode(QLineEdit::Password);
-    passLineEdit->setFixedWidth(600); // Set fixed width for password input
-    regArea->addWidget(passLineEdit);
-    QLineEdit *repPassLineEdit = new QLineEdit();
-    repPassLineEdit->setPlaceholderText("Repeat password");
-    repPassLineEdit->setEchoMode(QLineEdit::Password);
-    repPassLineEdit->setFixedWidth(600); // Set fixed width for repeat password input
-    regArea->addWidget(repPassLineEdit);
-    QPushButton *regButton = new QPushButton("Register");
-    regButton->setFixedWidth(600);
-    regArea->addWidget(regButton);
-    QLabel *passError = new QLabel();
-    passError->setStyleSheet("color: red");
-    regArea->addWidget(passError);
-
-    //connect regButton with action of registering user
-    connect(regButton, &QPushButton::clicked, [=]() {
-        QString password = passLineEdit->text();
-        QString repeatPassword = repPassLineEdit->text();
-
-        if (password != repeatPassword) {
-            // Display error message if passwords do not match
-            passError->setText("Passwords do not match. Please try again.");
-            passLineEdit->clear();
-            repPassLineEdit->clear();
-            passLineEdit->setFocus();
-            return;
-        } else {
-            // Clear the error message if passwords match
-            passError->clear();
-        }
-
-        //@ayla, check usernames here, maybe call a fucntion?
-        //then just send it to a function i made in registerwindow called makeAdmin
-        //please also do the functionality for that makeAdmin function
-    });
-
-    horizontalLay->addLayout(regArea);
-
-    QVBoxLayout *accManagmentArea = new QVBoxLayout();
+    mainLayout->addLayout(buttonLayout);
 
     QLabel *manageAccountsLabel = new QLabel("Manage Accounts:");
-    accManagmentArea->addWidget(manageAccountsLabel);
+    mainLayout->addWidget(manageAccountsLabel);
 
-    //create a table for managing accounts
     QTableWidget *accountsTable = new QTableWidget();
     makeAccountsTable(accountsTable);
-    accManagmentArea->addWidget(accountsTable);
+    mainLayout->addWidget(accountsTable);
 
-    horizontalLay->addLayout(accManagmentArea);
-    mainLayout->addLayout(horizontalLay);
     mainLayout->addStretch();
 }
-
 
 void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
     //using QList to store User data before displaying them in the table
@@ -1485,7 +1437,7 @@ bool ProductManager::isProductDisplayed(Products* product) {
 }
 
 
-void ProductManager::on_addAdminB_clicked()
+void ProductManager::onRegisterAdminClicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -1498,7 +1450,9 @@ void ProductManager::on_addAdminB_clicked()
     reg->show();
     hide();
 }
+void ProductManager::onRegisterSellerClicked(){
 
+}
 QWidget* ProductManager::createProductWidget(Products* product) {
     // Create a widget to display product information
     QWidget* productWidget = new QWidget;
