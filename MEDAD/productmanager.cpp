@@ -21,6 +21,7 @@
 #include <QVector>
 #include <QString>
 #include <QVBoxLayout>
+#include <QInputDialog>
 
 
 ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage)
@@ -372,7 +373,7 @@ void ProductManager::createAdminAccessPage(){
 }
 
 void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
-    //using QList to store User data before displaying them in table
+    //using QList to store User data before displaying them in the table
     QList<User> users;
     QFile file(":/UsersInfo/UserData.txt");
     if (file.open(QIODevice::ReadOnly)) {
@@ -381,12 +382,11 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
             QString line = in.readLine();
             QStringList parts = line.split(" ");
             if (parts.size() >= 3) {
-                User user;
-                user.setRole(parts[0]);
-                user.setUsername(parts[1]);
-                user.setPassword(parts[2]);
-                // Add more attributes as needed
-                users.append(user);
+                User client;
+                client.setRole(parts[0]);
+                client.setUsername(parts[1]);
+                client.setPassword(parts[2]);
+                users.append(client);
             }
         }
         file.close();
@@ -397,29 +397,68 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 
     qDebug() << "Number of users:" << users.size();
 
-    // Set the row count of the table to the number of users
     accountsTable->setRowCount(users.size());
 
     qDebug() << "Row count of the table:" << accountsTable->rowCount();
 
-    int numColumns = 3; //saving only role, username, and password columns
+    int numColumns = 4;
     accountsTable->setColumnCount(numColumns);
 
     QStringList headers;
-    headers << "Role" << "Username" << "Password";
+    headers << "     " << "Username" << "Password" << " ";
     accountsTable->setHorizontalHeaderLabels(headers);
 
     for (int i = 0; i < users.size(); ++i) {
-        User user = users.at(i);
-        QTableWidgetItem *roleItem = new QTableWidgetItem(user.getRole());
-        QTableWidgetItem *usernameItem = new QTableWidgetItem(user.getUsername());
-        QTableWidgetItem *passwordItem = new QTableWidgetItem(user.getPassword());
+        User client = users.at(i);
+        QTableWidgetItem *roleItem = new QTableWidgetItem(client.getRole());
+        QTableWidgetItem *usernameItem = new QTableWidgetItem(client.getUsername());
+        QTableWidgetItem *passwordItem = new QTableWidgetItem();
+        //adding a placeholder to protect private data from unauthorized access
+        passwordItem->setData(Qt::DisplayRole, "********");
 
-        accountsTable->setItem(i, 0, roleItem);
+        //button to reveal the password, requiring admin badge number
+        QPushButton *showPasswordButton = new QPushButton("Show Password");
+        showPasswordButton->setProperty("userIndex", i); //set a property to identify the user index
+
+        //connect the button's clicked signal to a slot
+        connect(showPasswordButton, &QPushButton::clicked, this, [=]() {
+            int userIndex = showPasswordButton->property("userIndex").toInt();
+            bool isVerified;
+            QString secretNumber = QInputDialog::getText(this, "Enter Authorized Badge Number", "Enter authorized badge number:");
+            Admin* ad = dynamic_cast<Admin*>(user);
+            if((ad->getBadgeNum()) == secretNumber)
+                isVerified = true;
+            if (isVerified) {
+                QTableWidgetItem *passwordItem = accountsTable->item(userIndex, 2);
+                if (passwordItem) {
+                    //set the real pass
+                    passwordItem->setData(Qt::DisplayRole, client.getPassword());
+                }
+            }
+        });
+
+        //want the image to really show
+        QLabel *imageLabel = new QLabel();
+        if (client.getRole() == "admin") {
+            // Set admin image
+            QPixmap adminPixmap(":/logos/assets/AdminLogo.png");
+            imageLabel->setPixmap(adminPixmap.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        } else if (client.getRole() == "customer") {
+            // Set user image
+            QPixmap cusPixmap(":/logos/assets/customerLogo.png");
+            imageLabel->setPixmap(cusPixmap.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        } else if (client.getRole() == "seller") {
+            QPixmap sellerPixmap(":/logos/assets/seller.png");
+            imageLabel->setPixmap(sellerPixmap.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }
+
+        accountsTable->setCellWidget(i, 0, imageLabel);
         accountsTable->setItem(i, 1, usernameItem);
         accountsTable->setItem(i, 2, passwordItem);
+        accountsTable->setCellWidget(i, 3, showPasswordButton);
     }
 }
+
 
 
 
