@@ -370,9 +370,11 @@ void Checkout::userDiscount(){
     if(isApplied){
         return;
     }else{
+
         QString pcode = ui->PromoCode->text();
         discountPercentage = 0.0;
         if(PromoCodes.contains(pcode)){
+            ui->InValidDiscount->setVisible(false);
             discountPercentage = discounts[pcode];
             Total *= (1 - discountPercentage);
             ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
