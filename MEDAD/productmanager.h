@@ -99,6 +99,9 @@ public:
     bool filteractivated=false;
     bool firstPage=false;
 
+    int widthFull;
+    int heightFull;
+
     ClickableLabels* nextButton;
     ClickableLabels* prevButton;
 };

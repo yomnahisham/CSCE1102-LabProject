@@ -41,10 +41,6 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
 
     ui->searchLineEdit->setPlaceholderText("Search by genre or title...");
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
     //setting logo in the corner of the shop app
     QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
     int w = ui->logoCorner->width();
@@ -209,7 +205,7 @@ void ProductManager::remarkItemsBeforeCall(){
     for(Products* prod: beforeCallProducts){
         //remove_if to move the items to be removed to the end of the vector
         displayedProducts.erase(remove_if(displayedProducts.begin(), displayedProducts.end(),
-            [&](Products* p) { return p == prod; }), displayedProducts.end());
+                                          [&](Products* p) { return p == prod; }), displayedProducts.end());
     }
 }
 
@@ -293,40 +289,34 @@ void ProductManager::createAdminAccessPage(){
     prevButton->setVisible(false);
 
     //create the main layout
-    QVBoxLayout *fullLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addStretch();
+
+    QHBoxLayout *horizontalLay = new QHBoxLayout(this);
+
 
     //create a layout for the registration area alone
     QVBoxLayout *regArea = new QVBoxLayout();
-    regArea->setAlignment(Qt::AlignTop);
-
-    QVBoxLayout *accManagmentArea = new QVBoxLayout();
-    accManagmentArea->setAlignment(Qt::AlignTop);
-
-    //create a widgets
-    QWidget *accManagmentWidget = new QWidget();
-    accManagmentWidget->setLayout(accManagmentArea);
-    QWidget *regWidget = new QWidget();
-    regWidget->setLayout(regArea);
 
     QLabel *regAdminLabel = new QLabel("Register New Admin:");
     regArea->addWidget(regAdminLabel);
 
     QLineEdit *nameLineEdit = new QLineEdit();
     nameLineEdit->setPlaceholderText("Enter username");
-    nameLineEdit->setFixedWidth(400); // Set fixed width for username input
+    nameLineEdit->setFixedWidth(600); // Set fixed width for username input
     regArea->addWidget(nameLineEdit);
     QLineEdit *passLineEdit = new QLineEdit();
     passLineEdit->setPlaceholderText("Enter password");
     passLineEdit->setEchoMode(QLineEdit::Password);
-    passLineEdit->setFixedWidth(400); // Set fixed width for password input
+    passLineEdit->setFixedWidth(600); // Set fixed width for password input
     regArea->addWidget(passLineEdit);
     QLineEdit *repPassLineEdit = new QLineEdit();
     repPassLineEdit->setPlaceholderText("Repeat password");
     repPassLineEdit->setEchoMode(QLineEdit::Password);
-    repPassLineEdit->setFixedWidth(400); // Set fixed width for repeat password input
+    repPassLineEdit->setFixedWidth(600); // Set fixed width for repeat password input
     regArea->addWidget(repPassLineEdit);
     QPushButton *regButton = new QPushButton("Register");
-    regButton->setFixedWidth(400);
+    regButton->setFixedWidth(600);
     regArea->addWidget(regButton);
     QLabel *passError = new QLabel();
     passError->setStyleSheet("color: red");
@@ -354,8 +344,9 @@ void ProductManager::createAdminAccessPage(){
         //please also do the functionality for that makeAdmin function
     });
 
-    fullLayout->addWidget(regWidget);
-    fullLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    horizontalLay->addLayout(regArea);
+
+    QVBoxLayout *accManagmentArea = new QVBoxLayout();
 
     QLabel *manageAccountsLabel = new QLabel("Manage Accounts:");
     accManagmentArea->addWidget(manageAccountsLabel);
@@ -365,12 +356,11 @@ void ProductManager::createAdminAccessPage(){
     makeAccountsTable(accountsTable);
     accManagmentArea->addWidget(accountsTable);
 
-    fullLayout->addWidget(regWidget);
-    fullLayout->addWidget(accManagmentWidget);
-
-    QSpacerItem *spacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    fullLayout->addSpacerItem(spacer);
+    horizontalLay->addLayout(accManagmentArea);
+    mainLayout->addLayout(horizontalLay);
+    mainLayout->addStretch();
 }
+
 
 void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
     //using QList to store User data before displaying them in the table
@@ -653,11 +643,6 @@ void ProductManager::makeFirstPage(){
 
     firstPageProducts.clear();
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-    int heightFull = screenGeometry.height();
-
     int productLayoutHeight = heightFull + 10;
 
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
@@ -725,10 +710,6 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword) {
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
     ui->allproductsLayout->parentWidget()->raise();
     ui->basedonyouLogo->setVisible(false);
     ui->ourproductsLogo->setVisible(false);
@@ -867,10 +848,6 @@ void ProductManager::showSuggestions(){
     initializeProducts();
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -1013,11 +990,6 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
     ui->ourproductsLogo->move(67, 150);
     ui->basedonyouLogo->setVisible(false);
     ui->basedonsearchLogo->setVisible(false);
-
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -1233,10 +1205,6 @@ void ProductManager::showRemainingProducts() {
 
     ui->allproductsLayout->parentWidget()->lower();
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
     //adjusting the size of the parent widget of recsLayout
@@ -1332,7 +1300,7 @@ void ProductManager::showRemainingProducts() {
             if (!imagePath.isNull()) {
                 QVBoxLayout* accessoryLayout = new QVBoxLayout();
                 QLabel* imageLabel = new QLabel();
-                                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 imageLabel->setScaledContents(true);
                 QLabel* nameLabel = new QLabel(name);
                 nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
@@ -1793,5 +1761,3 @@ void ProductManager::on_filterBox_currentTextChanged(const QString &arg1) {
     }
 
 }
-
-
