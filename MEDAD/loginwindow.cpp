@@ -87,7 +87,7 @@ void LoginWindow::on_loginB_clicked()
 
 
     //if both apply then go to productmanager window
-    if (userExists&&loggedUser && password != "" && !loggedUser->isempty)
+    if (userExists&&loggedUser && password != "")
     {
         qDebug()<< "user found";
 
@@ -103,7 +103,7 @@ void LoginWindow::on_loginB_clicked()
     else
     {   //show accurate error messages and clear inaccurate LineEdits
 
-        if (!userExists ||!loggedUser->isempty)
+        if (!userExists)
         {
             ui -> userError-> show();
             ui -> userLE -> setText("");

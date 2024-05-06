@@ -11,7 +11,6 @@ void User::setUsername (QString u)
 {
     username = u;
     isempty = false;
-    activated = true;
 }
 
 void User::setPassword (QString p)
@@ -29,11 +28,6 @@ QString User::getPassword () const{
 
 QString User::getRole() const{
     return role;
-}
-
-void User::deleteUser()
-{
-    isempty = true;
 }
 
 void User::virtualfunc()
