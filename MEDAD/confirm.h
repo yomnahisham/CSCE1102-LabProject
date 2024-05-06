@@ -13,7 +13,7 @@ class Confirm : public QWidget
     Q_OBJECT
 
 public:
-    explicit Confirm(QWidget *parent, Checkout *c, vector<Checkout::Address> userAdress);
+    explicit Confirm(QWidget *parent, Checkout *c,  const Checkout::Address &address);
     Checkout *checkout;
     ~Confirm();
 

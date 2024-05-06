@@ -2,7 +2,7 @@
 #include "ui_confirm.h"
 #include "checkout.h"
 
-Confirm::Confirm(QWidget *parent, Checkout *c, vector<Checkout::Address> userAdress)
+Confirm::Confirm(QWidget *parent, Checkout *c, const Checkout::Address &address)
     : QWidget(parent)
     , ui(new Ui::Confirm)
 {
