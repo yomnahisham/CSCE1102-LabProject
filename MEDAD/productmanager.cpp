@@ -361,6 +361,7 @@ void ProductManager::createAdminAccessPage(){
 
     //create a table for managing accounts
     QTableWidget *accountsTable = new QTableWidget();
+    makeAccountsTable(accountsTable);
     accManagmentArea->addWidget(accountsTable);
 
     fullLayout->addWidget(regWidget);
@@ -368,6 +369,50 @@ void ProductManager::createAdminAccessPage(){
 
     QSpacerItem *spacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
     fullLayout->addSpacerItem(spacer);
+}
+
+void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
+    //using QList to store User data before displaying them in table
+    QList<User> users;
+    QFile file(":/UsersInfo/UserData.txt");
+    if (file.open(QIODevice::ReadOnly)) {
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            QStringList parts = line.split(" ");
+            if (parts.size() >= 3) {
+                User user;
+                user.setRole(parts[0]);
+                user.setUsername(parts[1]);
+                user.setPassword(parts[2]);
+                // Add more attributes as needed
+                users.append(user);
+            }
+        }
+        file.close();
+    } else {
+        qDebug() << "Error opening file";
+        return;
+    }
+
+    int numColumns = 3; //saving only role, username, and password columns
+    accountsTable->setColumnCount(numColumns);
+
+    QStringList headers;
+    headers << "Role" << "Username" << "Password";
+    accountsTable->setHorizontalHeaderLabels(headers);
+
+    accountsTable->setRowCount(users.size());
+    for (int i = 0; i < users.size(); ++i) {
+        User user = users.at(i);
+        QTableWidgetItem *roleItem = new QTableWidgetItem(user.getRole());
+        QTableWidgetItem *usernameItem = new QTableWidgetItem(user.getUsername());
+        QTableWidgetItem *passwordItem = new QTableWidgetItem(user.getPassword());
+
+        accountsTable->setItem(i, 0, roleItem);
+        accountsTable->setItem(i, 1, usernameItem);
+        accountsTable->setItem(i, 2, passwordItem);
+    }
 }
 
 

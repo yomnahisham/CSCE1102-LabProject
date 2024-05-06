@@ -39,6 +39,7 @@ public:
     Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, int type);
 
     void createAdminAccessPage();
+    void makeAccountsTable(QTableWidget *accountsTable);
 
     vector<Products*> suggestSimilarItems();
 
