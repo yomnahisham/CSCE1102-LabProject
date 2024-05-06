@@ -85,8 +85,8 @@ void AllUsers::LoadUsers(){
     //load all user data
     qDebug() << "loading users:";
 
-    QFile userData (cachedResource(":/UsersInfo/UserData.txt"));
-    //QFile userData (":/UsersInfo/UserData.txt");
+    //QFile userData (cachedResource(":/UsersInfo/UserData.txt"));
+    QFile userData (":/UsersInfo/UserData.txt");
 
     if (userData.setPermissions(QFile::ReadOwner))
         qDebug() << "Permissions updated successfully for file:";

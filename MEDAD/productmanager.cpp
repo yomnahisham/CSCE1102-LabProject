@@ -41,6 +41,10 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
 
     ui->searchLineEdit->setPlaceholderText("Search by genre or title...");
 
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+
     //setting logo in the corner of the shop app
     QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
     int w = ui->logoCorner->width();
@@ -108,9 +112,9 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
         return;
     }else if(Admin* admin = dynamic_cast<Admin*>(user)){
         createAdminAccessPage();
+        return;
     }
-
-    loadProducts();
+    //loadProducts();
 }
 
 ProductManager::~ProductManager()
@@ -145,149 +149,6 @@ void ProductManager::clearLayout(QLayout* layout){
     }
 
 }
-
-void ProductManager::onCartClicked(){
-    qDebug() << "cart clicked, moving to shopping cart ui.";
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-
-
-    cart->resize(screenGeometry.width(), screenGeometry.height());
-    cart->show();
-    hide();
-}
-
-void ProductManager::onSignOutClicked(){
-    qDebug() << "signing out!";
-    users-> SaveUsers();
-
-    Customer *customer = dynamic_cast<Customer *>(user);
-    if(customer){
-        for(const auto& item : ShoppingCart::Cart){
-            Customer::UserCart cart(item.name, item.quantity);
-            customer->addToCartVec(cart);
-
-        }
-    }
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    LoginWindow* login = new LoginWindow(nullptr, users);
-    login-> resize(screenGeometry.width(), screenGeometry.height()); //resizing according to the QScreen measurements
-    login-> setWindowTitle("Login");
-    login -> show();
-    hide();
-}
-
-void ProductManager::onAddToCartClicked(){
-    qDebug() << "sending product data to shopping cart";
-    //Rawan, your part
-}
-
-void ProductManager::onNextClicked(){
-    beforeCallProducts.clear();
-    ui->searchLineEdit->setVisible(false);
-    if(!secondPage)
-        makeSecondPage();
-    else if(!thirdPage)
-        makeThirdPage();
-    else if(!fourthPage)
-        makeFourthPage();
-}
-
-void ProductManager::onPrevClicked(){
-    remarkItemsBeforeCall();
-    ui->searchLineEdit->setVisible(true);
-    showPrevious();
-}
-
-void ProductManager::remarkItemsBeforeCall(){
-    for(Products* prod: beforeCallProducts){
-        //remove_if to move the items to be removed to the end of the vector
-        displayedProducts.erase(remove_if(displayedProducts.begin(), displayedProducts.end(),
-                                          [&](Products* p) { return p == prod; }), displayedProducts.end());
-    }
-}
-
-Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
-    QPixmap image(imagePath);
-    return new Books(name, price, quantity, availability, image, genre, author, ISBN);
-}
-
-Accessories* ProductManager::createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size) {
-    QPixmap image(imagePath);
-    return new Accessories(name, price, quantity, availability, image, type, size);
-}
-
-Techs* ProductManager::createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& imagePath, int type){
-    QPixmap image(imagePath);
-    return new Techs(name, price, quantity, availability, image, type);
-}
-
-
-QString cached(const QString &rePath) {
-    // Not a resource -> done
-    if (!rePath.startsWith(":"))
-        return rePath;
-
-    // Get the cache directory of your app relative to the executable
-   // QString executable = QCoreApplication::applicationDirPath();
-
-    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) ;
-
-    QString cacheD = path + "/cache";
-
-
-    // Construct the path for the cached resource
-    QString suPath = cacheD + rePath.mid(1); // cache folder plus resource without the leading ':'
-
-    // Check if the resource is already cached
-    if (QFile::exists(suPath)) // File exists -> done
-    {   qDebug()<< "file exists";
-        return suPath;}
-
-    // Ensure the cache directory exists
-    if (!QFileInfo(cacheD).dir().mkpath("."))
-    {   qDebug()<< "couldn't create cache folder";
-        return {}; // Failed to create dir
-    }
-
-    // Copy the resource file to the cache directory
-    if (!QFile::copy(rePath, suPath))
-    {   qDebug()<< "couldn't copy file, error: " << QFile(suPath).QFile::errorString();
-        return {}; // Failed to copy file
-    }
-
-    // Make the copied file writable
-    QFile::setPermissions(suPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
-
-    qDebug()<< suPath;
-    return suPath;
-}
-
-void ProductManager::loadProducts(){
-    //load all user data
-    qDebug() << "loading users:";
-
-    QFile Data (cached(":/Books/bookData.txt"));
-
-    if (Data.setPermissions(QFile::ReadOwner))
-        qDebug() << "Permissions updated successfully for file:";
-    else
-        qDebug() << "Error updating permissions for file:" ;
-
-    Data.open(QIODevice::ReadOnly | QIODevice::Text);
-
-    QTextStream i(&Data);
-    while(!i.atEnd()) {
-        QString d = i.readLine();
-        qDebug()<< d;
-        QStringList splitD = d.split (" ");
-        qDebug()<< splitD[0];
-    }
-}
-
 
 void ProductManager::createAdminAccessPage(){
     ui->ourproductsLogo->setVisible(false);
@@ -459,6 +320,143 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 }
 
 
+void ProductManager::onCartClicked(){
+    qDebug() << "cart clicked, moving to shopping cart ui.";
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+
+
+    cart->resize(screenGeometry.width(), screenGeometry.height());
+    cart->show();
+    hide();
+}
+
+void ProductManager::onSignOutClicked(){
+    qDebug() << "signing out!";
+    users-> SaveUsers();
+
+    Customer *customer = dynamic_cast<Customer *>(user);
+    if(customer){
+        for(const auto& item : ShoppingCart::Cart){
+            Customer::UserCart cart(item.name, item.quantity);
+            customer->addToCartVec(cart);
+
+        }
+    }
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    LoginWindow* login = new LoginWindow(nullptr, users);
+    login-> resize(screenGeometry.width(), screenGeometry.height()); //resizing according to the QScreen measurements
+    login-> setWindowTitle("Login");
+    login -> show();
+    hide();
+}
+
+void ProductManager::onAddToCartClicked(){
+    qDebug() << "sending product data to shopping cart";
+    //Rawan, your part
+}
+
+void ProductManager::onNextClicked(){
+    beforeCallProducts.clear();
+    ui->searchLineEdit->setVisible(false);
+    if(!secondPage)
+        makeSecondPage();
+    else if(!thirdPage)
+        makeThirdPage();
+    else if(!fourthPage)
+        makeFourthPage();
+}
+
+void ProductManager::onPrevClicked(){
+    remarkItemsBeforeCall();
+    ui->searchLineEdit->setVisible(true);
+    showPrevious();
+}
+
+void ProductManager::remarkItemsBeforeCall(){
+    for(Products* prod: beforeCallProducts){
+        //remove_if to move the items to be removed to the end of the vector
+        displayedProducts.erase(remove_if(displayedProducts.begin(), displayedProducts.end(),
+                                          [&](Products* p) { return p == prod; }), displayedProducts.end());
+    }
+}
+
+Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
+    QPixmap image(imagePath);
+    return new Books(name, price, quantity, availability, image, genre, author, ISBN);
+}
+
+Accessories* ProductManager::createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size) {
+    QPixmap image(imagePath);
+    return new Accessories(name, price, quantity, availability, image, type, size);
+}
+
+Techs* ProductManager::createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& imagePath, int type){
+    QPixmap image(imagePath);
+    return new Techs(name, price, quantity, availability, image, type);
+}
+
+/*
+QString cachedResource(const QString &resPath) {
+    // Not a resource -> done
+    if (!resPath.startsWith(":"))
+        return resPath;
+
+    // Get the cache directory of your app relative to the executable
+    QString executablePath = QCoreApplication::applicationDirPath();
+    QString cacheDir = executablePath + "/cache";
+
+    // Construct the path for the cached resource
+    QString subPath = cacheDir + resPath.mid(1); // cache folder plus resource without the leading ':'
+
+    // Check if the resource is already cached
+    if (QFile::exists(subPath)) // File exists -> done
+    {   qDebug()<< "file exists";
+        return subPath;}
+
+    // Ensure the cache directory exists
+    if (!QFileInfo(cacheDir).dir().mkpath("."))
+    {   qDebug()<< "couldn't create cache folder";
+        return {}; // Failed to create dir
+    }
+
+    // Copy the resource file to the cache directory
+    if (!QFile::copy(resPath, subPath))
+    {   qDebug()<< "couldn't copy file";
+        return {}; // Failed to copy file
+    }
+
+    // Make the copied file writable
+    QFile::setPermissions(subPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
+
+    return subPath;
+}
+
+void ProductManager::loadProducts(){
+    //load all user data
+    qDebug() << "loading users:";
+
+    QFile bookData (cachedResource(":/Books/bookData.txt"));
+
+    if (bookData.setPermissions(QFile::ReadOwner))
+        qDebug() << "Permissions updated successfully for file:";
+    else
+        qDebug() << "Error updating permissions for file:" ;
+
+    bookData.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream in(&bookData);
+    while(!in.atEnd()) {
+        QString data = in.readLine();
+        qDebug()<< data;
+        QStringList splitdata = data.split ("{");
+        qDebug()<< splitdata[0];
+    }
+}
+*/
 void ProductManager::initializeProducts() {
     QString productsData[][8] = {
         {"War and Peace", "12.5", "5", "true", ":/Books/assets/warandpeace.png", "Classics", "Leo Tolstoy", "9780393042375"},
@@ -649,6 +647,11 @@ void ProductManager::makeFirstPage(){
 
     firstPageProducts.clear();
 
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+    int heightFull = screenGeometry.height();
+
     int productLayoutHeight = heightFull + 10;
 
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
@@ -716,6 +719,10 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword) {
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+
     ui->allproductsLayout->parentWidget()->raise();
     ui->basedonyouLogo->setVisible(false);
     ui->ourproductsLogo->setVisible(false);
@@ -854,6 +861,10 @@ void ProductManager::showSuggestions(){
     initializeProducts();
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -996,6 +1007,11 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
     ui->ourproductsLogo->move(67, 150);
     ui->basedonyouLogo->setVisible(false);
     ui->basedonsearchLogo->setVisible(false);
+
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -1210,6 +1226,10 @@ void ProductManager::showRemainingProducts() {
     ui->basedonsearchLogo->setVisible(false);
 
     ui->allproductsLayout->parentWidget()->lower();
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
