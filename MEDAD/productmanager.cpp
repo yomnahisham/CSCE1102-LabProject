@@ -169,6 +169,7 @@ void ProductManager::clearLayout(QLayout* layout){
 
 }
 
+
 void ProductManager::createAdminAccessPage(){
     ui->ourproductsLogo->setVisible(false);
     nextButton->setVisible(false);
@@ -681,12 +682,17 @@ void ProductManager::initializeProducts() {
         bookProducts->push_back(product);
         allProducts.push_back(product);
         Customer *customer = dynamic_cast<Customer*>(user);
-
         if(customer){
         for(const auto &item : customer->getShopingCart()){
-
             if(item.name == name){
-                cart->AddItemToCart(imagePath, name, price,item.quant);
+                if(quantity > 0){
+                    cart->AddItemToCart(imagePath, name, price,item.quant);
+                }else{
+
+                     QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+                }
+
+
             }
 
 
@@ -763,9 +769,16 @@ void ProductManager::initializeProducts() {
         if(customer){
         for(const auto &item : customer->getShopingCart()){
 
-            if(item.name == name){
-                cart->AddItemToCart(imagePath, name, price,item.quant);
-            }
+                if(item.name == name){
+                    if(quantity > 0){
+                        cart->AddItemToCart(imagePath, name, price,item.quant);
+                    }else{
+
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+                    }
+
+
+                }
 
 
         }}
@@ -869,8 +882,13 @@ void ProductManager::makeFirstPage(){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                connect(addtoCart, &ClickableLabels::clicked, [this, book, imagePath, name, price](){
+                    if(book->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+
+                    }
                 });
                 //add the labels to the book layout
                 bookLayout->addWidget(imageLabel);
@@ -963,9 +981,13 @@ void ProductManager::searchProducts(const QString &keyword) {
                         QPixmap addPix(":/logos/assets/addtoCart.png");
                         addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
-                        connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                        connect(addtoCart, &ClickableLabels::clicked, [this, book, imagePath, name, price](){
+                            if(book->getQuantity() > 0){
+                                this->cart->AddItemToCart(imagePath,name, price, 1);
+                            }else{
+                                QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
 
-                            this->cart->AddItemToCart(imagePath,name, price, 1);
+                            }
                         });
                         //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
 
@@ -1006,9 +1028,14 @@ void ProductManager::searchProducts(const QString &keyword) {
                             ClickableLabels* addtoCart = new ClickableLabels(this);
                             QPixmap addPix(":/logos/assets/addtoCart.png");
                             addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                            connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                            connect(addtoCart, &ClickableLabels::clicked, [this, book, imagePath, name, price](){
 
-                                this->cart->AddItemToCart(imagePath,name, price, 1);
+                                if(book->getQuantity() > 0){
+                                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                                }else{
+                                    QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+
+                                }
                             });
 
                             bookLayout->addWidget(imageLabel);
@@ -1079,9 +1106,14 @@ void ProductManager::showSuggestions(){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this, book, imagePath, name, price](){
 
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                    if(book->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+
+                    }
                 });
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
 
@@ -1228,9 +1260,14 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this, book , imagePath, name, price](){
 
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                    if(book->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+
+                    }
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
@@ -1272,9 +1309,13 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this, accessory, imagePath, name, price](){
+                    if(accessory->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
 
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
@@ -1314,9 +1355,13 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this, tech, imagePath, name, price](){
+                    if(tech->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
 
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
@@ -1458,9 +1503,14 @@ void ProductManager::showRemainingProducts() {
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this, book, imagePath, name, price](){
 
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                    if(book->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+
+                    }
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
