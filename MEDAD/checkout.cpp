@@ -342,8 +342,7 @@ void Checkout::on_ConfirmButton_clicked()
         confirmorder->resize(screenGeometry.width(), screenGeometry.height());
         confirmorder->show();
         this->hide();
-        false;
-        bool isApplied = false;
+
     }
 
     cartt->clearCart();
