@@ -32,8 +32,8 @@ public:
         int Month;
         int Year;
 
-        CreditCard(int c, const QString& card, int m, int y) : CVV(c), CardNum(card), Month(m), Year(y){};
-
+        CreditCard(int c = -1 , const QString& card = QString(), int m = 0, int y = 0) : CVV(c), CardNum(card), Month(m), Year(y){};
+        bool isNull() const {return (CVV == -1 && CardNum.isEmpty() && Month == 0 && Year == 0);}
 
     };
     QTableWidgetItem *cardTableItem;
@@ -65,6 +65,8 @@ public:
    void LoadDataIntoAddress(Customer *customer);
    ShoppingCart *cartt;
    Customer *customer;
+   bool isCredit;
+
 
 
 private slots:

@@ -3,6 +3,7 @@
 #include "productmanager.h"
 #include "shoppingcart.h"
 #include "customer.h"
+#include "confirm.h"
 
 
 #include <QVector>
@@ -18,10 +19,15 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
     users = all;
     cartt = cart;
 
+    isCredit = false;
+
     ui->savedAddressTable->setVisible(false);
     ui->savedAddressTable->setColumnCount(2);
     QStringList AddressHeaders = {"Area", "Phone Number"};
     ui->savedAddressTable->setHorizontalHeaderLabels(AddressHeaders);
+    ui->savedAddressTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->savedAddressTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->savedAddressTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->CreditCardsTableWidget->setVisible(false);
     ui->CreditCardsTableWidget->setColumnCount(2);
@@ -77,6 +83,7 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
     connect(ui->CashButton, &QRadioButton::toggled, [this](bool checked){
        if(!checked){
            this->ui->CreditWidget->setVisible(true);
+           isCredit = true;
        }
    });
 
@@ -95,6 +102,7 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
 }
 
 void Checkout::AddressSystem(){
+
     connect(ui->AddNewAddressButton, &QRadioButton::toggled, [this](bool checked){
         this->ui->AddressWidget->setVisible(checked);
 
@@ -102,6 +110,7 @@ void Checkout::AddressSystem(){
 
     connect(ui->SavedAddressButton, &QRadioButton::toggled, [this](bool checked){
         this->ui->SavedAddressGroup->setVisible(checked);
+        this->ui->savedAddressTable->setVisible(checked);
     });
 }
 //void SaveAddressInfo();
@@ -140,9 +149,11 @@ void Checkout::LoadDataIntoAddress(Customer *customer){
 
     ui->savedAddressTable->clear();
     ui->savedAddressTable->setRowCount(0);
+    userAddress.clear();
 
 
     for(const auto& add : customer->getAddress()){
+        userAddress.push_back({add.Province, add.Area, add.Street, add.Building, add.Floor, add.Apartment, add.PhoneNumber});
         int currentRow = ui->savedAddressTable->rowCount();
         ui->savedAddressTable->insertRow(currentRow);
         QString displayedNum = "+20" + add.PhoneNumber;
@@ -155,6 +166,7 @@ void Checkout::LoadDataIntoAddress(Customer *customer){
 
 void Checkout::CreditCardSystem(){
 
+    isCredit = true;
     connect(ui->CreditButton, &QRadioButton::toggled, [this](bool checked){
         this->ui->CreditAddOrSaveGroup->setVisible(checked);
         this->ui->CreditWidget->setVisible(false);
@@ -209,12 +221,10 @@ void Checkout::LoadDataIntoCreditCard(Customer *customer){
 
     ui->CreditCardsTableWidget->clear();
     ui->CreditCardsTableWidget->setRowCount(0);
-
-    ui->CreditCardsTableWidget->setColumnCount(2);
-    QStringList headers = {"Card Num", "CVV"};
-    ui->CreditCardsTableWidget->setHorizontalHeaderLabels(headers);
+    userCreditCards.clear();
 
     for(const auto &card : customer->getCreditCards()){
+        userCreditCards.push_back({card.CVV, card.CardNum, card.Month, card.Year});
         int row = ui->CreditCardsTableWidget->rowCount();
         ui->CreditCardsTableWidget->insertRow(row);
         QString displayedNum = "****" + card.CardNum.right(4);
@@ -289,6 +299,7 @@ void Checkout::on_enterAddress_clicked()
     }
     ui->AddressWidget->setVisible(false);
     ui->SavedAddressGroup->setVisible(true);
+    ui->savedAddressTable->setVisible(true);
     updateAddressTable();
 }
 
@@ -310,6 +321,29 @@ void Checkout::on_ConfirmButton_clicked()
 
         }
     }
+
+
+
+
+
+    int addSelected = ui->savedAddressTable->currentRow();
+    int creditSelected = isCredit ? ui->CreditCardsTableWidget->currentRow() : -1;
+
+    if(addSelected >= 0 && addSelected <= userAddress.size()){
+        const Address& selectedAddress = userAddress[addSelected];
+        const CreditCard *selectedCredit = (creditSelected >= 0 && creditSelected < userCreditCards.size()) ? &userCreditCards[creditSelected] : nullptr;
+        QScreen* screen = QGuiApplication::primaryScreen();
+        QRect screenGeometry = screen->geometry();
+        Confirm *confirmorder = new Confirm(nullptr, this, cartt, selectedAddress, selectedCredit, user, users);
+        confirmorder->resize(screenGeometry.width(), screenGeometry.height());
+        confirmorder->show();
+        this->hide();
+
+    }
+
+
+
+
 
 
 }
