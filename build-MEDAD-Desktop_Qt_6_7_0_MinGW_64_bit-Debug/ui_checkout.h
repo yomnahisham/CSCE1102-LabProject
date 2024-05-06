@@ -55,7 +55,7 @@ public:
     QComboBox *Month;
     QComboBox *Year;
     QCheckBox *SaveCredit;
-    QPushButton *pushButton;
+    QPushButton *ConfirmButton;
     QPushButton *ReTurnHome;
     QWidget *AddressWidget;
     QPushButton *enterAddress;
@@ -245,11 +245,11 @@ public:
         SaveCredit = new QCheckBox(CreditCardInfoGroupBox);
         SaveCredit->setObjectName("SaveCredit");
         SaveCredit->setGeometry(QRect(10, 260, 311, 26));
-        pushButton = new QPushButton(Checkout);
-        pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(1170, 640, 281, 71));
-        pushButton->setFont(font);
-        pushButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+        ConfirmButton = new QPushButton(Checkout);
+        ConfirmButton->setObjectName("ConfirmButton");
+        ConfirmButton->setGeometry(QRect(1170, 640, 281, 71));
+        ConfirmButton->setFont(font);
+        ConfirmButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(249, 184, 158);"));
         ReTurnHome = new QPushButton(Checkout);
         ReTurnHome->setObjectName("ReTurnHome");
@@ -333,7 +333,7 @@ public:
         PhoneNum->setObjectName("PhoneNum");
         PhoneNum->setGeometry(QRect(10, 280, 231, 28));
         PaymentWidget->raise();
-        pushButton->raise();
+        ConfirmButton->raise();
         CreditWidget->raise();
         ReTurnHome->raise();
         AddressWidget->raise();
@@ -392,7 +392,7 @@ public:
         Year->setItemText(11, QString());
 
         SaveCredit->setText(QCoreApplication::translate("Checkout", "Save Credit Card Info", nullptr));
-        pushButton->setText(QCoreApplication::translate("Checkout", "Order Confirmation", nullptr));
+        ConfirmButton->setText(QCoreApplication::translate("Checkout", "Order Confirmation", nullptr));
         ReTurnHome->setText(QCoreApplication::translate("Checkout", "Return to Home Page", nullptr));
         enterAddress->setText(QCoreApplication::translate("Checkout", "Enter", nullptr));
         AddressGroupBox->setTitle(QCoreApplication::translate("Checkout", "Address Info", nullptr));

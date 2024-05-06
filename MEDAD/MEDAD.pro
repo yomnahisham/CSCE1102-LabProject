@@ -15,6 +15,7 @@ SOURCES += \
     books.cpp \
     checkout.cpp \
     clickablelabels.cpp \
+    confirm.cpp \
     customer.cpp \
     discounts.cpp \
     loginwindow.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     books.h \
     checkout.h \
     clickablelabels.h \
+    confirm.h \
     customer.h \
     discounts.h \
     loginwindow.h \
@@ -47,6 +49,7 @@ HEADERS += \
 
 FORMS += \
     checkout.ui \
+    confirm.ui \
     loginwindow.ui \
     productmanager.ui \
     registerwindow.ui \

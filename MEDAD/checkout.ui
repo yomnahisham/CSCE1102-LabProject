@@ -607,7 +607,7 @@ background-color: rgb(249, 184, 158);</string>
     </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="ConfirmButton">
    <property name="geometry">
     <rect>
      <x>1170</x>
@@ -963,7 +963,7 @@ background-color: rgb(249, 184, 158);</string>
    </widget>
   </widget>
   <zorder>PaymentWidget</zorder>
-  <zorder>pushButton</zorder>
+  <zorder>ConfirmButton</zorder>
   <zorder>CreditWidget</zorder>
   <zorder>ReTurnHome</zorder>
   <zorder>AddressWidget</zorder>
