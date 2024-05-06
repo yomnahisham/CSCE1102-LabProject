@@ -12,10 +12,11 @@ protected:
     int quantity;
     bool availability;
     QPixmap image;
+    QString seller;
 
 
 public:
-    Products(QString n, double p, int q, bool a, QPixmap i );
+    Products(QString n, double p, int q, bool a, QPixmap i , QString s );
     virtual void displayDetails();
     void setName(QString n);
     QString getName();
@@ -27,6 +28,8 @@ public:
     bool getAvailability();
     void setImage(QPixmap i);
     QPixmap getImage ();
+    void setSeller(QString s);
+    QString getSeller();
 
 };
 

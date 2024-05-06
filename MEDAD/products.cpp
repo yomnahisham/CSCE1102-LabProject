@@ -1,14 +1,23 @@
 #include "products.h"
 
 
-Products::Products(QString n, double p, int q, bool a, QPixmap i )
+Products::Products(QString n, double p, int q, bool a, QPixmap i,QString s )
 {
     name=n;
     price=p;
     quantity=q;
     availability=a;
     image=i;
+    seller=s;
 
+}
+void Products::setSeller(QString s)
+{
+    seller=s;
+}
+QString Products::getSeller()
+{
+    return seller;
 }
 void Products::setName(QString n)
 {

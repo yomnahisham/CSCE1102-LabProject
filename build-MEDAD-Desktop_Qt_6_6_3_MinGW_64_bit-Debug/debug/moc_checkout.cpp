@@ -39,22 +39,22 @@ namespace {
 struct qt_meta_stringdata_CLASSCheckoutENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSCheckoutENDCLASS = QtMocHelpers::stringData(
     "Checkout",
-    "on_pushButton_clicked",
-    "",
     "on_enterCredit_clicked",
+    "",
     "on_ReTurnHome_clicked",
     "on_enterAddress_clicked",
-    "on_ConfirmButton_clicked"
+    "on_ConfirmButton_clicked",
+    "on_enterDiscount_clicked"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSCheckoutENDCLASS_t {
     uint offsetsAndSizes[14];
     char stringdata0[9];
-    char stringdata1[22];
+    char stringdata1[23];
     char stringdata2[1];
-    char stringdata3[23];
-    char stringdata4[22];
-    char stringdata5[24];
+    char stringdata3[22];
+    char stringdata4[24];
+    char stringdata5[25];
     char stringdata6[25];
 };
 #define QT_MOC_LITERAL(ofs, len) \
@@ -62,20 +62,20 @@ struct qt_meta_stringdata_CLASSCheckoutENDCLASS_t {
 Q_CONSTINIT static const qt_meta_stringdata_CLASSCheckoutENDCLASS_t qt_meta_stringdata_CLASSCheckoutENDCLASS = {
     {
         QT_MOC_LITERAL(0, 8),  // "Checkout"
-        QT_MOC_LITERAL(9, 21),  // "on_pushButton_clicked"
-        QT_MOC_LITERAL(31, 0),  // ""
-        QT_MOC_LITERAL(32, 22),  // "on_enterCredit_clicked"
-        QT_MOC_LITERAL(55, 21),  // "on_ReTurnHome_clicked"
-        QT_MOC_LITERAL(77, 23),  // "on_enterAddress_clicked"
-        QT_MOC_LITERAL(101, 24)   // "on_ConfirmButton_clicked"
+        QT_MOC_LITERAL(9, 22),  // "on_enterCredit_clicked"
+        QT_MOC_LITERAL(32, 0),  // ""
+        QT_MOC_LITERAL(33, 21),  // "on_ReTurnHome_clicked"
+        QT_MOC_LITERAL(55, 23),  // "on_enterAddress_clicked"
+        QT_MOC_LITERAL(79, 24),  // "on_ConfirmButton_clicked"
+        QT_MOC_LITERAL(104, 24)   // "on_enterDiscount_clicked"
     },
     "Checkout",
-    "on_pushButton_clicked",
-    "",
     "on_enterCredit_clicked",
+    "",
     "on_ReTurnHome_clicked",
     "on_enterAddress_clicked",
-    "on_ConfirmButton_clicked"
+    "on_ConfirmButton_clicked",
+    "on_enterDiscount_clicked"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -120,8 +120,6 @@ Q_CONSTINIT const QMetaObject Checkout::staticMetaObject = { {
     qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSCheckoutENDCLASS_t,
         // Q_OBJECT / Q_GADGET
         QtPrivate::TypeAndForceComplete<Checkout, std::true_type>,
-        // method 'on_pushButton_clicked'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_enterCredit_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_ReTurnHome_clicked'
@@ -129,6 +127,8 @@ Q_CONSTINIT const QMetaObject Checkout::staticMetaObject = { {
         // method 'on_enterAddress_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_ConfirmButton_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_enterDiscount_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -140,11 +140,11 @@ void Checkout::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         auto *_t = static_cast<Checkout *>(_o);
         (void)_t;
         switch (_id) {
-        case 0: _t->on_pushButton_clicked(); break;
-        case 1: _t->on_enterCredit_clicked(); break;
-        case 2: _t->on_ReTurnHome_clicked(); break;
-        case 3: _t->on_enterAddress_clicked(); break;
-        case 4: _t->on_ConfirmButton_clicked(); break;
+        case 0: _t->on_enterCredit_clicked(); break;
+        case 1: _t->on_ReTurnHome_clicked(); break;
+        case 2: _t->on_enterAddress_clicked(); break;
+        case 3: _t->on_ConfirmButton_clicked(); break;
+        case 4: _t->on_enterDiscount_clicked(); break;
         default: ;
         }
     }

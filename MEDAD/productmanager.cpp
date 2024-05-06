@@ -8,7 +8,7 @@
 #include "accessories.h"
 #include "techs.h"
 #include "loginwindow.h"
-
+#include"products.h"
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
@@ -336,19 +336,19 @@ void ProductManager::remarkItemsBeforeCall(){
     }
 }
 
-Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN){
+Books* ProductManager::createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& seller, const QString& genre, const QString& author, const QString& ISBN){
     QPixmap image(imagePath);
-    return new Books(name, price, quantity, availability, image, genre, author, ISBN);
+    return new Books(name, price, quantity, availability, image, seller, genre, author, ISBN);
 }
 
-Accessories* ProductManager::createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size) {
+Accessories* ProductManager::createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, ,const QString& seller, const QString& type, char size) {
     QPixmap image(imagePath);
-    return new Accessories(name, price, quantity, availability, image, type, size);
+    return new Accessories(name, price, quantity, availability, image, seller, type, size);
 }
 
-Techs* ProductManager::createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& imagePath, int type){
+Techs* ProductManager::createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& imagePath, const QString& seller, int type){
     QPixmap image(imagePath);
-    return new Techs(name, price, quantity, availability, image, type);
+    return new Techs(name, price, quantity, availability, image, seller, type);
 }
 
 /*
@@ -465,7 +465,7 @@ void ProductManager::initializeProducts() {
         QString author = data[6];
         QString ISBN = data[7];
 
-        Books* product = createBook(name, price, quantity, availability, imagePath, genre, author, ISBN);
+        Books* product = createBook(name, price, quantity, availability, imagePath, seller, genre, author, ISBN);
         bookProducts->push_back(product);
         allProducts.push_back(product);
         Customer *customer = dynamic_cast<Customer*>(user);
@@ -508,7 +508,7 @@ void ProductManager::initializeProducts() {
 
         char sizeChar = size.toLatin1();
 
-        Accessories* accessory = createAccessory(name, price, quantity, availability, imagePath, type, sizeChar);
+        Accessories* accessory = createAccessory(name, price, quantity, availability, imagePath, seller, type, sizeChar);
         accessoryProducts->push_back(accessory);
         allProducts.push_back(accessory);
 
@@ -538,7 +538,7 @@ void ProductManager::initializeProducts() {
         QString imagePath = data[4];
         int type = data[5].toInt();
 
-        Techs* tech = createTech(name, price, quantity, availability, QPixmap(imagePath), type);
+        Techs* tech = createTech(name, price, quantity, availability, QPixmap(imagePath), Seller, type);
         techyProducts->push_back(tech);
         allProducts.push_back(tech);
 

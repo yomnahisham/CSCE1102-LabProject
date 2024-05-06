@@ -34,9 +34,9 @@ public:
     explicit ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers,ShoppingCart *cartPage = nullptr);
     ~ProductManager();
 
-    Books* createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& genre, const QString& author, const QString& ISBN);
-    Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size);
-    Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, int type);
+    Books* createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& seller,const QString& genre, const QString& author, const QString& ISBN);
+    Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type,const QString& seller, char size);
+    Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, const QString& seller, int type);
 
     void createAdminAccessPage();
     void makeAccountsTable(QTableWidget *accountsTable);

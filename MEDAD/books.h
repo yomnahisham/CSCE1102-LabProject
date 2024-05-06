@@ -10,7 +10,7 @@ protected:
     QString ISBN;
 
 public:
-    Books(QString n, double p, int q, bool a, QPixmap i, QString g, QString au , QString I );
+    Books(QString n, double p, int q, bool a, QPixmap i,QString s, QString g, QString au , QString I );
     void setGenre(QString g);
     QString getGenre();
     void setAuthor(QString a);

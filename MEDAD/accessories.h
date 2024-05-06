@@ -8,7 +8,7 @@ protected:
     char size;
 
 public:
-    Accessories(QString n, double p, int q, bool a, QPixmap i, QString t, char s );
+    Accessories(QString n, double p, int q, bool a, QPixmap i, QString sel, QString t, char s );
     void setType(QString t);
     QString getType();
     void setSize(char s);

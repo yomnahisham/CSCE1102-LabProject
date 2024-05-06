@@ -1,6 +1,6 @@
 #include "techs.h"
 
-Techs::Techs(QString n, double p, int q, bool a, QPixmap i, int w):Products(n,p,q,a,i), warranty(w){}
+Techs::Techs(QString n, double p, int q, bool a, QPixmap i, QString s, int w):Products(n,p,q,a,i,s), warranty(w){}
 void Techs:: setWarranty(int w)
 {
     warranty=w;
