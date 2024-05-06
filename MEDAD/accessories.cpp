@@ -1,6 +1,6 @@
 #include "accessories.h"
 
-Accessories::Accessories(QString n, double p, int q, bool a, QPixmap i, QString sel, QString t, char s): Products(n,p,q,a,i,sel) , type(t) ,size(s){}
+Accessories::Accessories(QString n, double p, int q, bool a, QPixmap i, QString sel, QString t, QString s): Products(n,p,q,a,i,sel) , type(t) ,size(s){}
 
 void Accessories:: setType(QString t)
 {
@@ -10,11 +10,11 @@ QString Accessories:: getType()
 {
     return type;
 }
-void Accessories:: setSize(char s)
+void Accessories:: setSize(QString s)
 {
     size=s;
 }
-char Accessories:: getSize()
+QString Accessories:: getSize()
 {
     return size;
 }

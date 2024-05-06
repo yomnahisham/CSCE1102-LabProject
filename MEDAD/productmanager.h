@@ -35,11 +35,12 @@ public:
     ~ProductManager();
 
     Books* createBook(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& seller,const QString& genre, const QString& author, const QString& ISBN);
-    Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type,const QString& seller, char size);
+    Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& seller, const QString& type, QString size);
     Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, const QString& seller, int type);
 
     void createAdminAccessPage();
     void makeAccountsTable(QTableWidget *accountsTable);
+    void createSellerView();
 
     vector<Products*> suggestSimilarItems();
 
@@ -95,6 +96,7 @@ public:
     vector<Products*> fourthPageProducts;
     vector<Products*> beforeCallProducts;
     vector<Products*> allProducts;
+    QVector<Products*> sellerProducts;
 
     bool secondPage = false;
     bool thirdPage = false;

@@ -3,3 +3,4 @@ customer :yomna :yomna1 :Classics :Comic-Books :G :N
 customer :aylaS :ayla1234 :Classics :Palestine :G :N
 admin :AylaSaleh :ayla1234 :N
 admin :yoyoo :yomna1 :N
+seller :ReadersCorner :rc :N

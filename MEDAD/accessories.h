@@ -5,14 +5,14 @@ class Accessories : public Products
 {
 protected:
     QString type;
-    char size;
+    QString size;
 
 public:
-    Accessories(QString n, double p, int q, bool a, QPixmap i, QString sel, QString t, char s );
+    Accessories(QString n, double p, int q, bool a, QPixmap i, QString sel, QString t, QString s );
     void setType(QString t);
     QString getType();
-    void setSize(char s);
-    char getSize();
+    void setSize(QString s);
+    QString getSize();
     void displayDetails();
 
 
