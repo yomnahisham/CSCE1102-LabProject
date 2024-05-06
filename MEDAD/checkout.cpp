@@ -378,6 +378,9 @@ void Checkout::userDiscount(){
             ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
             isApplied = true;
 
+        }else{
+            ui->InValidDiscount->setVisible(true);
+
         }
     }
 
