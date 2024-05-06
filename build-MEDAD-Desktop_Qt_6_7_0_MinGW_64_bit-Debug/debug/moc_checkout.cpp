@@ -36,12 +36,12 @@ namespace {
 struct qt_meta_stringdata_CLASSCheckoutENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSCheckoutENDCLASS = QtMocHelpers::stringData(
     "Checkout",
-    "on_pushButton_clicked",
-    "",
     "on_enterCredit_clicked",
+    "",
     "on_ReTurnHome_clicked",
     "on_enterAddress_clicked",
-    "on_ConfirmButton_clicked"
+    "on_ConfirmButton_clicked",
+    "on_enterDiscount_clicked"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -87,8 +87,6 @@ Q_CONSTINIT const QMetaObject Checkout::staticMetaObject = { {
     qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSCheckoutENDCLASS_t,
         // Q_OBJECT / Q_GADGET
         QtPrivate::TypeAndForceComplete<Checkout, std::true_type>,
-        // method 'on_pushButton_clicked'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_enterCredit_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_ReTurnHome_clicked'
@@ -96,6 +94,8 @@ Q_CONSTINIT const QMetaObject Checkout::staticMetaObject = { {
         // method 'on_enterAddress_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_ConfirmButton_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_enterDiscount_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -107,11 +107,11 @@ void Checkout::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         auto *_t = static_cast<Checkout *>(_o);
         (void)_t;
         switch (_id) {
-        case 0: _t->on_pushButton_clicked(); break;
-        case 1: _t->on_enterCredit_clicked(); break;
-        case 2: _t->on_ReTurnHome_clicked(); break;
-        case 3: _t->on_enterAddress_clicked(); break;
-        case 4: _t->on_ConfirmButton_clicked(); break;
+        case 0: _t->on_enterCredit_clicked(); break;
+        case 1: _t->on_ReTurnHome_clicked(); break;
+        case 2: _t->on_enterAddress_clicked(); break;
+        case 3: _t->on_ConfirmButton_clicked(); break;
+        case 4: _t->on_enterDiscount_clicked(); break;
         default: ;
         }
     }

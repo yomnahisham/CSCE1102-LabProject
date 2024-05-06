@@ -21,6 +21,8 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
 
     isCredit = false;
 
+    ui->InValidDiscount->setVisible(false);
+
     ui->savedAddressTable->setVisible(false);
     ui->savedAddressTable->setColumnCount(2);
     QStringList AddressHeaders = {"Area", "Phone Number"};
@@ -94,6 +96,7 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
 
     CreditCardSystem();
     AddressSystem();
+
 
 
 
@@ -276,10 +279,12 @@ void Checkout::on_enterCredit_clicked()
 
 }
 
+/*
 void Checkout::on_pushButton_clicked(){
 
 
 }
+*/
 void Checkout::on_ReTurnHome_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
@@ -342,5 +347,103 @@ void Checkout::on_ConfirmButton_clicked()
 
     cartt->clearCart();
 
+}
+
+void Checkout::userDiscount(){
+
+    QString pcode = ui->PromoCode->text();
+    bool isFound = false;
+    //"HHXB", "PPOX", "UAFX", "VBBS", "XYSA", "AVXG", "VBWQ", "HAJQ", "VZBQ", "QBAI"
+    if(pcode == "HHXB"){
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.10;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+    }else if(pcode == "PPOX"){
+
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.20;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+
+    }else if(pcode == "UAFX"){
+
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.30;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+
+
+    }else if(pcode == "VBBS"){
+
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.40;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+    }else if(pcode == "XYSA"){
+
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.50;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+    }else if(pcode == "AVXG"){
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.60;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+    }else if(pcode == "VBWQ"){
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.70;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+    }else if(pcode == "HAJQ"){
+
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.80;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+    }else if(pcode == "VZBQ"){
+
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 0.90;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+    }else if(pcode == "QBAI"){
+
+        isFound = true;
+        ui->InValidDiscount->setVisible(false);
+        discountPercentage = 1.00;
+        Total *= discountPercentage;
+        ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
+
+    }else{
+
+        if(!isFound){
+            ui->InValidDiscount->setVisible(true);
+        }
+
+    }
+
+}
+void Checkout::on_enterDiscount_clicked()
+{
+    userDiscount();
 }
 

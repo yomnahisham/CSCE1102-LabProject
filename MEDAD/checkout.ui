@@ -21,7 +21,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>10</y>
+     <y>20</y>
      <width>561</width>
      <height>781</height>
     </rect>
@@ -29,8 +29,8 @@
    <widget class="QLabel" name="DeliveryFee">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>580</y>
+      <x>10</x>
+      <y>630</y>
       <width>509</width>
       <height>61</height>
      </rect>
@@ -56,10 +56,10 @@
    <widget class="QLabel" name="Total">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>670</y>
-      <width>291</width>
-      <height>111</height>
+      <x>10</x>
+      <y>730</y>
+      <width>301</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -143,8 +143,8 @@
    <widget class="QLabel" name="subTotal">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>640</y>
+      <x>10</x>
+      <y>670</y>
       <width>509</width>
       <height>61</height>
      </rect>
@@ -323,6 +323,58 @@
       </rect>
      </property>
     </widget>
+   </widget>
+   <widget class="QLineEdit" name="PromoCode">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>640</y>
+      <width>231</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0, 0, 0);</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="enterDiscount">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>640</y>
+      <width>83</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(249, 184, 158);
+</string>
+    </property>
+    <property name="text">
+     <string>Enter</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="InValidDiscount">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>680</y>
+      <width>271</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>*Invalid Promo Code</string>
+    </property>
    </widget>
   </widget>
   <widget class="QWidget" name="CreditWidget" native="true">

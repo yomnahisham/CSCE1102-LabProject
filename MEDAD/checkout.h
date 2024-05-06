@@ -66,11 +66,12 @@ public:
    ShoppingCart *cartt;
    Customer *customer;
    bool isCredit;
+   void userDiscount();
 
 
 
 private slots:
-    void on_pushButton_clicked();
+    //void on_pushButton_clicked();
 
     void on_enterCredit_clicked();
 
@@ -81,6 +82,8 @@ private slots:
     void on_ConfirmButton_clicked();
 
 
+    void on_enterDiscount_clicked();
+
 private:
     Ui::Checkout *ui;
     double Total;
@@ -88,6 +91,8 @@ private:
     double deliveryFee;
     User *user ;
     AllUsers *users;
+    double discountPercentage;
+    QString PromoCodes[10] = {"HHXB", "PPOX", "UAFX", "VBBS", "XYSA", "AVXG", "VBWQ", "HAJQ", "VZBQ", "QBAI"};
 
 
 
