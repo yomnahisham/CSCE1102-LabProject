@@ -21,7 +21,7 @@ Confirm::Confirm(QWidget *parent, Checkout *c, ShoppingCart *cart, const Checkou
     ui->TotalLabel->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
     ui->DeliveryLabel->setText("Delivery Fee: " + QString("EGP %1").arg(deliveryFee, 0, 'f', 2));
     ui->SubTotalLabel->setText("SubTotal: " + QString("EGP %1").arg(Subtotal, 0, 'f', 2));
-    ui->DelievryDateLabel -> setText("Delivery Date: 5 buisness days");
+    ui->DeliveryDate-> setText(" 5 buisness days");
 
     if(creditcard != nullptr){
         ui->PaymentMethod->setText("Credit Card, ****" +creditcard->CardNum.right(4));

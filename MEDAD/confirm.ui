@@ -13,20 +13,23 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <widget class="QWidget" name="ConfirmWidget" native="true">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>40</y>
-     <width>691</width>
-     <height>561</height>
+     <x>320</x>
+     <y>70</y>
+     <width>741</width>
+     <height>621</height>
     </rect>
    </property>
    <widget class="QLabel" name="OrderPlacedLabel">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
+      <x>70</x>
+      <y>50</y>
       <width>641</width>
       <height>51</height>
      </rect>
@@ -37,6 +40,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0, 0, 0);</string>
+    </property>
     <property name="text">
      <string>Order Successfully Placed!</string>
     </property>
@@ -44,8 +50,8 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>120</y>
+      <x>80</x>
+      <y>130</y>
       <width>601</width>
       <height>361</height>
      </rect>
@@ -55,6 +61,9 @@
       <pointsize>15</pointsize>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0, 0, 0);</string>
     </property>
     <property name="title">
      <string>Order Summary</string>
@@ -102,9 +111,18 @@
       <rect>
        <x>10</x>
        <y>120</y>
-       <width>211</width>
-       <height>21</height>
+       <width>361</width>
+       <height>41</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
       <string>Total: EGP 20.00</string>
@@ -118,6 +136,12 @@
        <width>191</width>
        <height>51</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
       <string>Delivering To:</string>
@@ -151,6 +175,12 @@
        <height>41</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Payment Method:</string>
      </property>
@@ -183,6 +213,12 @@
        <height>41</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Delivery Date:</string>
      </property>
@@ -210,16 +246,20 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>500</y>
-      <width>191</width>
-      <height>51</height>
+      <x>280</x>
+      <y>520</y>
+      <width>211</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(249, 184, 158);</string>
     </property>
     <property name="text">
      <string>Continue Shopping</string>
