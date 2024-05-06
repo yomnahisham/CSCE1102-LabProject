@@ -2,7 +2,7 @@
 #include "ui_confirm.h"
 #include "checkout.h"
 
-Confirm::Confirm(QWidget *parent, Checkout *c, vector<Checkout::Address> userAdress, const Addrress& add)
+Confirm::Confirm(QWidget *parent, Checkout *c, vector<Checkout::Address> userAdress)
     : QWidget(parent)
     , ui(new Ui::Confirm)
 {
@@ -15,7 +15,7 @@ Confirm::Confirm(QWidget *parent, Checkout *c, vector<Checkout::Address> userAdr
     ui->DeliveryLabel->setText("Delivery Fee: " + QString("EGP %1").arg(deliveryFee, 0, 'f', 2));
     ui->SubTotalLabel->setText("SubTotal: " + QString("EGP %1").arg(Subtotal, 0, 'f', 2));
     ui->DelievryDateLabel -> setText("Delivery Date: 5 buisness days");
-    Provice = add
+
 
 }
 
