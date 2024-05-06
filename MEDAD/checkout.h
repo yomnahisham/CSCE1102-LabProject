@@ -91,9 +91,13 @@ private:
     double deliveryFee;
     User *user ;
     AllUsers *users;
+    bool isApplied = false;
     double discountPercentage;
-    QString PromoCodes[10] = {"HHXB", "PPOX", "UAFX", "VBBS", "XYSA", "AVXG", "VBWQ", "HAJQ", "VZBQ", "QBAI"};
-
+    QStringList PromoCodes = {"HHXB", "PPOX", "UAFX", "VBBS", "XYSA", "AVXG", "VBWQ", "HAJQ", "VZBQ", "QBAI"};
+    QMap<QString, double> discounts = {
+                            {"HHXB",0.10}, {"PPOX", 0.20}, {"UAFX", 0.30} ,{"VBBS", 0.49} , {"XYSA", 0.50},
+                            {"AVXG", 0.60}, {"VBWQ", 0.70}, {"HAJQ", 0.80} , {"VZBQ" , 0.90} , {"QBAI", 1.00}
+    };
 
 
 };
