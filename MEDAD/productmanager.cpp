@@ -1128,7 +1128,7 @@ void ProductManager::makeSecondPage(){
     ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
-
+    ui->allproductsLayout->Down;
     showRemainingProducts();
 }
 
@@ -1141,7 +1141,7 @@ void ProductManager::makeThirdPage(){
     ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
-
+ ui->allproductsLayout->Down;
     showRemainingProducts();
 }
 
@@ -1155,7 +1155,7 @@ void ProductManager::makeFourthPage(){
     ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
-
+ ui->allproductsLayout->Down;
     showRemainingProducts();
 }
 
@@ -1453,6 +1453,7 @@ void ProductManager::onRegisterAdminClicked()
 void ProductManager::onRegisterSellerClicked(){
 
 }
+
 QWidget* ProductManager::createProductWidget(Products* product) {
     // Create a widget to display product information
     QWidget* productWidget = new QWidget;
@@ -1464,10 +1465,14 @@ QWidget* ProductManager::createProductWidget(Products* product) {
 
     QLabel* priceLabel = new QLabel(QString::number(product->getPrice()) + " EGP");
     priceLabel->setFont(QFont("Optima", 12));
-
     // Create a QLabel to display the product image
     QLabel* imageLabel = new QLabel();
     QPixmap imagePixmap = product->getImage();
+    imageLabel->setPixmap(imagePixmap); // Set the pixmap to the label
+
+    // Scale the pixmap to fit the label while preserving aspect ratio
+    imageLabel->setScaledContents(true);
+
 
     // Define the maximum width and height for the image label
     int maxImageWidth = 200; // Adjust as needed
@@ -1479,7 +1484,8 @@ QWidget* ProductManager::createProductWidget(Products* product) {
         scaledImagePixmap = imagePixmap.scaledToHeight(maxImageHeight, Qt::SmoothTransformation);
     }
 
-    // Set the pixmap to the image label
+
+    // Set the scaled pixmap to the image label
     imageLabel->setPixmap(scaledImagePixmap);
 
     // Assuming you have a QLabel for "Add to Cart" button
@@ -1502,10 +1508,9 @@ QWidget* ProductManager::createProductWidget(Products* product) {
     productWidget->setLayout(layout);
 
     return productWidget;
+
+
 }
-
-
-
 
 void ProductManager::sortPage(QLayout* layout, const QString &arg1, vector<Products*> &products, int startIndex, int maxBooksToShow) {
     qDebug() << "Processing page...";

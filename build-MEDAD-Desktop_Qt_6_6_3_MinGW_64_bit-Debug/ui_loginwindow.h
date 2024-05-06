@@ -32,6 +32,7 @@ public:
     QLineEdit *passLE;
     QLabel *userError;
     QLabel *passError;
+    QPushButton *sellerB;
 
     void setupUi(QDialog *LoginWindow)
     {
@@ -54,11 +55,11 @@ public:
         LoginAsL->setGeometry(QRect(570, 340, 58, 16));
         customerB = new QPushButton(LoginWindow);
         customerB->setObjectName("customerB");
-        customerB->setGeometry(QRect(450, 390, 100, 32));
+        customerB->setGeometry(QRect(380, 390, 100, 32));
         customerB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         adminB = new QPushButton(LoginWindow);
         adminB->setObjectName("adminB");
-        adminB->setGeometry(QRect(650, 390, 100, 32));
+        adminB->setGeometry(QRect(710, 390, 100, 32));
         adminB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         userL = new QLabel(LoginWindow);
         userL->setObjectName("userL");
@@ -83,6 +84,10 @@ public:
         passError = new QLabel(LoginWindow);
         passError->setObjectName("passError");
         passError->setGeometry(QRect(650, 390, 131, 16));
+        sellerB = new QPushButton(LoginWindow);
+        sellerB->setObjectName("sellerB");
+        sellerB->setGeometry(QRect(540, 390, 100, 32));
+        sellerB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
 
         retranslateUi(LoginWindow);
 
@@ -101,6 +106,7 @@ public:
         passL->setText(QCoreApplication::translate("LoginWindow", "Password:", nullptr));
         userError->setText(QCoreApplication::translate("LoginWindow", "<html><head/><body><p><span style=\" color:#941100;\">Incorrect Username</span></p></body></html>", nullptr));
         passError->setText(QCoreApplication::translate("LoginWindow", "<html><head/><body><p><span style=\" color:#941100;\">Incorrect Password</span></p></body></html>", nullptr));
+        sellerB->setText(QCoreApplication::translate("LoginWindow", "Seller", nullptr));
     } // retranslateUi
 
 };

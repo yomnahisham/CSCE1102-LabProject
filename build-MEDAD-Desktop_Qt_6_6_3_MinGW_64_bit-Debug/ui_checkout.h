@@ -14,10 +14,12 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -32,7 +34,18 @@ public:
     QRadioButton *CashButton;
     QRadioButton *CreditButton;
     QLabel *subTotal;
+    QGroupBox *CreditAddOrSaveGroup;
+    QRadioButton *AddNewCreditButton;
+    QRadioButton *SavedCredtButton;
+    QGroupBox *DelieverinAddorSaveGroup;
+    QRadioButton *AddNewAddressButton;
+    QRadioButton *SavedAddressButton;
+    QGroupBox *CreditCardsGroup;
+    QTableWidget *CreditCardsTableWidget;
+    QGroupBox *SavedAddressGroup;
+    QTableWidget *savedAddressTable;
     QWidget *CreditWidget;
+    QPushButton *enterCredit;
     QGroupBox *CreditCardInfoGroupBox;
     QLabel *CreditNumLabel;
     QLineEdit *CreditNum;
@@ -42,21 +55,40 @@ public:
     QComboBox *Month;
     QComboBox *Year;
     QCheckBox *SaveCredit;
-    QPushButton *pushButton;
+    QPushButton *ConfirmButton;
+    QPushButton *ReTurnHome;
+    QWidget *AddressWidget;
+    QPushButton *enterAddress;
+    QGroupBox *AddressGroupBox;
+    QLabel *StreetLabel;
+    QLineEdit *Street;
+    QLabel *ProvinceLabel;
+    QComboBox *Province;
+    QCheckBox *SaveAddress;
+    QLabel *AreaLabel;
+    QLineEdit *Area;
+    QLabel *BuildingLabel;
+    QLineEdit *Building;
+    QLabel *AptLabel;
+    QLineEdit *Apt;
+    QLabel *FloorLabel;
+    QLineEdit *Floor;
+    QLabel *PhoneNoLabel;
+    QLineEdit *PhoneNum;
 
     void setupUi(QWidget *Checkout)
     {
         if (Checkout->objectName().isEmpty())
             Checkout->setObjectName("Checkout");
-        Checkout->resize(1278, 933);
+        Checkout->resize(1757, 933);
         Checkout->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
 ""));
         PaymentWidget = new QWidget(Checkout);
         PaymentWidget->setObjectName("PaymentWidget");
-        PaymentWidget->setGeometry(QRect(60, 70, 601, 781));
+        PaymentWidget->setGeometry(QRect(80, 10, 561, 781));
         DeliveryFee = new QLabel(PaymentWidget);
         DeliveryFee->setObjectName("DeliveryFee");
-        DeliveryFee->setGeometry(QRect(20, 380, 509, 61));
+        DeliveryFee->setGeometry(QRect(20, 580, 509, 61));
         QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Minimum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -68,7 +100,7 @@ public:
         DeliveryFee->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         Total = new QLabel(PaymentWidget);
         Total->setObjectName("Total");
-        Total->setGeometry(QRect(20, 440, 291, 111));
+        Total->setGeometry(QRect(20, 670, 291, 111));
         QFont font1;
         font1.setPointSize(20);
         font1.setBold(true);
@@ -80,7 +112,7 @@ public:
         Total->setWordWrap(false);
         groupBox = new QGroupBox(PaymentWidget);
         groupBox->setObjectName("groupBox");
-        groupBox->setGeometry(QRect(30, 60, 321, 191));
+        groupBox->setGeometry(QRect(10, 20, 281, 121));
         QFont font2;
         font2.setPointSize(15);
         font2.setBold(true);
@@ -89,17 +121,17 @@ public:
 ""));
         CashButton = new QRadioButton(groupBox);
         CashButton->setObjectName("CashButton");
-        CashButton->setGeometry(QRect(10, 130, 201, 26));
+        CashButton->setGeometry(QRect(10, 80, 201, 26));
         CashButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 ""));
         CreditButton = new QRadioButton(groupBox);
         CreditButton->setObjectName("CreditButton");
-        CreditButton->setGeometry(QRect(10, 80, 181, 26));
+        CreditButton->setGeometry(QRect(10, 50, 181, 26));
         CreditButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 ""));
         subTotal = new QLabel(PaymentWidget);
         subTotal->setObjectName("subTotal");
-        subTotal->setGeometry(QRect(20, 420, 509, 61));
+        subTotal->setGeometry(QRect(20, 640, 509, 61));
         QSizePolicy sizePolicy1(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Ignored);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -110,12 +142,55 @@ public:
         font3.setBold(true);
         subTotal->setFont(font3);
         subTotal->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        CreditAddOrSaveGroup = new QGroupBox(PaymentWidget);
+        CreditAddOrSaveGroup->setObjectName("CreditAddOrSaveGroup");
+        CreditAddOrSaveGroup->setGeometry(QRect(10, 190, 161, 111));
+        CreditAddOrSaveGroup->setFont(font);
+        CreditAddOrSaveGroup->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        AddNewCreditButton = new QRadioButton(CreditAddOrSaveGroup);
+        AddNewCreditButton->setObjectName("AddNewCreditButton");
+        AddNewCreditButton->setGeometry(QRect(20, 40, 112, 26));
+        SavedCredtButton = new QRadioButton(CreditAddOrSaveGroup);
+        SavedCredtButton->setObjectName("SavedCredtButton");
+        SavedCredtButton->setGeometry(QRect(20, 80, 112, 26));
+        DelieverinAddorSaveGroup = new QGroupBox(PaymentWidget);
+        DelieverinAddorSaveGroup->setObjectName("DelieverinAddorSaveGroup");
+        DelieverinAddorSaveGroup->setGeometry(QRect(20, 450, 151, 91));
+        DelieverinAddorSaveGroup->setFont(font);
+        DelieverinAddorSaveGroup->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        AddNewAddressButton = new QRadioButton(DelieverinAddorSaveGroup);
+        AddNewAddressButton->setObjectName("AddNewAddressButton");
+        AddNewAddressButton->setGeometry(QRect(10, 30, 112, 26));
+        SavedAddressButton = new QRadioButton(DelieverinAddorSaveGroup);
+        SavedAddressButton->setObjectName("SavedAddressButton");
+        SavedAddressButton->setGeometry(QRect(10, 60, 112, 26));
+        CreditCardsGroup = new QGroupBox(PaymentWidget);
+        CreditCardsGroup->setObjectName("CreditCardsGroup");
+        CreditCardsGroup->setGeometry(QRect(240, 190, 271, 191));
+        CreditCardsGroup->setFont(font);
+        CreditCardsGroup->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        CreditCardsTableWidget = new QTableWidget(CreditCardsGroup);
+        CreditCardsTableWidget->setObjectName("CreditCardsTableWidget");
+        CreditCardsTableWidget->setGeometry(QRect(10, 40, 241, 141));
+        SavedAddressGroup = new QGroupBox(PaymentWidget);
+        SavedAddressGroup->setObjectName("SavedAddressGroup");
+        SavedAddressGroup->setGeometry(QRect(240, 440, 281, 171));
+        SavedAddressGroup->setFont(font);
+        SavedAddressGroup->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        savedAddressTable = new QTableWidget(SavedAddressGroup);
+        savedAddressTable->setObjectName("savedAddressTable");
+        savedAddressTable->setGeometry(QRect(10, 40, 261, 121));
         CreditWidget = new QWidget(Checkout);
         CreditWidget->setObjectName("CreditWidget");
-        CreditWidget->setGeometry(QRect(700, 60, 511, 451));
+        CreditWidget->setGeometry(QRect(650, 140, 401, 391));
+        enterCredit = new QPushButton(CreditWidget);
+        enterCredit->setObjectName("enterCredit");
+        enterCredit->setGeometry(QRect(130, 340, 111, 41));
+        enterCredit->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"background-color: rgb(249, 184, 158);"));
         CreditCardInfoGroupBox = new QGroupBox(CreditWidget);
         CreditCardInfoGroupBox->setObjectName("CreditCardInfoGroupBox");
-        CreditCardInfoGroupBox->setGeometry(QRect(30, 60, 459, 319));
+        CreditCardInfoGroupBox->setGeometry(QRect(10, 40, 361, 291));
         CreditCardInfoGroupBox->setFont(font2);
         CreditCardInfoGroupBox->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         CreditNumLabel = new QLabel(CreditCardInfoGroupBox);
@@ -125,7 +200,7 @@ public:
         CreditNumLabel->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         CreditNum = new QLineEdit(CreditCardInfoGroupBox);
         CreditNum->setObjectName("CreditNum");
-        CreditNum->setGeometry(QRect(10, 80, 301, 28));
+        CreditNum->setGeometry(QRect(10, 80, 331, 28));
         CVVLabel = new QLabel(CreditCardInfoGroupBox);
         CVVLabel->setObjectName("CVVLabel");
         CVVLabel->setGeometry(QRect(10, 110, 71, 20));
@@ -169,13 +244,99 @@ public:
         Year->setGeometry(QRect(120, 220, 82, 28));
         SaveCredit = new QCheckBox(CreditCardInfoGroupBox);
         SaveCredit->setObjectName("SaveCredit");
-        SaveCredit->setGeometry(QRect(20, 280, 311, 26));
-        pushButton = new QPushButton(Checkout);
-        pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(780, 690, 391, 71));
-        pushButton->setFont(font);
-        pushButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+        SaveCredit->setGeometry(QRect(10, 260, 311, 26));
+        ConfirmButton = new QPushButton(Checkout);
+        ConfirmButton->setObjectName("ConfirmButton");
+        ConfirmButton->setGeometry(QRect(1170, 640, 281, 71));
+        ConfirmButton->setFont(font);
+        ConfirmButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(249, 184, 158);"));
+        ReTurnHome = new QPushButton(Checkout);
+        ReTurnHome->setObjectName("ReTurnHome");
+        ReTurnHome->setGeometry(QRect(840, 640, 281, 71));
+        ReTurnHome->setFont(font);
+        ReTurnHome->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"background-color: rgb(249, 184, 158);"));
+        AddressWidget = new QWidget(Checkout);
+        AddressWidget->setObjectName("AddressWidget");
+        AddressWidget->setGeometry(QRect(1050, 140, 431, 441));
+        enterAddress = new QPushButton(AddressWidget);
+        enterAddress->setObjectName("enterAddress");
+        enterAddress->setGeometry(QRect(150, 400, 111, 41));
+        enterAddress->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"background-color: rgb(249, 184, 158);"));
+        AddressGroupBox = new QGroupBox(AddressWidget);
+        AddressGroupBox->setObjectName("AddressGroupBox");
+        AddressGroupBox->setGeometry(QRect(20, 30, 391, 361));
+        AddressGroupBox->setFont(font2);
+        AddressGroupBox->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        StreetLabel = new QLabel(AddressGroupBox);
+        StreetLabel->setObjectName("StreetLabel");
+        StreetLabel->setGeometry(QRect(10, 120, 71, 20));
+        StreetLabel->setFont(font3);
+        Street = new QLineEdit(AddressGroupBox);
+        Street->setObjectName("Street");
+        Street->setGeometry(QRect(10, 150, 113, 28));
+        ProvinceLabel = new QLabel(AddressGroupBox);
+        ProvinceLabel->setObjectName("ProvinceLabel");
+        ProvinceLabel->setGeometry(QRect(10, 50, 181, 20));
+        ProvinceLabel->setFont(font3);
+        Province = new QComboBox(AddressGroupBox);
+        Province->addItem(QString());
+        Province->addItem(QString());
+        Province->addItem(QString());
+        Province->addItem(QString());
+        Province->addItem(QString());
+        Province->addItem(QString());
+        Province->addItem(QString());
+        Province->addItem(QString());
+        Province->setObjectName("Province");
+        Province->setGeometry(QRect(10, 80, 171, 28));
+        SaveAddress = new QCheckBox(AddressGroupBox);
+        SaveAddress->setObjectName("SaveAddress");
+        SaveAddress->setGeometry(QRect(10, 320, 311, 26));
+        AreaLabel = new QLabel(AddressGroupBox);
+        AreaLabel->setObjectName("AreaLabel");
+        AreaLabel->setGeometry(QRect(230, 50, 181, 20));
+        AreaLabel->setFont(font3);
+        AreaLabel->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        Area = new QLineEdit(AddressGroupBox);
+        Area->setObjectName("Area");
+        Area->setGeometry(QRect(230, 80, 131, 28));
+        BuildingLabel = new QLabel(AddressGroupBox);
+        BuildingLabel->setObjectName("BuildingLabel");
+        BuildingLabel->setGeometry(QRect(230, 130, 181, 20));
+        BuildingLabel->setFont(font3);
+        BuildingLabel->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        Building = new QLineEdit(AddressGroupBox);
+        Building->setObjectName("Building");
+        Building->setGeometry(QRect(230, 150, 151, 28));
+        AptLabel = new QLabel(AddressGroupBox);
+        AptLabel->setObjectName("AptLabel");
+        AptLabel->setGeometry(QRect(10, 190, 171, 20));
+        AptLabel->setFont(font3);
+        Apt = new QLineEdit(AddressGroupBox);
+        Apt->setObjectName("Apt");
+        Apt->setGeometry(QRect(10, 220, 113, 28));
+        FloorLabel = new QLabel(AddressGroupBox);
+        FloorLabel->setObjectName("FloorLabel");
+        FloorLabel->setGeometry(QRect(240, 190, 171, 20));
+        FloorLabel->setFont(font3);
+        Floor = new QLineEdit(AddressGroupBox);
+        Floor->setObjectName("Floor");
+        Floor->setGeometry(QRect(230, 220, 113, 28));
+        PhoneNoLabel = new QLabel(AddressGroupBox);
+        PhoneNoLabel->setObjectName("PhoneNoLabel");
+        PhoneNoLabel->setGeometry(QRect(10, 260, 171, 20));
+        PhoneNoLabel->setFont(font3);
+        PhoneNum = new QLineEdit(AddressGroupBox);
+        PhoneNum->setObjectName("PhoneNum");
+        PhoneNum->setGeometry(QRect(10, 280, 231, 28));
+        PaymentWidget->raise();
+        ConfirmButton->raise();
+        CreditWidget->raise();
+        ReTurnHome->raise();
+        AddressWidget->raise();
 
         retranslateUi(Checkout);
 
@@ -191,6 +352,15 @@ public:
         CashButton->setText(QCoreApplication::translate("Checkout", "Cash on Delievery", nullptr));
         CreditButton->setText(QCoreApplication::translate("Checkout", "Credit Card", nullptr));
         subTotal->setText(QCoreApplication::translate("Checkout", "Subtotal: EGP 20.00", nullptr));
+        CreditAddOrSaveGroup->setTitle(QCoreApplication::translate("Checkout", "Saved or Add New", nullptr));
+        AddNewCreditButton->setText(QCoreApplication::translate("Checkout", "Add New", nullptr));
+        SavedCredtButton->setText(QCoreApplication::translate("Checkout", "Saved", nullptr));
+        DelieverinAddorSaveGroup->setTitle(QCoreApplication::translate("Checkout", "Delivering To", nullptr));
+        AddNewAddressButton->setText(QCoreApplication::translate("Checkout", "Add New", nullptr));
+        SavedAddressButton->setText(QCoreApplication::translate("Checkout", "Saved", nullptr));
+        CreditCardsGroup->setTitle(QCoreApplication::translate("Checkout", "Credit Cards", nullptr));
+        SavedAddressGroup->setTitle(QCoreApplication::translate("Checkout", "Saved Address", nullptr));
+        enterCredit->setText(QCoreApplication::translate("Checkout", "Enter", nullptr));
         CreditCardInfoGroupBox->setTitle(QCoreApplication::translate("Checkout", "Credit Card Info", nullptr));
         CreditNumLabel->setText(QCoreApplication::translate("Checkout", "Credit Card Num:", nullptr));
         CVVLabel->setText(QCoreApplication::translate("Checkout", "CVV", nullptr));
@@ -222,7 +392,27 @@ public:
         Year->setItemText(11, QString());
 
         SaveCredit->setText(QCoreApplication::translate("Checkout", "Save Credit Card Info", nullptr));
-        pushButton->setText(QCoreApplication::translate("Checkout", "Order Confirmation", nullptr));
+        ConfirmButton->setText(QCoreApplication::translate("Checkout", "Order Confirmation", nullptr));
+        ReTurnHome->setText(QCoreApplication::translate("Checkout", "Return to Home Page", nullptr));
+        enterAddress->setText(QCoreApplication::translate("Checkout", "Enter", nullptr));
+        AddressGroupBox->setTitle(QCoreApplication::translate("Checkout", "Address Info", nullptr));
+        StreetLabel->setText(QCoreApplication::translate("Checkout", "Street", nullptr));
+        ProvinceLabel->setText(QCoreApplication::translate("Checkout", "Province", nullptr));
+        Province->setItemText(0, QCoreApplication::translate("Checkout", "Fifth Settlement", nullptr));
+        Province->setItemText(1, QCoreApplication::translate("Checkout", "First Settlement", nullptr));
+        Province->setItemText(2, QCoreApplication::translate("Checkout", "Third Settlement", nullptr));
+        Province->setItemText(3, QCoreApplication::translate("Checkout", "El Yasmeen ", nullptr));
+        Province->setItemText(4, QCoreApplication::translate("Checkout", "Al Rehab City", nullptr));
+        Province->setItemText(5, QCoreApplication::translate("Checkout", "Madinaty", nullptr));
+        Province->setItemText(6, QCoreApplication::translate("Checkout", "Shoroul City", nullptr));
+        Province->setItemText(7, QCoreApplication::translate("Checkout", "Al Narges", nullptr));
+
+        SaveAddress->setText(QCoreApplication::translate("Checkout", "Save Address Info", nullptr));
+        AreaLabel->setText(QCoreApplication::translate("Checkout", "Area", nullptr));
+        BuildingLabel->setText(QCoreApplication::translate("Checkout", "Building", nullptr));
+        AptLabel->setText(QCoreApplication::translate("Checkout", "Apartment No.", nullptr));
+        FloorLabel->setText(QCoreApplication::translate("Checkout", "Floor", nullptr));
+        PhoneNoLabel->setText(QCoreApplication::translate("Checkout", "Phone No.", nullptr));
     } // retranslateUi
 
 };

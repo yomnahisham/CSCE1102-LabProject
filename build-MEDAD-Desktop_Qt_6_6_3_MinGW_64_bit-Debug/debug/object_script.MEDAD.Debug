@@ -1,10 +1,10 @@
 debug/accessories.o
 debug/admin.o
-debug/allproducts1.o
 debug/allusers.o
 debug/books.o
 debug/checkout.o
 debug/clickablelabels.o
+debug/confirm.o
 debug/customer.o
 debug/discounts.o
 debug/loginwindow.o
@@ -12,7 +12,7 @@ debug/main.o
 debug/productmanager.o
 debug/products.o
 debug/registerwindow.o
-debug/search.o
+debug/seller.o
 debug/shoppingcart.o
 debug/techs.o
 debug/user.o
@@ -22,11 +22,10 @@ debug/qrc_Books.o
 debug/qrc_Resources.o
 debug/qrc_Techs.o
 debug/qrc_Tshirts.o
-debug/moc_allproducts1.o
 debug/moc_checkout.o
 debug/moc_clickablelabels.o
+debug/moc_confirm.o
 debug/moc_loginwindow.o
 debug/moc_productmanager.o
 debug/moc_registerwindow.o
-debug/moc_search.o
 debug/moc_shoppingcart.o
