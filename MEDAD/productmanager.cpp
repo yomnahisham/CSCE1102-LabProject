@@ -1355,7 +1355,7 @@ void ProductManager::makeSecondPage(){
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
     ui->allproductsLayout->Down;
-     ui->recsLayout->parentWidget()->raise();
+    ui->recsLayout->parentWidget()->raise();
     nextButton->raise();
     prevButton->raise();
     showRemainingProducts();
@@ -1370,28 +1370,31 @@ void ProductManager::makeThirdPage(){
     ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
- ui->allproductsLayout->Down;
-     ui->recsLayout->parentWidget()->raise();
- nextButton->raise();
- prevButton->raise();
+    ui->allproductsLayout->Down;
+    ui->recsLayout->parentWidget()->raise();
+    nextButton->raise();
+    prevButton->raise();
     showRemainingProducts();
 }
 
 void ProductManager::makeFourthPage(){
+    qDebug() << "Entering makeFourthPage()";
     firstPage = false;
     secondPage = false;
     thirdPage = false;
     fourthPage = true;
-    thirdPageProducts.clear();
+    fourthPageProducts.clear();
     nextButton->setVisible(false);
     ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
- ui->allproductsLayout->Down;
-     ui->recsLayout->parentWidget()->raise();
- nextButton->raise();
- prevButton->raise();
+
+    qDebug() << "Cleared layouts for fourth page";
+
     showRemainingProducts();
+
+    qDebug() << "Executed showRemainingProducts() for fourth page";
+    qDebug() << "Number of products in fourthPageProducts:" << fourthPageProducts.size();
 }
 
 QPixmap ProductManager::resizeImage(const QPixmap& originalPixmap, int maxWidth, int maxHeight) {
