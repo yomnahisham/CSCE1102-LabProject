@@ -287,6 +287,20 @@ void Checkout::on_pushButton_clicked(){
 */
 void Checkout::on_ReTurnHome_clicked()
 {
+    Customer *customer = dynamic_cast<Customer *>(user);
+    if(customer){
+        for(const auto& card : userCreditCards){
+            Customer::UserCreditCard credit(card.CVV, card.CardNum, card.Month, card.Year);
+            customer->addToCreditVec(credit);
+        }
+
+        for(const auto& add : userAddress){
+
+            Customer::UserAddress newAdd(add.Province, add.Area, add.Street, add.Building, add.Floor, add.Apartment, add.PhoneNumber);
+            customer->addToAddressVec(newAdd);
+
+        }
+    }
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     ProductManager *productManager = new ProductManager(nullptr, user, users, cartt);
