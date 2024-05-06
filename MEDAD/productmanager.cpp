@@ -2059,9 +2059,14 @@ void ProductManager::on_addProductButton_clicked()
         bool availability = availabilityCheckBox->isChecked();
         QString seller = user->getUsername();
 
+        //if image path is empty, use the placeholder image path
+        if (imagePath.isEmpty()) {
+            imagePath = ":/logos/assets/imagePlaceHolder.png";
+        }
+
         //validate input
-        if (name.isEmpty() || price <= 0 || quantity <= 0 || imagePath.isEmpty() || (bookRadioButton->isChecked() && isbn.isEmpty())) {
-            QMessageBox::warning(&dialog, "Error", "Please fill in all fields.");
+        if (name.isEmpty() || price <= 0 || quantity <= 0 || (bookRadioButton->isChecked() && isbn.isEmpty())) {
+            QMessageBox::warning(&dialog, "Error", "Please fill in all required fields.");
             return;
         }
 

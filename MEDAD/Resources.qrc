@@ -17,5 +17,6 @@
         <file>assets/AUCBookstoreLogo.png</file>
         <file>assets/ReadersCorner.png</file>
         <file>assets/VirginBookstore.png</file>
+        <file>assets/imagePlaceHolder.png</file>
     </qresource>
 </RCC>
