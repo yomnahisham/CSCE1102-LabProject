@@ -54,6 +54,7 @@ public:
     void showProductsBasedonPage(vector<Products*> neededProducts);
 
     void loadProducts();
+    void loadNewProduct();
 
     void initializeProducts();
     void showSuggestions();
@@ -99,7 +100,7 @@ private slots:
     vector<Products*> fourthPageProducts;
     vector<Products*> beforeCallProducts;
     vector<Products*> allProducts;
-    vector<Products*> sellerProducts;
+    vector<Products*> sellerNewProducts;
 
     bool secondPage = false;
     bool thirdPage = false;
@@ -107,6 +108,7 @@ private slots:
     bool calledPrevious = false;
     bool filteractivated=false;
     bool firstPage=false;
+    bool addedNewProduct = false;
 
     int widthFull;
     int heightFull;

@@ -410,6 +410,80 @@ void ProductManager::createSellerView(){
         }
     }
 
+    if (addedNewProduct) {
+        for (Products* product : sellerNewProducts) {
+            if (productCount >= 20 || row >= 2) {
+                break;
+            }
+            if (!isProductDisplayed(product)) {
+                QString name;
+                QPixmap imagePath;
+                double price;
+                int quantity;
+
+                Books* book = dynamic_cast<Books*>(product);
+                Accessories* accessory = dynamic_cast<Accessories*>(product);
+                Techs* tech = dynamic_cast<Techs*>(product);
+
+                if (book) {
+                    name = book->getName();
+                    imagePath = book->getImage();
+                    price = book->getPrice();
+                    quantity = book->getQuantity();
+                } else if (accessory) {
+                    name = accessory->getName();
+                    imagePath = accessory->getImage();
+                    price = accessory->getPrice();
+                    quantity = accessory->getQuantity();
+                } else if (tech) {
+                    name = tech->getName();
+                    imagePath = tech->getImage();
+                    price = tech->getPrice();
+                    quantity = tech->getQuantity();
+                }
+
+                if (!imagePath.isNull()) {
+                    // Create widgets for the product
+                    QVBoxLayout* productLayout = new QVBoxLayout();
+                    QLabel* imageLabel = new QLabel();
+                    imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                    imageLabel->setScaledContents(true);
+                    QLabel* nameLabel = new QLabel(name);
+                    nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                    nameLabel->setMaximumWidth(imageLabel->width());
+                    nameLabel->setWordWrap(true);
+                    QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                    priceLabel->setFont(QFont("Optima", 12));
+                    QLabel* quanityLabel = new QLabel(QString::number(quantity) + " Avaliable");
+                    quanityLabel->setFont(QFont("Optima", 12, QFont::ExtraLight));
+
+                    productLayout->addWidget(imageLabel);
+                    productLayout->addWidget(nameLabel);
+                    productLayout->addWidget(priceLabel);
+                    productLayout->addWidget(quanityLabel);
+                    productLayout->setAlignment(Qt::AlignTop);
+
+                    sellerProductsLayout->addLayout(productLayout, row, col);
+
+                    itemsInRow++;
+
+                    if (itemsInRow >= maxItemsInRow) {
+                        row++;
+                        col = 0;
+                        itemsInRow = 0;
+                    } else {
+                        col++;
+                    }
+                    productCount++;
+                    displayedProducts.push_back(product);
+                } else {
+                    qDebug() << "Invalid image path for product: " << name;
+                }
+            }
+        }
+        addedNewProduct=false;
+    }
+
     ui->recsLayout->addLayout(sellerProductsLayout);
 }
 
@@ -553,11 +627,11 @@ void ProductManager::initializeProducts() {
         {"Oliver Twist", "14", "5", "true", ":/Books/assets/oliver.jpeg", "Classics", "Charles Dickens", "9780140430172", "AUCBookstore"},
         {"Julius Caesar", "16", "5", "true", ":/Books/assets/ceaser.jpeg", "Plays", "William Shakespeare", "9780743482745", "AUCBookstore"},
         { "The Days", "25", "5", "true", ":/Books/assets/days.jpeg" , "Arabic Literature" , "Taha Hussein" , "9781617971310", "ReadersCorner"},
-        { "Doaa Al-Karawan", "20", "5", "true", ":/Books/assets/karawan.jpeg" , "Arabic Literature" , "Taha Hussein" , "9789771497011", "AUCBookstore"},
+        { "Doaa Al-Karawan", "20", "5", "true", ":/Books/assets/karawan.jpeg" , "Arabic Literature" , "Taha Hussein" , "9789771497011", "ReadersCorner"},
         { "1984", "19", "5", "true", ":/Books/assets/1984.jpeg" , "Classics" , "George Orwell" , "9780155658110", "ReadersCorner"},
         { "Animal Farm", "18.5", "5", "true", ":/Books/assets/animal farm.jpeg" , "Classics" , "George Orwell" , "9788129116123", "ReadersCorner"},
         { "The Da Vinci Code", "17", "5", "true", ":/Books/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780307277671", "ReadersCorner"},
-        { "Angels and Demons", "16.5", "5", "true", ":/Books/assets/angels anddemons.jpeg" , "Classics" , "Dan Brown" , "9780743486224", "AUCBookstore"},
+        { "Angels and Demons", "16.5", "5", "true", ":/Books/assets/angels anddemons.jpeg" , "Classics" , "Dan Brown" , "9780743486224", "ReadersCorner"},
         { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009", "VirginBookstore"},
         { "A Room of One’s Own", "24", "5", "true", ":/Books/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009", "ReadersCorner"},
         { "Wuthering Heights", "26", "5", "true", ":/Books/assets/wutheruing heights.jpeg" , "Classics" , "Emily Bronte" , "9780175565757", "VirginBookstore"},
@@ -716,7 +790,7 @@ vector<Products*> ProductManager::getSellerProducts(){
         return sellerProducts;
     } else {
         qDebug() << "User is not a seller";
-        return vector<Products*>();
+        return vector<Products*>(); //return empty vector
     }
 }
 
@@ -2077,16 +2151,21 @@ void ProductManager::on_addProductButton_clicked()
         if (bookRadioButton->isChecked()) {
             genre = genreLineEdit->text();
             author = authorLineEdit->text();
-            emit createBook(name, price, quantity, availability, imagePath, seller, genre, author, isbn);
+            Books* newBook = new Books(name, price, quantity, availability, imagePath, seller, genre, author, isbn);
+            sellerNewProducts.push_back(newBook);
         } else if (accessoryRadioButton->isChecked()) {
             type = typeLineEdit->text();
             size = sizeLineEdit->text();
-            emit createAccessory(name, price, quantity, availability, imagePath, seller, type, size);
+            Accessories* newAccessory = new Accessories(name, price, quantity, availability, imagePath, seller, type, size);
+            sellerNewProducts.push_back(newAccessory);
         } else if (techRadioButton->isChecked()) {
             warranty = warrantySpinBox->value();
-            emit createTech(name, price, quantity, availability, QPixmap(imagePath), seller, warranty);
+            Techs* newTech = new Techs(name, price, quantity, availability, QPixmap(imagePath), seller, warranty);
+            sellerNewProducts.push_back(newTech);
         }
-
+        loadNewProduct();
+        addedNewProduct = true;
+        createSellerView();
         //close the dialog
         dialog.close();
     });
@@ -2097,5 +2176,36 @@ void ProductManager::on_addProductButton_clicked()
     dialog.setMinimumSize(400, 300);
     dialog.exec();
 }
+
+void ProductManager::loadNewProduct()
+{
+    //open the file for writing
+    QFile file(":/UsersInfo/sellerEnteredProducts.txt");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open the file for writing.";
+        return;
+    }
+
+    //create a QTextStream to write to the file
+    QTextStream out(&file);
+
+    //iterate over the sellerNewProducts vector and write each product's data to the file
+    for (Products* product : sellerNewProducts) {
+        if (Books* book = dynamic_cast<Books*>(product)) {
+            out << book->getName() << "," << book->getPrice() << "," << book->getQuantity() << "," << book->getImagePath() << "," << book->getSeller() << ","
+                << book->getISBN() << "," << book->getGenre() << "," << book->getAuthor() << ",Book\n";
+        } else if (Accessories* accessory = dynamic_cast<Accessories*>(product)) {
+            out << accessory->getName() << "," << accessory->getPrice() << "," << accessory->getQuantity() << "," << accessory->getImagePath() << ","
+                << accessory->getSeller() << "," << accessory->getType() << "," << accessory->getSize() << ",Accessory\n";
+        } else if (Techs* tech = dynamic_cast<Techs*>(product)) {
+            out << tech->getName() << "," << tech->getPrice() << "," << tech->getQuantity() << "," << tech->getImagePath() << ","
+                << tech->getSeller() << "," << tech->getWarranty() << ",Tech\n";
+        }
+    }
+
+    //close the file
+    file.close();
+}
+
 
 

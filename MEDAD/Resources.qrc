@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/UsersInfo">
         <file>UserData.txt</file>
+        <file>sellerEnteredProducts.txt</file>
     </qresource>
     <qresource prefix="/logos">
         <file>assets/shoppingcartlogo.png</file>

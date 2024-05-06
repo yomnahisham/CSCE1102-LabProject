@@ -12,6 +12,7 @@ protected:
     int quantity;
     bool availability;
     QPixmap image;
+    QString imagePath;
     QString seller;
 
 
@@ -28,6 +29,8 @@ public:
     bool getAvailability();
     void setImage(QPixmap i);
     QPixmap getImage ();
+    void loadImage(const QString& path);
+    QString getImagePath();
     void setSeller(QString s);
     QString getSeller();
 

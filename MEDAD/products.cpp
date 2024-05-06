@@ -59,6 +59,18 @@ QPixmap Products:: getImage ()
 {
     return image;
 }
+
+// Load image from file
+void Products::loadImage(const QString& path) {
+    image.load(path);
+    imagePath = path; // Store the path
+}
+
+// Return the path to the loaded image
+QString Products::getImagePath() {
+    return imagePath;
+}
+
 void Products::displayDetails()
 {
     qDebug() << "Name: " << name;
