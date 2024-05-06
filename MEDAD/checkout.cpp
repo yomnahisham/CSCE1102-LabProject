@@ -267,7 +267,10 @@ void Checkout::on_enterCredit_clicked()
 
 }
 
+void Checkout::on_pushButton_clicked(){
 
+
+}
 void Checkout::on_ReTurnHome_clicked()
 {
     QScreen* screen = QGuiApplication::primaryScreen();
