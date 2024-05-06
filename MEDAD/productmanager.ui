@@ -197,6 +197,38 @@ font: italic 13pt &quot;Helvetica&quot;;</string>
     <string>all prod</string>
    </property>
   </widget>
+  <widget class="QLabel" name="XLogo">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>60</y>
+     <width>16</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>X</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="sellerLogo">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>50</y>
+     <width>291</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0)</string>
+   </property>
+   <property name="text">
+    <string>SellerLogo</string>
+   </property>
+  </widget>
   <zorder>logoCorner</zorder>
   <zorder>horizontalLayoutWidget</zorder>
   <zorder>horizontalLayoutWidget_2</zorder>
@@ -208,6 +240,8 @@ font: italic 13pt &quot;Helvetica&quot;;</string>
   <zorder>addAdminB</zorder>
   <zorder>logoSub</zorder>
   <zorder>ourproductsLogo</zorder>
+  <zorder>XLogo</zorder>
+  <zorder>sellerLogo</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -14,8 +14,8 @@
         <file>assets/ourproducts.png</file>
         <file>assets/nextArrow.png</file>
         <file>assets/prevArrow.png</file>
-        <file>assets/AdminLogo.png</file>
-        <file>assets/seller.png</file>
-        <file>assets/customerLogo.png</file>
+        <file>assets/AUCBookstoreLogo.png</file>
+        <file>assets/ReadersCorner.png</file>
+        <file>assets/VirginBookstore.png</file>
     </qresource>
 </RCC>

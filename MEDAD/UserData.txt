@@ -4,4 +4,5 @@ customer :aylaS :ayla1234 :Classics :Palestine :G :N
 admin :AylaSaleh :ayla1234 :N
 admin :yoyoo :yomna1 :N
 seller :ReadersCorner :rc :N
-seller :Amazon :a :N
+seller :VirginBookstore :v :N
+seller :AUCBookstore :a :N

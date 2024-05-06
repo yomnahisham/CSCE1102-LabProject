@@ -39,6 +39,8 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     connect(ui->filterBox, &QComboBox::currentTextChanged, this, &ProductManager::on_filterBox_currentTextChanged);
 
     ui->searchLineEdit->setPlaceholderText("Search by genre or title...");
+    ui->XLogo->setVisible(false);
+    ui->sellerLogo->setVisible(false);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
@@ -117,6 +119,10 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
         createAdminAccessPage();
         return;
     }else if(Seller* seller = dynamic_cast<Seller*>(user)){
+        nextButton->setVisible(false);
+        prevButton->setVisible(false);
+        ui->XLogo->setVisible(true);
+        ui->searchLineEdit->setVisible(false);
         createSellerView();
         return;
     }
@@ -278,33 +284,43 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 }
 
 void ProductManager::createSellerView(){
+    ui->sellerLogo->setVisible(true);
+    QPixmap sellLogo;
+    int w = ui->sellerLogo->width();
+    int h = ui->sellerLogo->height();
+
+    if (user->getUsername() == "AUCBookstore") {
+        sellLogo.load(":/logos/assets/AUCBookstoreLogo.png");
+    } else if (user->getUsername() == "VirginBookstore") {
+        sellLogo.load(":/logos/assets/VirginBookstore.png");
+    } else if (user->getUsername() == "ReadersCorner") {
+        sellLogo.load(":/logos/assets/ReadersCorner.png");
+    } else {
+        // Set a default logo or hide the logo widget
+        ui->sellerLogo->setVisible(false);
+        ui->XLogo->setVisible(false);
+    }
+
+    ui->sellerLogo->setPixmap(sellLogo.scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
     qDebug() << "Creating seller view...";
     initializeProducts(); // Call initialize products to set the sellerProducts vector
     qDebug() << "Product initialization in createSellerView completed...";
     vector<Products*> myProducts = getSellerProducts();
 
-    // Hide unnecessary logos
     ui->basedonyouLogo->setVisible(false);
     ui->ourproductsLogo->setVisible(false);
     ui->basedonsearchLogo->setVisible(false);
 
-    // Clear the layouts
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
-    // Lower the parent widget of recsLayout
     ui->allproductsLayout->parentWidget()->lower();
 
-    // Get screen width
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
-    // Set the height of the recsLayout's parent widget
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
     ui->recsLayout->parentWidget()->resize(widthFull - 100, recsLayoutHeight);
 
-    // Create a grid layout for displaying the seller's products
+    //create a grid layout for displaying the seller's products
     QGridLayout* sellerProductsLayout = new QGridLayout();
     sellerProductsLayout->setAlignment(Qt::AlignTop);
 
@@ -314,20 +330,16 @@ void ProductManager::createSellerView(){
     int col = 0;
     int productCount = 0;
 
-    // Loop through the seller's products and add them to the layout
     for (Products* product : myProducts) {
         if (productCount >= 20 || row >= 2) {
             break;
         }
-
-        // Check if the product is displayed
         if (!isProductDisplayed(product)) {
             QString name;
             QPixmap imagePath;
             double price;
             int quantity;
 
-            // Extract product information based on its type
             Books* book = dynamic_cast<Books*>(product);
             Accessories* accessory = dynamic_cast<Accessories*>(product);
             Techs* tech = dynamic_cast<Techs*>(product);
@@ -374,12 +386,10 @@ void ProductManager::createSellerView(){
                 productLayout->addWidget(addToCart);
                 productLayout->setAlignment(Qt::AlignTop);
 
-                // Add the product layout to the seller's products layout
                 sellerProductsLayout->addLayout(productLayout, row, col);
 
                 itemsInRow++;
 
-                // Check if we need to start a new row
                 if (itemsInRow >= maxItemsInRow) {
                     row++;
                     col = 0;
@@ -395,7 +405,6 @@ void ProductManager::createSellerView(){
         }
     }
 
-    // Add the seller's products layout to recsLayout
     ui->recsLayout->addLayout(sellerProductsLayout);
 }
 
@@ -544,12 +553,12 @@ void ProductManager::initializeProducts() {
         { "Animal Farm", "18.5", "5", "true", ":/Books/assets/animal farm.jpeg" , "Classics" , "George Orwell" , "9788129116123", "ReadersCorner"},
         { "The Da Vinci Code", "17", "5", "true", ":/Books/assets/davinci code.jpeg" , "Classics" , "Dan Brown" , "9780307277671", "ReadersCorner"},
         { "Angels and Demons", "16.5", "5", "true", ":/Books/assets/angels anddemons.jpeg" , "Classics" , "Dan Brown" , "9780743486224", "AUCBookstore"},
-        { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009", "AUCBookstore"},
+        { "Mrs. Dalloway", "23", "5", "true", ":/Books/assets/room of ones.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009", "VirginBookstore"},
         { "A Room of One’s Own", "24", "5", "true", ":/Books/assets/dalloway.jpeg" , "Classics" , "Virginia Woolf" , "9780199536009", "ReadersCorner"},
-        { "Wuthering Heights", "26", "5", "true", ":/Books/assets/wutheruing heights.jpeg" , "Classics" , "Emily Bronte" , "9780175565757", "ReadersCorner"},
+        { "Wuthering Heights", "26", "5", "true", ":/Books/assets/wutheruing heights.jpeg" , "Classics" , "Emily Bronte" , "9780175565757", "VirginBookstore"},
         { "Jane Eyre", "27", "5", "true", ":/Books/assets/jane eyre.jpeg" , "Classics" , "Charlotte Bronte" , "9780785294788", "ReadersCorner"},
         { "Villette", "24", "5", "true", ":/Books/assets/villette.jpeg" , "Classics" , "Charlotte Bronte" , "9781853260193","ReadersCorner"},
-        { "The Great Gatsby", "27", "5", "true", ":/Books/assets/gatsby.jpeg" , "Classics" , "F. Scott Fitzgerald" , "9780393042375", "AUCBookstore"},
+        { "The Great Gatsby", "27", "5", "true", ":/Books/assets/gatsby.jpeg" , "Classics" , "F. Scott Fitzgerald" , "9780393042375", "VirginBookstore"},
         { "Tender is The Night", "34", "5", "true", ":/Books/assets/tender is.jpeg" , "Classics" , "F. Scott Fitzgerald" , "9780684151519", "ReadersCorner"},
         { "The Stranger", "16", "5", "true", ":/Books/assets/stranger.png" , "Philosophy" , "Albert Camus" , "9780679720201", "ReadersCorner"},
         { "The Plague", "17", "5", "true", ":/Books/assets/plague.jpeg" , "Philosophy" , "Albert Camus" , "9780307827807", "ReadersCorner"},
@@ -560,14 +569,14 @@ void ProductManager::initializeProducts() {
         { "The Prophet", "38", "5", "true", ":/Books/assets/prophet.jpeg" , "Poetry" , "Khalil Gibran" , "9783530268003", "AUCBookstore"},
         { "Broken Wings", "32", "5", "true", ":/Books/assets/broken wings.jpeg" , "Arabic Literature" , "Khalil Gibran" , "9788177697025", "AUCBookstore"},
         { "Granada", "40", "5", "true", ":/Books/assets/granada.jpeg" , "Classics" , "Leo Tolstoy" , "9780393042375", "ReadersCorner"},
-        { "Al Tantouriah", "42", "5", "true", ":/Books/assets/tantouriah.jpeg" , "Palestine" , "Radwa Ashour" , "9789770928295", "AUCBookstore"},
+        { "Al Tantouriah", "42", "5", "true", ":/Books/assets/tantouriah.jpeg" , "Palestine" , "Radwa Ashour" , "9789770928295", "VirginBookstore"},
         { "Fi Al-Quds", "26", "5", "true", ":/Books/assets/fi alquds.jpeg" , "Palestine" , "Tamim Al-Barghouthi" , "", "AUCBookstore"},
-        { "Ya Masr Hanet", "20", "5", "true", ":/Books/assets/ya masr hanet.jpeg" , "Poetry" , "Tamim Al-Barghouthi" , "", "AUCBookstore"},
+        { "Ya Masr Hanet", "20", "5", "true", ":/Books/assets/ya masr hanet.jpeg" , "Poetry" , "Tamim Al-Barghouthi" , "", "VirginBookstore"},
         { "I saw Ramallah", "45", "5", "true", ":/Books/assets/i saw ramallah.jpeg" , "Palestine" , "Mourid Al-Barghouthi" , "9789774247552", "ReadersCorner"},
-        { "I Was Born There, I Was Born Here", "40", "5", "true", ":/Books/assets/i was born.jpeg" , "Palestine" , "Mourid Al-Barghouthi" , "9781408829097", "ReadersCorner"},
+        { "I Was Born There, I Was Born Here", "40", "5", "true", ":/Books/assets/i was born.jpeg" , "Palestine" , "Mourid Al-Barghouthi" , "9781408829097", "VirginBookstore"},
         { "Returning To Haifa", "39", "5", "true", ":/Books/assets/haifa.jpeg" , "Palestine" , "Ghassan Kanafani" , "9780571347827", "AUCBookstore"},
-        { "Men in The Sun", "37", "5", "true", ":/Books/assets/men in the sun.jpeg" , "Palestine" , "Ghassan Kanafani" , "9780894108570", "AUCBookstore"},
-        { "Beirut Nightmares", "29", "5", "true", ":/Books/assets/beirut nightmares.jpeg" , "Arabic Literature" , "Ghada Al-Samman" , "9780704380653", "AUCBookstore"},
+        { "Men in The Sun", "37", "5", "true", ":/Books/assets/men in the sun.jpeg" , "Palestine" , "Ghassan Kanafani" , "9780894108570", "VirginBookstore"},
+        { "Beirut Nightmares", "29", "5", "true", ":/Books/assets/beirut nightmares.jpeg" , "Arabic Literature" , "Ghada Al-Samman" , "9780704380653", "VirginBookstore"},
         { "No Sea in Beirut", "28", "5", "true", ":/Books/assets/no sea in beirut.jpg" , "Arabic Literature" , "Ghada Al-Samman" , "", "AUCBookstore"},
         { "The Hundred Years’ War on Palestine", "45", "5", "true", ":/Books/assets/the hundred years war on palestine.jpeg" , "Palestine" , "Rashid Khalidi" , "9781627798549", "AUCBookstore"},
         { "The Iron Cage", "43", "5", "true", ":/Books/assets/iron cage.jpeg" , "Palestine" , "Rashid Khalidi" , "9780807003084", "AUCBookstore"},
@@ -610,16 +619,16 @@ void ProductManager::initializeProducts() {
                                     {"Cool Kids Tshirt", "20", "5", "true", ":/Tshirts/assets/Cool Kids Are Reading.jpeg", "T-shirt", "L", "MedadBookstore"},
                                     { "I’d Rather Be Reading Tshirt","30", "5", "true", ":/Tshirts/assets/I'd Rather tshirt.jpeg"  ,  "T-shirt",   "S", "MedadBookstore"},
                                     { " Reading TicketTshirt","30", "5", "true", ":/Tshirts/assets/Reading Ticket Tshirst.jpeg"  ,  "T-shirt",   "XS", "MedadBookstore"},
-                                    { "Raising Readers Tote Bag","36", "5", "true", ":/Bags/assets/Raising Readers Tote Bag.jpeg"  ,  "Bag",   " ", "MedadBookstore"},
+                                    { "Raising Readers Tote Bag","36", "5", "true", ":/Bags/assets/Raising Readers Tote Bag.jpeg"  ,  "Bag",   " ", "VirginBookstore"},
                                     { "Book Stack Tote Bag","38", "5", "true", ":/Bags/assets/Book Stack Tote Bag.jpeg"  ,  "Bag",   " ", "MedadBookstore"},
                                     { "Medad Merchandise Tote Bag","40", "5", "true", ":/Bags/assets/Screenshot 2024-05-01 145322.png"  ,  "Bag",   " ", "MedadBookstore"},
-                                    { " Bookmark set1","10", "5", "true", ":/BookMarks/assets/Bookmark Set1.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
-                                    { " Bookmark set2","10", "5", "true", ":/BookMarks/assets/Bookmark Set3.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
-                                    { " Bookmark set3","10", "5", "true", ":/BookMarks/assets/Bookmark Set2.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
-                                    { " Bookmark Palestine1","15", "5", "true", ":/BookMarks/assets/Bookmark Set Plaestine 1.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
-                                    { " Bookmark Palestine2","15", "5", "true", ":/BookMarks/assets/Bookmark Set Palestine2.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
-                                    { " Bookmark HarryPotter","20", "5", "true", ":/BookMarks/assets/Bookmark Set Harry Potter2.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
-                                    { " Bookmark Egyptian","25", "5", "true", ":/BookMarks/assets/Bookmark Set Egyptian 2.jpeg"  ,  "BookMarks"," ", "MedadBookstore"},
+                                    { " Bookmark Set","10", "5", "true", ":/BookMarks/assets/Bookmark Set1.jpeg"  ,  "BookMarks",   " ", "VirginBookstore"},
+                                    { " Bookmark Set","10", "5", "true", ":/BookMarks/assets/Bookmark Set3.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
+                                    { " Bookmark Set","10", "5", "true", ":/BookMarks/assets/Bookmark Set2.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
+                                    { " Bookmark Palestine","15", "5", "true", ":/BookMarks/assets/Bookmark Set Plaestine 1.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
+                                    { " Bookmark Palestine","15", "5", "true", ":/BookMarks/assets/Bookmark Set Palestine2.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
+                                    { " Bookmark Harry Potter","20", "5", "true", ":/BookMarks/assets/Bookmark Set Harry Potter2.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
+                                    { " Bookmark Egyptian","25", "5", "true", ":/BookMarks/assets/Bookmark Set Egyptian 2.jpeg"  ,  "BookMarks"," ", "VirginBookstore"},
                                     { " Bookmark Arabic","30", "5", "true", ":/BookMarks/assets/Bookmark Set Arabic 2.jpeg"  ,  "BookMarks", " ", "MedadBookstore"},
                                     };
 
@@ -651,10 +660,10 @@ void ProductManager::initializeProducts() {
         }}
     }
 
-    QString techsData[][7] = { // Change the inner array size to 6
-        {"Kindle", "500", "5", "true", ":/Techs/assets/Kindle.jpeg", "1", "Amazon"},
-        {"BookLight", "200", "5", "true", ":/Techs/assets/Book Light.jpeg", "2", "Amazon"},
-        {"ReadingLight", "250", "5", "true", ":/Techs/assets/Reading Light.jpeg", "3", "Amazon"}
+    QString techsData[][7] = {
+        {"Kindle", "500", "5", "true", ":/Techs/assets/Kindle.jpeg", "1", "VirginBookstore"},
+        {"BookLight", "200", "5", "true", ":/Techs/assets/Book Light.jpeg", "2", "VirginBookstore"},
+        {"ReadingLight", "250", "5", "true", ":/Techs/assets/Reading Light.jpeg", "3", "VirginBookstore"}
     };
 
     for (const auto& data : techsData) {
