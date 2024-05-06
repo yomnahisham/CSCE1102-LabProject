@@ -17,6 +17,7 @@ RegisterWindow::RegisterWindow(QWidget *parent, AllUsers* Allusers, AllUsers::Ty
     , type(type)
     ,ogUser (ogUser)
 {
+
     ui->setupUi(this);
     ui -> userError -> hide();
     ui -> passError -> hide();
@@ -52,8 +53,7 @@ void RegisterWindow::on_backB_clicked()
         login -> show();
         hide();
     }else{
-        ShoppingCart *cart = new ShoppingCart(nullptr, user, users);
-        ProductManager* home = new ProductManager(nullptr, ogUser, users, cart);
+        ProductManager* home = new ProductManager(nullptr, ogUser, users);
         home -> setWindowTitle("Home");
         home->resize(screenGeometry.width(), screenGeometry.height());
         home-> show();
@@ -125,7 +125,7 @@ void RegisterWindow::on_regB_clicked()
             home->resize(screenGeometry.width(), screenGeometry.height());
             home-> show();
             hide();
-        }else
+        }else if(type == AllUsers::admin)
         {
             ui-> loginB -> show();
             ui -> returnB -> show();
@@ -139,6 +139,9 @@ void RegisterWindow::on_regB_clicked()
             ui -> passRLE -> hide();
             ui -> backB -> hide();
             ui -> regB -> hide();
+        }else if(type == AllUsers::seller)
+        {
+            on_backB_clicked();
         }
     }else {
 

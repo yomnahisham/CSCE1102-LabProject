@@ -103,9 +103,10 @@ void AllUsers::LoadUsers(){
         QStringList splitdata = data.split (" :");
 
         if (splitdata[0] == "admin")
-           insert (admin,splitdata[1], splitdata[2]);
+            insert (admin,splitdata[1], splitdata[2]);
         else if (splitdata[0] == "customer")
         {
+
             vector<QString> genres;
             vector <Customer::UserCart> cart;
             vector <Customer::UserAddress> add;
@@ -118,6 +119,8 @@ void AllUsers::LoadUsers(){
                 qDebug()<< "added genre " << x;
             }
 
+            x++;
+            bool active = splitdata [x].toInt();
             x++;
 
             qDebug()<< "exited genre";
@@ -173,7 +176,7 @@ void AllUsers::LoadUsers(){
                 }
             }
 
-            insert (customer,splitdata[1], splitdata[2], genres, cart, add, cc);
+            insert (customer,splitdata[1], splitdata[2], genres,active, cart, add, cc);
         }else if (splitdata[0]== "seller"){
             insert (seller, splitdata[1], splitdata[2]);
         }else if (splitdata[0]== "/")
@@ -205,15 +208,15 @@ void AllUsers::SaveUsers()
     userData.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Truncate);
 
     QTextStream stream(&userData);
-   /*  stream << "customer :yomna :yomna1 :Classics :Comic-Books :G :N" << "\n";
-    stream << "customer :aylaS :ayla1234 :Classics :Palestine :G :N" << "\n";
+    /*  stream << "customer :yomna :yomna1 :Classics :Comic-Books :G :1 :N" << "\n";
+    stream << "customer :aylaS :ayla1234 :Classics :Palestine :G :1 :N" << "\n";
     stream << "admin :AylaSaleh :ayla1234 :N" << "\n";
     stream << "admin :yoyoo :yomna1 :N" << "\n";
     for (int i = 0; i < 47; i++)
         stream << "/" << "\n";*/
 
 
-     for (int i = 0 ; i < n; i ++)
+    for (int i = 0 ; i < n; i ++)
     {
         if (AllAdmins[i].isempty)
             stream << "/" << "\n";
@@ -227,12 +230,12 @@ void AllUsers::SaveUsers()
         if (AllCustomers[i].isempty)
             stream << "/" << "\n";      //put a slash in the line
         else
-        {    stream << "customer :" << AllCustomers[i].getUsername() << " :" << AllCustomers[i].getPassword() ;
+        {    stream << "customer :" <<AllCustomers[i].getUsername() << " :" << AllCustomers[i].getPassword() ;
             vector <QString> genre = AllCustomers[i].getPreferredGenres();
             for (auto it = genre.begin(); it != genre.end(); it++)
                 stream << " :" <<*it;
             stream << " :G";
-
+            stream << " :" << AllCustomers[i].activated;
             vector <Customer::UserCart> cart = AllCustomers[i].getShopingCart();
             if (!cart.empty())                                          //if cart is not empty save it's contents, if empty skip
                 for (auto it = cart.begin(); it != cart.end(); i++)
@@ -341,7 +344,7 @@ void AllUsers::checkTable (Type type)
     }
 }
 
-void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres,vector <Customer::UserCart> cart,vector <Customer::UserAddress> add,vector <Customer::UserCreditCard> cc)
+void AllUsers::insert (Type type,  QString u, QString p, vector<QString> genres,bool active,vector <Customer::UserCart> cart,vector <Customer::UserAddress> add,vector <Customer::UserCreditCard> cc)
 {
     //checkTable(type);
     int a = 0;
@@ -369,6 +372,7 @@ void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres,v
         if (AllCustomers[i].isempty)
         {    AllCustomers[i].setUsername(u);
             AllCustomers[i].setPassword(p);
+            AllCustomers[i].activated = active;
             AllCustomers[i].setPreferredGenres(genres);
             AllCustomers[i].setShopingCart(cart);
             AllCustomers[i].setAddress(add);
@@ -492,4 +496,108 @@ bool AllUsers::userExists (Type type, QString u)
         return false;
         break;
     }
+}
+
+void AllUsers::deleteUser (Type type, QString u)
+{
+    int a = 0;
+    int i = hash (type, u, a);
+    bool endHash = false;
+    switch (type)
+    {case admin:
+        while (!endHash)
+        {
+            if (AllAdmins[i].getUsername() == u)
+                AllAdmins[i].isempty = true;
+            else
+                i = hash (type, u, a++);
+
+            if ((!AllAdmins[i].isempty )||(a < m))  // while [i] is full and we haven't completed a full loop
+                endHash = true;
+        }
+        break;
+    case customer:
+        qDebug()<< "entered customer";
+        while (!endHash)
+        {
+            if (AllCustomers[i].getUsername() == u)
+            {   AllCustomers[i].isempty = true;
+                qDebug()<< "found custimer deleted";
+            }
+            else
+            {    i = hash (type, u, a++);
+                qDebug()<< "rehashing";}
+
+            if ((!AllCustomers[i].isempty )||(a < n))  // while [i] is full and we haven't completed a full loop
+                endHash = true;
+        }
+        break;
+    case seller:
+        while (!endHash)
+        {
+            if (AllSellers[i].getUsername() == u)
+                AllSellers[i].isempty = true;
+            else
+                i = hash (type, u, a++);
+
+            if ((!AllSellers[i].isempty )||(a < l))  // while [i] is full and we haven't completed a full loop
+                endHash = true;
+        }
+        break;
+    }
+
+    qDebug()<< "deleted in all users";
+
+}
+
+void AllUsers::deActivateUser (Type type, QString u)
+{
+    int a = 0;
+    int i = hash (type, u, a);
+    bool endHash = false;
+    switch (type)
+    {case admin:
+        while (!endHash)
+        {
+            if (AllAdmins[i].getUsername() == u)
+                AllAdmins[i].activated = false;
+            else
+                i = hash (type, u, a++);
+
+            if ((!AllAdmins[i].isempty )||(a < m))  // while [i] is full and we haven't completed a full loop
+                endHash = true;
+        }
+        break;
+    case customer:
+        qDebug()<< "entered customer";
+        while (!endHash)
+        {
+            if (AllCustomers[i].getUsername() == u)
+            {   AllCustomers[i].activated = false;
+                qDebug()<< "found custimer deleted";
+            }
+            else
+            {    i = hash (type, u, a++);
+                qDebug()<< "rehashing";}
+
+            if ((!AllCustomers[i].isempty )||(a < n))  // while [i] is full and we haven't completed a full loop
+                endHash = true;
+        }
+        break;
+    case seller:
+        while (!endHash)
+        {
+            if (AllSellers[i].getUsername() == u)
+                AllSellers[i].activated = false;
+            else
+                i = hash (type, u, a++);
+
+            if ((!AllSellers[i].isempty )||(a < l))  // while [i] is full and we haven't completed a full loop
+                endHash = true;
+        }
+        break;
+    }
+
+    qDebug()<< "deleted in all users";
+
 }

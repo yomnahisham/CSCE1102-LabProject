@@ -28,7 +28,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     : QWidget(parent)
     , ui(new Ui::ProductManager)
     , user(loggedUser)
-    , users (Allusers)
+    , allusers (Allusers)
     ,cart (cartPage)
     , techyProducts(new QVector<Techs*>())
     , accessoryProducts(new QVector<Accessories*>())
@@ -105,12 +105,16 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     ui->basedonsearchLogo->setPixmap(searchPix.scaled(ui->basedonsearchLogo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->basedonsearchLogo->setVisible(false);
 
+    if (!user-> activated)
+    {
+        cartLabel -> setVisible(false);
+    }
+
     if(Customer* cus = dynamic_cast<Customer*>(user)){
-        ui->addAdminB->setVisible(false);
-        ui->addProductB->setVisible(false);
         makeFirstPage();
         return;
     }else if(Admin* admin = dynamic_cast<Admin*>(user)){
+        cartLabel -> setVisible(false);
         createAdminAccessPage();
         return;
     }
@@ -181,15 +185,51 @@ void ProductManager::createAdminAccessPage(){
     mainLayout->addStretch();
 }
 
+
+QString cached(const QString &resPath) {
+    // Not a resource -> done
+    if (!resPath.startsWith(":"))
+        return resPath;
+
+    // Get the cache directory of your app relative to the executable
+    QString executablePath = QCoreApplication::applicationDirPath();
+    QString cacheDir = executablePath + "/cache";
+
+    // Construct the path for the cached resource
+    QString subPath = cacheDir + resPath.mid(1); // cache folder plus resource without the leading ':'
+
+    // Check if the resource is already cached
+    if (QFile::exists(subPath)) // File exists -> done
+    {   qDebug()<< "file exists";
+        return subPath;}
+
+    // Ensure the cache directory exists
+    if (!QFileInfo(cacheDir).dir().mkpath("."))
+    {   qDebug()<< "couldn't create cache folder";
+        return {}; // Failed to create dir
+    }
+
+    // Copy the resource file to the cache directory
+    if (!QFile::copy(resPath, subPath))
+    {   qDebug()<< "couldn't copy file";
+        return {}; // Failed to copy file
+    }
+
+    // Make the copied file writable
+    QFile::setPermissions(subPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
+
+    return subPath;
+}
+
 void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
     //using QList to store User data before displaying them in the table
     QList<User> users;
-    QFile file(":/UsersInfo/UserData.txt");
+    QFile file(cached(":/UsersInfo/UserData.txt"));
     if (file.open(QIODevice::ReadOnly)) {
         QTextStream in(&file);
         while (!in.atEnd()) {
             QString line = in.readLine();
-            QStringList parts = line.split(" ");
+            QStringList parts = line.split(" :");
             if (parts.size() >= 3) {
                 User client;
                 client.setRole(parts[0]);
@@ -198,9 +238,11 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
                 users.append(client);
             }
         }
+        qDebug() << "OPENED accounts table file";
+
         file.close();
     } else {
-        qDebug() << "Error opening file";
+        qDebug() << "Error opening accounts table file";
         return;
     }
 
@@ -250,7 +292,14 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 
         connect(deleteUserButton, &QPushButton::clicked, this, [=]() {
             int userIndex = deleteUserButton->property("userIndex").toInt();
-            //@ayla, how to delete user?
+            if (client.getRole() == "admin")
+                allusers -> deleteUser(AllUsers::admin, client.getUsername());
+            else if (client.getRole() == "customer")
+                allusers -> deleteUser(AllUsers::customer, client.getUsername());
+            else if (client.getRole() == "seller")
+                allusers -> deleteUser(AllUsers::seller, client.getUsername());
+            qDebug()<< "deleted";
+            allusers -> SaveUsers();
             accountsTable->removeRow(userIndex);
         });
 
@@ -259,8 +308,13 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 
         connect(deactiveUserButton, &QPushButton::clicked, this, [=]() {
             int userIndex = deactiveUserButton->property("userIndex").toInt();
-            //?? can we make it so that the user can't buy anything for a while?
-        });
+            if (client.getRole() == "admin")
+                allusers -> deActivateUser(AllUsers::admin, client.getUsername());
+            else if (client.getRole() == "customer")
+                allusers -> deActivateUser(AllUsers::customer, client.getUsername());
+            else if (client.getRole() == "seller")
+                allusers -> deActivateUser(AllUsers::seller, client.getUsername());
+            });
 
         accountsTable->setItem(i, 0, roleItem);
         accountsTable->setItem(i, 1, usernameItem);
@@ -286,7 +340,6 @@ void ProductManager::onCartClicked(){
 
 void ProductManager::onSignOutClicked(){
     qDebug() << "signing out!";
-    users-> SaveUsers();
 
     Customer *customer = dynamic_cast<Customer *>(user);
     if(customer){
@@ -299,10 +352,11 @@ void ProductManager::onSignOutClicked(){
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    LoginWindow* login = new LoginWindow(nullptr, users);
+    LoginWindow* login = new LoginWindow(nullptr, allusers);
     login-> resize(screenGeometry.width(), screenGeometry.height()); //resizing according to the QScreen measurements
     login-> setWindowTitle("Login");
     login -> show();
+    allusers-> SaveUsers();
     hide();
 }
 
@@ -351,43 +405,9 @@ Techs* ProductManager::createTech(const QString& name, double price, int quantit
     return new Techs(name, price, quantity, availability, image, type);
 }
 
-/*
-QString cachedResource(const QString &resPath) {
-    // Not a resource -> done
-    if (!resPath.startsWith(":"))
-        return resPath;
 
-    // Get the cache directory of your app relative to the executable
-    QString executablePath = QCoreApplication::applicationDirPath();
-    QString cacheDir = executablePath + "/cache";
 
-    // Construct the path for the cached resource
-    QString subPath = cacheDir + resPath.mid(1); // cache folder plus resource without the leading ':'
-
-    // Check if the resource is already cached
-    if (QFile::exists(subPath)) // File exists -> done
-    {   qDebug()<< "file exists";
-        return subPath;}
-
-    // Ensure the cache directory exists
-    if (!QFileInfo(cacheDir).dir().mkpath("."))
-    {   qDebug()<< "couldn't create cache folder";
-        return {}; // Failed to create dir
-    }
-
-    // Copy the resource file to the cache directory
-    if (!QFile::copy(resPath, subPath))
-    {   qDebug()<< "couldn't copy file";
-        return {}; // Failed to copy file
-    }
-
-    // Make the copied file writable
-    QFile::setPermissions(subPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
-
-    return subPath;
-}
-
-void ProductManager::loadProducts(){
+/*void ProductManager::loadProducts(){
     //load all user data
     qDebug() << "loading users:";
 
@@ -1444,15 +1464,26 @@ void ProductManager::onRegisterAdminClicked()
 
     Admin* ad = dynamic_cast<Admin*> (user);
 
-    RegisterWindow *reg = new RegisterWindow(nullptr, users, AllUsers::admin, ad);
+    RegisterWindow *reg = new RegisterWindow(nullptr, allusers, AllUsers::admin, ad);
     reg->resize(screenGeometry.width(), screenGeometry.height());
     reg -> setWindowTitle("Register new Admin");
     reg->show();
     hide();
 }
-void ProductManager::onRegisterSellerClicked(){
 
+void ProductManager::onRegisterSellerClicked(){
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+
+    Admin* ad = dynamic_cast<Admin*> (user);
+
+    RegisterWindow *reg = new RegisterWindow(nullptr, allusers, AllUsers::seller, ad);
+    reg->resize(screenGeometry.width(), screenGeometry.height());
+    reg -> setWindowTitle("Register new Seller");
+    reg->show();
+    hide();
 }
+
 QWidget* ProductManager::createProductWidget(Products* product) {
     // Create a widget to display product information
     QWidget* productWidget = new QWidget;
@@ -1741,3 +1772,5 @@ void ProductManager::on_filterBox_currentTextChanged(const QString &arg1) {
     }
 
 }
+
+

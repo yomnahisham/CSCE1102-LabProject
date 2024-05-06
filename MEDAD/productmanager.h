@@ -81,10 +81,11 @@ private slots:
     void updateLayout(QLayout* layout);
    void sortProducts(vector<Products*>& products, const QString& arg1);
     //void loadProducts();
-public:
+
+   public:
     Ui::ProductManager *ui;
     User* user;
-    AllUsers* users;
+    AllUsers* allusers;
     QVector<Books*> *bookProducts;
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;

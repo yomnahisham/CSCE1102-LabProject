@@ -152,38 +152,6 @@ font: italic 13pt &quot;Helvetica&quot;;</string>
     </property>
    </item>
   </widget>
-  <widget class="QPushButton" name="addProductB">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>30</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
-   </property>
-   <property name="text">
-    <string>Add Product</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="addAdminB">
-   <property name="geometry">
-    <rect>
-     <x>760</x>
-     <y>30</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
-   </property>
-   <property name="text">
-    <string>Add Admin</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="ourproductsLogo">
    <property name="geometry">
     <rect>
@@ -204,8 +172,6 @@ font: italic 13pt &quot;Helvetica&quot;;</string>
   <zorder>basedonsearchLogo</zorder>
   <zorder>searchLineEdit</zorder>
   <zorder>filterBox</zorder>
-  <zorder>addProductB</zorder>
-  <zorder>addAdminB</zorder>
   <zorder>logoSub</zorder>
   <zorder>ourproductsLogo</zorder>
  </widget>
