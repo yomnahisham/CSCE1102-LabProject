@@ -17,7 +17,6 @@
 #include <QCoreApplication>
 #include <QApplication>
 #include <QScreen>
-#include <QScreen>
 #include <QVector>
 #include <QString>
 #include <QVBoxLayout>
@@ -43,7 +42,8 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
+    widthFull = screenGeometry.width();
+    heightFull = screenGeometry.height();
 
     //setting logo in the corner of the shop app
     QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
@@ -113,6 +113,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     }else if(Admin* admin = dynamic_cast<Admin*>(user)){
         ui->searchLineEdit->setVisible(false);
         ui->filterBox->setVisible(false);
+        cartLabel->setVisible(false);
         createAdminAccessPage();
         return;
     }else if(Seller* seller = dynamic_cast<Seller*>(user)){
@@ -277,17 +278,131 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 }
 
 void ProductManager::createSellerView(){
+    qDebug() << "Creating seller view...";
+    initializeProducts(); // Call initialize products to set the sellerProducts vector
+    qDebug() << "Product initialization in createSellerView completed...";
+    vector<Products*> myProducts = getSellerProducts();
 
+    // Hide unnecessary logos
+    ui->basedonyouLogo->setVisible(false);
+    ui->ourproductsLogo->setVisible(false);
+    ui->basedonsearchLogo->setVisible(false);
+
+    // Clear the layouts
+    clearLayout(ui->recsLayout);
+    clearLayout(ui->allproductsLayout);
+
+    // Lower the parent widget of recsLayout
+    ui->allproductsLayout->parentWidget()->lower();
+
+    // Get screen width
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    int widthFull = screenGeometry.width();
+
+    // Set the height of the recsLayout's parent widget
+    int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
+    ui->recsLayout->parentWidget()->resize(widthFull - 100, recsLayoutHeight);
+
+    // Create a grid layout for displaying the seller's products
+    QGridLayout* sellerProductsLayout = new QGridLayout();
+    sellerProductsLayout->setAlignment(Qt::AlignTop);
+
+    int maxItemsInRow = 10;
+    int itemsInRow = 0;
+    int row = 0;
+    int col = 0;
+    int productCount = 0;
+
+    // Loop through the seller's products and add them to the layout
+    for (Products* product : myProducts) {
+        if (productCount >= 20 || row >= 2) {
+            break;
+        }
+
+        // Check if the product is displayed
+        if (!isProductDisplayed(product)) {
+            QString name;
+            QPixmap imagePath;
+            double price;
+            int quantity;
+
+            // Extract product information based on its type
+            Books* book = dynamic_cast<Books*>(product);
+            Accessories* accessory = dynamic_cast<Accessories*>(product);
+            Techs* tech = dynamic_cast<Techs*>(product);
+
+            if (book) {
+                name = book->getName();
+                imagePath = book->getImage();
+                price = book->getPrice();
+                quantity = book->getQuantity();
+            } else if (accessory) {
+                name = accessory->getName();
+                imagePath = accessory->getImage();
+                price = accessory->getPrice();
+                quantity = accessory->getQuantity();
+            } else if (tech) {
+                name = tech->getName();
+                imagePath = tech->getImage();
+                price = tech->getPrice();
+                quantity = tech->getQuantity();
+            }
+
+            if (!imagePath.isNull()) {
+                // Create widgets for the product
+                QVBoxLayout* productLayout = new QVBoxLayout();
+                QLabel* imageLabel = new QLabel();
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                imageLabel->setScaledContents(true);
+                QLabel* nameLabel = new QLabel(name);
+                nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
+                nameLabel->setMaximumWidth(imageLabel->width());
+                nameLabel->setWordWrap(true);
+                QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
+                priceLabel->setFont(QFont("Optima", 12));
+                ClickableLabels* addToCart = new ClickableLabels(this);
+                QPixmap addPix(":/logos/assets/addtoCart.png");
+                addToCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                connect(addToCart, &ClickableLabels::clicked, [this, imagePath, name, price]() {
+                    this->cart->AddItemToCart(imagePath, name, price, 1);
+                });
+
+                productLayout->addWidget(imageLabel);
+                productLayout->addWidget(nameLabel);
+                productLayout->addWidget(priceLabel);
+                productLayout->addWidget(addToCart);
+                productLayout->setAlignment(Qt::AlignTop);
+
+                // Add the product layout to the seller's products layout
+                sellerProductsLayout->addLayout(productLayout, row, col);
+
+                itemsInRow++;
+
+                // Check if we need to start a new row
+                if (itemsInRow >= maxItemsInRow) {
+                    row++;
+                    col = 0;
+                    itemsInRow = 0;
+                } else {
+                    col++;
+                }
+                productCount++;
+                displayedProducts.push_back(product);
+            } else {
+                qDebug() << "Invalid image path for product: " << name;
+            }
+        }
+    }
+
+    // Add the seller's products layout to recsLayout
+    ui->recsLayout->addLayout(sellerProductsLayout);
 }
 
 void ProductManager::onCartClicked(){
     qDebug() << "cart clicked, moving to shopping cart ui.";
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-
-
-    cart->resize(screenGeometry.width(), screenGeometry.height());
+    cart->resize(widthFull, heightFull);
     cart->show();
     hide();
 }
@@ -305,10 +420,8 @@ void ProductManager::onSignOutClicked(){
         }
     }
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
     LoginWindow* login = new LoginWindow(nullptr, users);
-    login-> resize(screenGeometry.width(), screenGeometry.height()); //resizing according to the QScreen measurements
+    login-> resize(widthFull, heightFull); //resizing according to the QScreen measurements
     login-> setWindowTitle("Login");
     login -> show();
     hide();
@@ -418,6 +531,7 @@ void ProductManager::loadProducts(){
 }
 */
 void ProductManager::initializeProducts() {
+    qDebug()<< "Initializing...";
     QString productsData[][9] = {
         {"War and Peace", "12.5", "5", "true", ":/Books/assets/warandpeace.png", "Classics", "Leo Tolstoy", "9780393042375", "AUCBookstore"},
         {"Anna Karenina", "15", "5", "true", ":/Books/assets/anna kare.jpeg", "Classics", "Leo Tolstoy", "9780393042771", "ReadersCorner"},
@@ -473,11 +587,14 @@ void ProductManager::initializeProducts() {
         QString author = data[6];
         QString ISBN = data[7];
         QString seller = data[8];
+        qDebug() << "Seller: " << seller;
 
-        Books* product = createBook(name, price, quantity, availability, imagePath, genre, author, ISBN, seller);
+        Books* product = createBook(name, price, quantity, availability, imagePath, seller, genre, author, ISBN);
         bookProducts->push_back(product);
         allProducts.push_back(product);
         Customer *customer = dynamic_cast<Customer*>(user);
+
+        if(customer){
         for(const auto &item : customer->getShopingCart()){
 
             if(item.name == name){
@@ -485,7 +602,7 @@ void ProductManager::initializeProducts() {
             }
 
 
-        }
+        }}
     }
 
     QString accessoriesData[][8] = {
@@ -494,7 +611,7 @@ void ProductManager::initializeProducts() {
                                     { "I’d Rather Be Reading Tshirt","30", "5", "true", ":/Tshirts/assets/I'd Rather tshirt.jpeg"  ,  "T-shirt",   "S", "MedadBookstore"},
                                     { " Reading TicketTshirt","30", "5", "true", ":/Tshirts/assets/Reading Ticket Tshirst.jpeg"  ,  "T-shirt",   "XS", "MedadBookstore"},
                                     { "Raising Readers Tote Bag","36", "5", "true", ":/Bags/assets/Raising Readers Tote Bag.jpeg"  ,  "Bag",   " ", "MedadBookstore"},
-                                    { "Book Stack Tote Bag","38", "5", "true", ":/Bags/assets/Book Stack Tote Bag.jpeg"  ,  "Bag",   " "},
+                                    { "Book Stack Tote Bag","38", "5", "true", ":/Bags/assets/Book Stack Tote Bag.jpeg"  ,  "Bag",   " ", "MedadBookstore"},
                                     { "Medad Merchandise Tote Bag","40", "5", "true", ":/Bags/assets/Screenshot 2024-05-01 145322.png"  ,  "Bag",   " ", "MedadBookstore"},
                                     { " Bookmark set1","10", "5", "true", ":/BookMarks/assets/Bookmark Set1.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
                                     { " Bookmark set2","10", "5", "true", ":/BookMarks/assets/Bookmark Set3.jpeg"  ,  "BookMarks",   " ", "MedadBookstore"},
@@ -515,12 +632,14 @@ void ProductManager::initializeProducts() {
         QString type = data[5];
         QString size = data[6];
         QString seller = data[7];
+        qDebug() << "Seller: " << seller;
 
         Accessories* accessory = createAccessory(name, price, quantity, availability, imagePath, seller, type, size);
         accessoryProducts->push_back(accessory);
         allProducts.push_back(accessory);
 
         Customer *customer = dynamic_cast<Customer*>(user);
+        if(customer){
         for(const auto &item : customer->getShopingCart()){
 
             if(item.name == name){
@@ -529,7 +648,7 @@ void ProductManager::initializeProducts() {
 
 
 
-        }
+        }}
     }
 
     QString techsData[][7] = { // Change the inner array size to 6
@@ -546,12 +665,14 @@ void ProductManager::initializeProducts() {
         QString imagePath = data[4];
         int type = data[5].toInt();
         QString seller = data[6];
+        qDebug() << "Seller: " << seller;
 
         Techs* tech = createTech(name, price, quantity, availability, QPixmap(imagePath), seller, type);
         techyProducts->push_back(tech);
         allProducts.push_back(tech);
 
         Customer *customer = dynamic_cast<Customer*>(user);
+        if(customer){
         for(const auto &item : customer->getShopingCart()){
 
             if(item.name == name){
@@ -559,19 +680,30 @@ void ProductManager::initializeProducts() {
             }
 
 
-        }
+        }}
     }
+}
 
-    //after all initialization, put products related to current seller in sellerProducts vector
-    if(Seller* seller = dynamic_cast<Seller*>(user)){
-        QString loggedInSeller = seller->getUsername();
+vector<Products*> ProductManager::getSellerProducts(){
+    qDebug() << "Getting Seller Products...";
+    qDebug() << "Found " << allProducts.size();
+    Seller* seller = dynamic_cast<Seller*>(user);
+    if (seller) {
+        vector<Products*> sellerProducts;
+        QString username = seller->getUsername();
+        qDebug() << "User's username: " << user->getUsername();
         for (Products* product : allProducts) {
-            if (product->getSeller() == loggedInSeller) {
+            qDebug() << "Product seller: " << product->getSeller();
+            if (product->getSeller() == username) {
                 sellerProducts.push_back(product);
             }
         }
+        qDebug() << "Found " << sellerProducts.size() << " products for seller " << username;
+        return sellerProducts;
+    } else {
+        qDebug() << "User is not a seller";
+        return vector<Products*>();
     }
-
 }
 
 vector<Products*> ProductManager::suggestSimilarItems(){
@@ -617,11 +749,6 @@ void ProductManager::makeFirstPage(){
     showSuggestions();
 
     firstPageProducts.clear();
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-    int heightFull = screenGeometry.height();
 
     int productLayoutHeight = heightFull + 10;
 
@@ -690,10 +817,6 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword) {
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
     ui->allproductsLayout->parentWidget()->raise();
     ui->basedonyouLogo->setVisible(false);
     ui->ourproductsLogo->setVisible(false);
@@ -832,10 +955,6 @@ void ProductManager::showSuggestions(){
     initializeProducts();
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -983,11 +1102,6 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
     ui->ourproductsLogo->move(67, 150);
     ui->basedonyouLogo->setVisible(false);
     ui->basedonsearchLogo->setVisible(false);
-
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -1212,10 +1326,6 @@ void ProductManager::showRemainingProducts() {
 
     ui->allproductsLayout->parentWidget()->lower();
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
     //adjusting the size of the parent widget of recsLayout
@@ -1423,8 +1533,6 @@ void ProductManager::showRemainingProducts() {
         }
     }
 
-    //add the grid layout to both recsLayout and allproductsLayout
-
     ui->recsLayout->addLayout(gridLayout);
     ui->allproductsLayout->addLayout(gridLayout);
 }
@@ -1472,13 +1580,10 @@ bool ProductManager::isProductDisplayed(Products* product) {
 
 void ProductManager::onRegisterAdminClicked()
 {
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-
     Admin* ad = dynamic_cast<Admin*> (user);
 
     RegisterWindow *reg = new RegisterWindow(nullptr, users, AllUsers::admin, ad);
-    reg->resize(screenGeometry.width(), screenGeometry.height());
+    reg->resize(widthFull, heightFull);
     reg -> setWindowTitle("Register new Admin");
     reg->show();
     hide();

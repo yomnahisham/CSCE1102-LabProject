@@ -42,6 +42,7 @@ public:
     void makeAccountsTable(QTableWidget *accountsTable);
     void createSellerView();
 
+    vector<Products*> getSellerProducts();
     vector<Products*> suggestSimilarItems();
 
     void makeFirstPage();
@@ -96,7 +97,7 @@ public:
     vector<Products*> fourthPageProducts;
     vector<Products*> beforeCallProducts;
     vector<Products*> allProducts;
-    QVector<Products*> sellerProducts;
+    vector<Products*> sellerProducts;
 
     bool secondPage = false;
     bool thirdPage = false;
