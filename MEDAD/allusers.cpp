@@ -35,6 +35,7 @@ QString cachedResource(const QString &resPath) {
 
     // Get the cache directory of your app relative to the executable
     QString executablePath = QCoreApplication::applicationDirPath();
+
     QString cacheDir = executablePath + "/cache";
 
     // Construct the path for the cached resource
@@ -60,6 +61,23 @@ QString cachedResource(const QString &resPath) {
     // Make the copied file writable
     QFile::setPermissions(subPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
 
+    if (QFile::exists(subPath)) {
+        qDebug() << "File exists:" << subPath;
+        // Check if the file is open by another process
+        QFile checkFile(subPath);
+        if (!checkFile.open(QIODevice::ReadOnly | QIODevice::Text | QIODevice::OpenModeFlag::Unbuffered)) {
+            qDebug() << "File is currently in use. Cannot set permissions.";
+            return {}; // Return or handle appropriately
+        }
+        checkFile.close(); // Close the file after checking
+        return subPath; // Return the file path
+    }
+    else
+    {
+        qDebug() << "File does not exists:" << subPath;
+    }
+
+
     return subPath;
 }
 
@@ -68,6 +86,7 @@ void AllUsers::LoadUsers(){
     qDebug() << "loading users:";
 
     QFile userData (cachedResource(":/UsersInfo/UserData.txt"));
+    //QFile userData (":/UsersInfo/UserData.txt");
 
     if (userData.setPermissions(QFile::ReadOwner))
         qDebug() << "Permissions updated successfully for file:";
@@ -81,19 +100,82 @@ void AllUsers::LoadUsers(){
     while(!in.atEnd()) {
         QString data = in.readLine();
         qDebug()<< x << " : " <<data ;
-        QStringList splitdata = data.split (" ");
-
-        vector<QString> genres;
+        QStringList splitdata = data.split (" :");
 
         if (splitdata[0] == "admin")
-           insert (admin,splitdata[1], splitdata[2], genres);
+           insert (admin,splitdata[1], splitdata[2]);
         else if (splitdata[0] == "customer")
         {
-            for (int i = 3; splitdata[i] != "N" ; i++)
-                genres.push_back(splitdata[i]);
-            insert (customer,splitdata[1], splitdata[2], genres);
+            vector<QString> genres;
+            vector <Customer::UserCart> cart;
+            vector <Customer::UserAddress> add;
+            vector <Customer::UserCreditCard> cc;
+
+            int x = 3;
+            for (int i = 3; splitdata[i] != "G" ; i++)
+            {    genres.push_back(splitdata[i]);
+                x++;
+                qDebug()<< "added genre " << x;
+            }
+
+            x++;
+
+            qDebug()<< "exited genre";
+
+            if (splitdata[x] != "N")
+            {
+                qDebug()<< "entered cart";
+                QStringList cartit = splitdata[x].split(",");
+                for (int i = 0; i < cartit.size(); i += 2) {
+                    int q = cartit[i + 1].toInt();
+                    QString n = cartit[i];
+                    Customer::UserCart item(n, q);
+                    cart.push_back(item);
+                    qDebug()<< "added cart item";
+                }
+                x++;
+            }
+
+            if (splitdata[x] != "N")
+            {
+                qDebug()<< "entered cart";
+                QStringList ad = splitdata[x].split(",");
+                for (int i = 0; i < ad.size(); i+=7) {
+                    QString p = ad[i];
+                    QString ar = ad[i+1];
+                    QString s = ad[i+2];
+                    QString b = ad[i+3];
+                    int f = ad[i+4].toInt();
+                    int ap = ad[i+5].toInt();
+                    QString ph = ad[i+6];
+
+                    Customer::UserAddress a(p,ar,s,b,f,ap,ph);
+                    add.push_back(a);
+                    qDebug()<< "added address";
+                }
+                x++;
+            }
+
+
+            if (splitdata[x] != "N")
+            {
+                qDebug()<< "entered cart";
+
+                QStringList credit = splitdata[x].split(",");
+                for (int i = 0; i < credit.size(); i += 2) {
+                    int ccv = credit[i].toInt();
+                    QString cn = credit[i+1];
+                    int m = credit[i+2].toInt();
+                    int y = credit[i+3].toInt();
+                    Customer::UserCreditCard c(ccv, cn, m, y);
+                    cc.push_back(c);
+                    qDebug()<< "added credit card";
+                }
+            }
+
+            insert (customer,splitdata[1], splitdata[2], genres, cart, add, cc);
         }else if (splitdata[0]== "seller"){
-            insert (seller, splitdata[1], splitdata[2], genres);
+            insert (seller, splitdata[1], splitdata[2]);
         }else if (splitdata[0]== "/")
         {
             qDebug()<< "empty spot";
@@ -112,6 +194,8 @@ void AllUsers::SaveUsers()
 
     QFile userData (cachedResource(":/UsersInfo/UserData.txt"));
 
+
+
     if (userData.setPermissions(QFile::WriteOwner)) {
         qDebug() << "Permissions updated successfully for file:";
     } else {
@@ -121,35 +205,60 @@ void AllUsers::SaveUsers()
     userData.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Truncate);
 
     QTextStream stream(&userData);
-   /* stream << "customer yomna yomna1 Classics Comic-Books N" << "\n";
-    stream << "customer aylaS ayla1234 Classics Palestine N" << "\n";
-    stream << "admin AylaSaleh ayla1234" << "\n";
-    stream << "admin yoyoo yomna1" << "\n";
-    for (int i = 0; i < 30; i++)
+   /*  stream << "customer :yomna :yomna1 :Classics :Comic-Books :G :N" << "\n";
+    stream << "customer :aylaS :ayla1234 :Classics :Palestine :G :N" << "\n";
+    stream << "admin :AylaSaleh :ayla1234 :N" << "\n";
+    stream << "admin :yoyoo :yomna1 :N" << "\n";
+    for (int i = 0; i < 47; i++)
         stream << "/" << "\n";*/
 
 
-    for (int i = 0 ; i < m; i ++)
+     for (int i = 0 ; i < n; i ++)
     {
         if (AllAdmins[i].isempty)
             stream << "/" << "\n";
         else
-            stream << "admin " << AllAdmins[i].getUsername() << " " << AllAdmins[i].getPassword() << "\n" ;
+            stream << "admin :" << AllAdmins[i].getUsername() << " :" << AllAdmins[i].getPassword() << " :N" << "\n" ;
 
+    }
+
+    for (int i = 0 ; i < m; i ++)
+    {
         if (AllCustomers[i].isempty)
-            stream << "/" << "\n";
+            stream << "/" << "\n";      //put a slash in the line
         else
-        {    stream << "customer " << AllCustomers[i].getUsername() << " " << AllCustomers[i].getPassword() ;
+        {    stream << "customer :" << AllCustomers[i].getUsername() << " :" << AllCustomers[i].getPassword() ;
             vector <QString> genre = AllCustomers[i].getPreferredGenres();
             for (auto it = genre.begin(); it != genre.end(); it++)
-                stream << " " <<*it;
-            stream << " N" << "\n";
-        }
+                stream << " :" <<*it;
+            stream << " :G";
 
+            vector <Customer::UserCart> cart = AllCustomers[i].getShopingCart();
+            if (!cart.empty())                                          //if cart is not empty save it's contents, if empty skip
+                for (auto it = cart.begin(); it != cart.end(); i++)
+                    stream << " :" << it->name << "," << it -> quant;
+
+            vector <Customer::UserAddress> add = AllCustomers[i].getAddress();
+            if (!add.empty())
+                for (auto it = add.begin(); it != add.end(); i++)
+                    stream << " :" << it->Province << "," << it -> Area<< "," << it -> Street<< "," << it -> Building<< "," << it -> Floor<< "," << it -> Apartment<< "," << it -> PhoneNumber;
+
+            vector <Customer::UserCreditCard> cc = AllCustomers[i].getCreditCards();
+            if (! cc.empty())
+                for (auto it = cc.begin(); it != cc.end(); i++)
+                   stream << " :" << it->CVV <<  "," << it -> CardNum<<  "," << it -> Month<<  "," << it -> Year;
+
+
+            stream << " :N" << "\n";        //end with N for future loading then newline.
+        }
+    }
+
+    for (int i = 0 ; i < l; i ++)
+    {
         if (AllSellers[i].isempty)
             stream << "/" << "\n";
         else{
-            stream << "seller " << AllSellers[i].getUsername() << " " << AllSellers[i].getPassword() << "\n" ;
+            stream << "seller :" << AllSellers[i].getUsername() << " :" << AllSellers[i].getPassword() << " :N" << "\n" ;
         }
     }
 
@@ -232,7 +341,7 @@ void AllUsers::checkTable (Type type)
     }
 }
 
-void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
+void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres,vector <Customer::UserCart> cart,vector <Customer::UserAddress> add,vector <Customer::UserCreditCard> cc)
 {
     //checkTable(type);
     int a = 0;
@@ -261,6 +370,9 @@ void AllUsers::insert (Type type, QString u, QString p, vector<QString> genres)
         {    AllCustomers[i].setUsername(u);
             AllCustomers[i].setPassword(p);
             AllCustomers[i].setPreferredGenres(genres);
+            AllCustomers[i].setShopingCart(cart);
+            AllCustomers[i].setAddress(add);
+            AllCustomers[i].setCreditCards(cc);
             qDebug()<< "final i : " << i;
 
         }

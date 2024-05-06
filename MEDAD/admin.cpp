@@ -10,3 +10,5 @@ void Admin::virtualfunc()
 {
 
 }
+
+QString Admin::getBadgeNum() const{ return authorizedViewPassNum; }

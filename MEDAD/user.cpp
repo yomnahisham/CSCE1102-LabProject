@@ -17,13 +17,17 @@ void User::setPassword (QString p)
 {
     password = p;
 }
-
-QString User::getUsername (){
+void User::setRole(QString r){ role = r; }
+QString User::getUsername () const{
     return username;
 }
 
-QString User::getPassword (){
+QString User::getPassword () const{
     return password;
+}
+
+QString User::getRole() const{
+    return role;
 }
 
 void User::virtualfunc()

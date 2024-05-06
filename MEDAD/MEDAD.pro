@@ -11,7 +11,6 @@ CONFIG += c++17
 SOURCES += \
     accessories.cpp \
     admin.cpp \
-    allproducts1.cpp \
     allusers.cpp \
     books.cpp \
     checkout.cpp \
@@ -24,7 +23,6 @@ SOURCES += \
     productmanager.cpp \
     products.cpp \
     registerwindow.cpp \
-    search.cpp \
     seller.cpp \
     shoppingcart.cpp \
     techs.cpp \
@@ -33,7 +31,6 @@ SOURCES += \
 HEADERS += \
     accessories.h \
     admin.h \
-    allproducts1.h \
     allusers.h \
     books.h \
     checkout.h \
@@ -45,20 +42,17 @@ HEADERS += \
     productmanager.h \
     products.h \
     registerwindow.h \
-    search.h \
     seller.h \
     shoppingcart.h \
     techs.h \
     user.h
 
 FORMS += \
-    allproducts1.ui \
     checkout.ui \
     confirm.ui \
     loginwindow.ui \
     productmanager.ui \
     registerwindow.ui \
-    search.ui \
     shoppingcart.ui
 
 # Default rules for deployment.

@@ -21,6 +21,7 @@
 #include <QVector>
 #include <QString>
 #include <QVBoxLayout>
+#include <QInputDialog>
 
 
 ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage)
@@ -39,10 +40,6 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     connect(ui->filterBox, &QComboBox::currentTextChanged, this, &ProductManager::on_filterBox_currentTextChanged);
 
     ui->searchLineEdit->setPlaceholderText("Search by genre or title...");
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     //setting logo in the corner of the shop app
     QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
@@ -108,6 +105,9 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
         ui->addAdminB->setVisible(false);
         ui->addProductB->setVisible(false);
         makeFirstPage();
+        return;
+    }else if(Admin* admin = dynamic_cast<Admin*>(user)){
+        createAdminAccessPage();
     }
     //loadProducts();
 }
@@ -205,7 +205,7 @@ void ProductManager::remarkItemsBeforeCall(){
     for(Products* prod: beforeCallProducts){
         //remove_if to move the items to be removed to the end of the vector
         displayedProducts.erase(remove_if(displayedProducts.begin(), displayedProducts.end(),
-            [&](Products* p) { return p == prod; }), displayedProducts.end());
+                                          [&](Products* p) { return p == prod; }), displayedProducts.end());
     }
 }
 
@@ -282,6 +282,177 @@ void ProductManager::loadProducts(){
     }
 }
 */
+
+void ProductManager::createAdminAccessPage(){
+    ui->ourproductsLogo->setVisible(false);
+    nextButton->setVisible(false);
+    prevButton->setVisible(false);
+
+    //create the main layout
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addStretch();
+
+    QHBoxLayout *horizontalLay = new QHBoxLayout(this);
+
+
+    //create a layout for the registration area alone
+    QVBoxLayout *regArea = new QVBoxLayout();
+
+    QLabel *regAdminLabel = new QLabel("Register New Admin:");
+    regArea->addWidget(regAdminLabel);
+
+    QLineEdit *nameLineEdit = new QLineEdit();
+    nameLineEdit->setPlaceholderText("Enter username");
+    nameLineEdit->setFixedWidth(600); // Set fixed width for username input
+    regArea->addWidget(nameLineEdit);
+    QLineEdit *passLineEdit = new QLineEdit();
+    passLineEdit->setPlaceholderText("Enter password");
+    passLineEdit->setEchoMode(QLineEdit::Password);
+    passLineEdit->setFixedWidth(600); // Set fixed width for password input
+    regArea->addWidget(passLineEdit);
+    QLineEdit *repPassLineEdit = new QLineEdit();
+    repPassLineEdit->setPlaceholderText("Repeat password");
+    repPassLineEdit->setEchoMode(QLineEdit::Password);
+    repPassLineEdit->setFixedWidth(600); // Set fixed width for repeat password input
+    regArea->addWidget(repPassLineEdit);
+    QPushButton *regButton = new QPushButton("Register");
+    regButton->setFixedWidth(600);
+    regArea->addWidget(regButton);
+    QLabel *passError = new QLabel();
+    passError->setStyleSheet("color: red");
+    regArea->addWidget(passError);
+
+    //connect regButton with action of registering user
+    connect(regButton, &QPushButton::clicked, [=]() {
+        QString password = passLineEdit->text();
+        QString repeatPassword = repPassLineEdit->text();
+
+        if (password != repeatPassword) {
+            // Display error message if passwords do not match
+            passError->setText("Passwords do not match. Please try again.");
+            passLineEdit->clear();
+            repPassLineEdit->clear();
+            passLineEdit->setFocus();
+            return;
+        } else {
+            // Clear the error message if passwords match
+            passError->clear();
+        }
+
+        //@ayla, check usernames here, maybe call a fucntion?
+        //then just send it to a function i made in registerwindow called makeAdmin
+        //please also do the functionality for that makeAdmin function
+    });
+
+    horizontalLay->addLayout(regArea);
+
+    QVBoxLayout *accManagmentArea = new QVBoxLayout();
+
+    QLabel *manageAccountsLabel = new QLabel("Manage Accounts:");
+    accManagmentArea->addWidget(manageAccountsLabel);
+
+    //create a table for managing accounts
+    QTableWidget *accountsTable = new QTableWidget();
+    makeAccountsTable(accountsTable);
+    accManagmentArea->addWidget(accountsTable);
+
+    horizontalLay->addLayout(accManagmentArea);
+    mainLayout->addLayout(horizontalLay);
+    mainLayout->addStretch();
+}
+
+
+void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
+    //using QList to store User data before displaying them in the table
+    QList<User> users;
+    QFile file(":/UsersInfo/UserData.txt");
+    if (file.open(QIODevice::ReadOnly)) {
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            QStringList parts = line.split(" ");
+            if (parts.size() >= 3) {
+                User client;
+                client.setRole(parts[0]);
+                client.setUsername(parts[1]);
+                client.setPassword(parts[2]);
+                users.append(client);
+            }
+        }
+        file.close();
+    } else {
+        qDebug() << "Error opening file";
+        return;
+    }
+
+    qDebug() << "Number of users:" << users.size();
+
+    accountsTable->setRowCount(users.size());
+
+    qDebug() << "Row count of the table:" << accountsTable->rowCount();
+
+    int numColumns = 6;
+    accountsTable->setColumnCount(numColumns);
+
+    QStringList headers;
+    headers << "Role" << "Username" << "Password" << "     " << "     " << "     ";
+    accountsTable->setHorizontalHeaderLabels(headers);
+
+    for (int i = 0; i < users.size(); ++i) {
+        User client = users.at(i);
+        QTableWidgetItem *roleItem = new QTableWidgetItem(client.getRole());
+        QTableWidgetItem *usernameItem = new QTableWidgetItem(client.getUsername());
+        QTableWidgetItem *passwordItem = new QTableWidgetItem();
+        //adding a placeholder to protect private data from unauthorized access
+        passwordItem->setData(Qt::DisplayRole, "********");
+
+        //button to reveal the password, requiring admin badge number
+        QPushButton* showPasswordButton = new QPushButton("Show Password");
+        showPasswordButton->setProperty("userIndex", i); //set a property to identify the user index
+
+        connect(showPasswordButton, &QPushButton::clicked, this, [=]() {
+            int userIndex = showPasswordButton->property("userIndex").toInt();
+            bool isVerified;
+            QString secretNumber = QInputDialog::getText(this, "Enter Authorized Badge Number", "Enter authorized badge number:");
+            Admin* ad = dynamic_cast<Admin*>(user);
+            if(ad && (ad->getBadgeNum()) == secretNumber)
+                isVerified = true;
+            if (isVerified) {
+                QTableWidgetItem *passwordItem = accountsTable->item(userIndex, 2);
+                if (passwordItem) {
+                    //set the real pass
+                    passwordItem->setData(Qt::DisplayRole, client.getPassword());
+                }
+            }
+        });
+
+        QPushButton* deleteUserButton = new QPushButton("Delete User");
+        deleteUserButton->setProperty("userIndex", i);
+
+        connect(deleteUserButton, &QPushButton::clicked, this, [=]() {
+            int userIndex = deleteUserButton->property("userIndex").toInt();
+            //@ayla, how to delete user?
+            accountsTable->removeRow(userIndex);
+        });
+
+        QPushButton* deactiveUserButton = new QPushButton("Deactivate User");
+        deactiveUserButton->setProperty("userIndex", i);
+
+        connect(deactiveUserButton, &QPushButton::clicked, this, [=]() {
+            int userIndex = deactiveUserButton->property("userIndex").toInt();
+            //?? can we make it so that the user can't buy anything for a while?
+        });
+
+        accountsTable->setItem(i, 0, roleItem);
+        accountsTable->setItem(i, 1, usernameItem);
+        accountsTable->setItem(i, 2, passwordItem);
+        accountsTable->setCellWidget(i, 3, showPasswordButton);
+        accountsTable->setCellWidget(i, 4, deactiveUserButton);
+        accountsTable->setCellWidget(i, 5, deleteUserButton);
+    }
+}
+
+
 void ProductManager::initializeProducts() {
     QString productsData[][8] = {
         {"War and Peace", "12.5", "5", "true", ":/Books/assets/warandpeace.png", "Classics", "Leo Tolstoy", "9780393042375"},
@@ -472,11 +643,6 @@ void ProductManager::makeFirstPage(){
 
     firstPageProducts.clear();
 
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-    int heightFull = screenGeometry.height();
-
     int productLayoutHeight = heightFull + 10;
 
     ui->allproductsLayout->parentWidget()->resize(widthFull-100, productLayoutHeight);
@@ -544,10 +710,6 @@ void ProductManager::makeFirstPage(){
 }
 
 void ProductManager::searchProducts(const QString &keyword) {
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
-
     ui->allproductsLayout->parentWidget()->raise();
     ui->basedonyouLogo->setVisible(false);
     ui->ourproductsLogo->setVisible(false);
@@ -686,10 +848,6 @@ void ProductManager::showSuggestions(){
     initializeProducts();
     vector<Products*> recommendations;
     recommendations = suggestSimilarItems();
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -832,11 +990,6 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
     ui->ourproductsLogo->move(67, 150);
     ui->basedonyouLogo->setVisible(false);
     ui->basedonsearchLogo->setVisible(false);
-
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -998,6 +1151,7 @@ void ProductManager::makeSecondPage(){
     thirdPage = false;
     fourthPage = false;
     secondPageProducts.clear();
+    ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -1010,6 +1164,7 @@ void ProductManager::makeThirdPage(){
     thirdPage = true;
     fourthPage = false;
     thirdPageProducts.clear();
+    ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -1023,6 +1178,7 @@ void ProductManager::makeFourthPage(){
     fourthPage = true;
     thirdPageProducts.clear();
     nextButton->setVisible(false);
+    ui->searchLineEdit->setVisible(true);
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
@@ -1048,10 +1204,6 @@ void ProductManager::showRemainingProducts() {
     ui->basedonsearchLogo->setVisible(false);
 
     ui->allproductsLayout->parentWidget()->lower();
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int widthFull = screenGeometry.width();
 
     int recsLayoutHeight = ui->recsLayout->parentWidget()->height() + 40;
 
@@ -1148,7 +1300,7 @@ void ProductManager::showRemainingProducts() {
             if (!imagePath.isNull()) {
                 QVBoxLayout* accessoryLayout = new QVBoxLayout();
                 QLabel* imageLabel = new QLabel();
-                                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 imageLabel->setScaledContents(true);
                 QLabel* nameLabel = new QLabel(name);
                 nameLabel->setFont(QFont("Optima", 12, QFont::Bold));
@@ -1609,5 +1761,3 @@ void ProductManager::on_filterBox_currentTextChanged(const QString &arg1) {
     }
 
 }
-
-

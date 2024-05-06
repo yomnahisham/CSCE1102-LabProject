@@ -9,13 +9,16 @@ public:
     ~User();
     void setUsername (QString u);
     void setPassword (QString p);
-    QString getUsername () ;
-    QString getPassword () ;
+    void setRole(QString r);
+    QString getUsername () const;
+    QString getPassword () const;
+    QString getRole() const;
     bool isempty = true;
     virtual void virtualfunc();
 private:
     QString password;
     QString username;
+    QString role;
 
 };
 

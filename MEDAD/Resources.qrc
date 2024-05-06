@@ -14,5 +14,8 @@
         <file>assets/ourproducts.png</file>
         <file>assets/nextArrow.png</file>
         <file>assets/prevArrow.png</file>
+        <file>assets/AdminLogo.png</file>
+        <file>assets/seller.png</file>
+        <file>assets/customerLogo.png</file>
     </qresource>
 </RCC>

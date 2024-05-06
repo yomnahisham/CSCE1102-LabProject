@@ -6,9 +6,9 @@
 #include "books.h"
 #include "accessories.h"
 #include "techs.h"
-#include"allproducts1.h"
 #include "clickablelabels.h"
 #include "shoppingcart.h"
+
 #include <QWidget>
 #include <vector>
 #include <QLayoutItem>
@@ -18,7 +18,6 @@
 #include <QStringList>
 #include <algorithm>
 #include<QScrollArea>
-#include"search.h"
 #include <QMainWindow>
 
 using namespace std;
@@ -39,6 +38,9 @@ public:
     Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size);
     Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, int type);
 
+    void createAdminAccessPage();
+    void makeAccountsTable(QTableWidget *accountsTable);
+
     vector<Products*> suggestSimilarItems();
 
     void makeFirstPage();
@@ -52,9 +54,11 @@ public:
     void initializeProducts();
     void showSuggestions();
     void showRemainingProducts();
+
     void clearLayout(QLayout* layout);
     bool isProductDisplayed(Products* product);
     void remarkItemsBeforeCall();
+
     ShoppingCart *cart;
     Customer *customer;
 
@@ -94,6 +98,9 @@ public:
     bool calledPrevious = false;
     bool filteractivated=false;
     bool firstPage=false;
+
+    int widthFull;
+    int heightFull;
 
     ClickableLabels* nextButton;
     ClickableLabels* prevButton;

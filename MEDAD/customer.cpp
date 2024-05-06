@@ -1,5 +1,4 @@
 #include "customer.h"
-#include "products.h"
 
 Customer::Customer() {
     emptyCart =true;
@@ -41,6 +40,7 @@ void Customer::setCreditCards(const vector<UserCreditCard> Credit){
 const vector <Customer::UserCreditCard>& Customer::getCreditCards() const{
     return userCredit;
 }
+
 void Customer::addToCreditVec(const UserCreditCard& creditItems){
     userCredit.push_back(creditItems);
 }
@@ -56,10 +56,3 @@ void Customer::addToAddressVec(const UserAddress &addressItems){
     userAddress.push_back(addressItems);
 }
 
-/*void Customer::setShopingCart(const QVector <ShoppingCart::CartItems> Cart){
-    cart = Cart;
-}
-
-const QVector <ShoppingCart::CartItems>& Customer::getShopingCart() const {
-    return cart;
-}*/
