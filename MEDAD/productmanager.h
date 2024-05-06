@@ -51,6 +51,8 @@ public:
     void showPrevious();
     void showProductsBasedonPage(vector<Products*> neededProducts);
 
+    void loadProducts();
+
     void initializeProducts();
     void showSuggestions();
     void showRemainingProducts();
@@ -58,6 +60,7 @@ public:
     void clearLayout(QLayout* layout);
     bool isProductDisplayed(Products* product);
     void remarkItemsBeforeCall();
+
 
     ShoppingCart *cart;
     Customer *customer;

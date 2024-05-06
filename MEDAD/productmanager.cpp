@@ -109,7 +109,8 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     }else if(Admin* admin = dynamic_cast<Admin*>(user)){
         createAdminAccessPage();
     }
-    //loadProducts();
+
+    loadProducts();
 }
 
 ProductManager::~ProductManager()
@@ -224,64 +225,69 @@ Techs* ProductManager::createTech(const QString& name, double price, int quantit
     return new Techs(name, price, quantity, availability, image, type);
 }
 
-/*
-QString cachedResource(const QString &resPath) {
+
+QString cached(const QString &rePath) {
     // Not a resource -> done
-    if (!resPath.startsWith(":"))
-        return resPath;
+    if (!rePath.startsWith(":"))
+        return rePath;
 
     // Get the cache directory of your app relative to the executable
-    QString executablePath = QCoreApplication::applicationDirPath();
-    QString cacheDir = executablePath + "/cache";
+   // QString executable = QCoreApplication::applicationDirPath();
+
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) ;
+
+    QString cacheD = path + "/cache";
+
 
     // Construct the path for the cached resource
-    QString subPath = cacheDir + resPath.mid(1); // cache folder plus resource without the leading ':'
+    QString suPath = cacheD + rePath.mid(1); // cache folder plus resource without the leading ':'
 
     // Check if the resource is already cached
-    if (QFile::exists(subPath)) // File exists -> done
+    if (QFile::exists(suPath)) // File exists -> done
     {   qDebug()<< "file exists";
-        return subPath;}
+        return suPath;}
 
     // Ensure the cache directory exists
-    if (!QFileInfo(cacheDir).dir().mkpath("."))
+    if (!QFileInfo(cacheD).dir().mkpath("."))
     {   qDebug()<< "couldn't create cache folder";
         return {}; // Failed to create dir
     }
 
     // Copy the resource file to the cache directory
-    if (!QFile::copy(resPath, subPath))
-    {   qDebug()<< "couldn't copy file";
+    if (!QFile::copy(rePath, suPath))
+    {   qDebug()<< "couldn't copy file, error: " << QFile(suPath).QFile::errorString();
         return {}; // Failed to copy file
     }
 
     // Make the copied file writable
-    QFile::setPermissions(subPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
+    QFile::setPermissions(suPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
 
-    return subPath;
+    qDebug()<< suPath;
+    return suPath;
 }
 
 void ProductManager::loadProducts(){
     //load all user data
     qDebug() << "loading users:";
 
-    QFile bookData (cachedResource(":/Books/bookData.txt"));
+    QFile Data (cached(":/Books/bookData.txt"));
 
-    if (bookData.setPermissions(QFile::ReadOwner))
+    if (Data.setPermissions(QFile::ReadOwner))
         qDebug() << "Permissions updated successfully for file:";
     else
         qDebug() << "Error updating permissions for file:" ;
 
-    bookData.open(QIODevice::ReadOnly | QIODevice::Text);
+    Data.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    QTextStream in(&bookData);
-    while(!in.atEnd()) {
-        QString data = in.readLine();
-        qDebug()<< data;
-        QStringList splitdata = data.split ("{");
-        qDebug()<< splitdata[0];
+    QTextStream i(&Data);
+    while(!i.atEnd()) {
+        QString d = i.readLine();
+        qDebug()<< d;
+        QStringList splitD = d.split (" ");
+        qDebug()<< splitD[0];
     }
 }
-*/
+
 
 void ProductManager::createAdminAccessPage(){
     ui->ourproductsLogo->setVisible(false);
