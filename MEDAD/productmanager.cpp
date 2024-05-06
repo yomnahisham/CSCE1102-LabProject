@@ -395,6 +395,13 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
         return;
     }
 
+    qDebug() << "Number of users:" << users.size();
+
+    // Set the row count of the table to the number of users
+    accountsTable->setRowCount(users.size());
+
+    qDebug() << "Row count of the table:" << accountsTable->rowCount();
+
     int numColumns = 3; //saving only role, username, and password columns
     accountsTable->setColumnCount(numColumns);
 
@@ -402,7 +409,6 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
     headers << "Role" << "Username" << "Password";
     accountsTable->setHorizontalHeaderLabels(headers);
 
-    accountsTable->setRowCount(users.size());
     for (int i = 0; i < users.size(); ++i) {
         User user = users.at(i);
         QTableWidgetItem *roleItem = new QTableWidgetItem(user.getRole());
@@ -414,6 +420,7 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
         accountsTable->setItem(i, 2, passwordItem);
     }
 }
+
 
 
 void ProductManager::initializeProducts() {
