@@ -86,6 +86,15 @@ void ShoppingCart::AddItemToCart(const QPixmap image, const QString &ItemName, d
 
 }
 
+void ShoppingCart::clearCart(){
+
+    Cart.clear();
+    ui->cartTable->clear();
+    ui->cartTable->setRowCount(0);
+
+
+}
+
 void ShoppingCart::addQuantity(int row){
     qDebug() << "Quantity incremented" ;
     itemQuantity = ui->cartTable->item(row,3);

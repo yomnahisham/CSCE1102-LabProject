@@ -98,7 +98,6 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
 
 
 
-
 }
 
 void Checkout::AddressSystem(){
@@ -341,10 +340,7 @@ void Checkout::on_ConfirmButton_clicked()
 
     }
 
-
-
-
-
+    cartt->clearCart();
 
 }
 

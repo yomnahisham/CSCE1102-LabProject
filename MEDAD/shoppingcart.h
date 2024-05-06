@@ -38,6 +38,7 @@ public:
     void addQuantity(int);
     void subQuantity(int);
     void setCart (QVector<Products*> CART);
+    void clearCart();
 
 private slots:
     void on_DeleteItem_clicked();
