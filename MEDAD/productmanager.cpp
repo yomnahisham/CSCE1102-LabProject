@@ -21,6 +21,12 @@
 #include <QString>
 #include <QVBoxLayout>
 #include <QInputDialog>
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QDoubleSpinBox>
+#include <QSpinBox>
+#include <QMessageBox>
+#include <QCheckBox>
 
 
 ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage)
@@ -108,8 +114,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     ui->basedonsearchLogo->setVisible(false);
 
     if(Customer* cus = dynamic_cast<Customer*>(user)){
-        ui->addAdminB->setVisible(false);
-        ui->addProductB->setVisible(false);
+        ui->addProductButton->setVisible(false);
         makeFirstPage();
         return;
     }else if(Admin* admin = dynamic_cast<Admin*>(user)){
@@ -121,8 +126,10 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     }else if(Seller* seller = dynamic_cast<Seller*>(user)){
         nextButton->setVisible(false);
         prevButton->setVisible(false);
+        cartLabel->setVisible(false);
         ui->XLogo->setVisible(true);
         ui->searchLineEdit->setVisible(false);
+        ui->filterBox->setVisible(false);
         createSellerView();
         return;
     }
@@ -284,6 +291,8 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 }
 
 void ProductManager::createSellerView(){
+    ui->addProductButton->setVisible(true);
+    ui->addProductButton->move(widthFull-(135), ui->filterBox->y());
     ui->sellerLogo->setVisible(true);
     QPixmap sellLogo;
     int w = ui->sellerLogo->width();
@@ -373,17 +382,13 @@ void ProductManager::createSellerView(){
                 nameLabel->setWordWrap(true);
                 QLabel* priceLabel = new QLabel(QString::number(price) + " EGP");
                 priceLabel->setFont(QFont("Optima", 12));
-                ClickableLabels* addToCart = new ClickableLabels(this);
-                QPixmap addPix(":/logos/assets/addtoCart.png");
-                addToCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addToCart, &ClickableLabels::clicked, [this, imagePath, name, price]() {
-                    this->cart->AddItemToCart(imagePath, name, price, 1);
-                });
+                QLabel* quanityLabel = new QLabel(QString::number(quantity) + " Avaliable");
+                quanityLabel->setFont(QFont("Optima", 12, QFont::ExtraLight));
 
                 productLayout->addWidget(imageLabel);
                 productLayout->addWidget(nameLabel);
                 productLayout->addWidget(priceLabel);
-                productLayout->addWidget(addToCart);
+                productLayout->addWidget(quanityLabel);
                 productLayout->setAlignment(Qt::AlignTop);
 
                 sellerProductsLayout->addLayout(productLayout, row, col);
@@ -1893,3 +1898,199 @@ void ProductManager::on_filterBox_currentTextChanged(const QString &arg1) {
     }
 
 }
+void ProductManager::on_addProductButton_clicked()
+{
+    QDialog dialog(this);
+    dialog.setWindowTitle("Add Product");
+
+    //create layout for the dialog
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
+
+    //add radio buttons for product type selection
+    QGroupBox *groupBox = new QGroupBox("Product Type");
+    QVBoxLayout *radioLayout = new QVBoxLayout;
+    QRadioButton *bookRadioButton = new QRadioButton("Book");
+    QRadioButton *accessoryRadioButton = new QRadioButton("Accessory");
+    QRadioButton *techRadioButton = new QRadioButton("Tech");
+
+    radioLayout->addWidget(bookRadioButton);
+    radioLayout->addWidget(accessoryRadioButton);
+    radioLayout->addWidget(techRadioButton);
+    groupBox->setLayout(radioLayout);
+    layout->addWidget(groupBox);
+
+    //add input fields for common product details
+    QLineEdit *nameLineEdit = new QLineEdit(&dialog);
+    nameLineEdit->setPlaceholderText("Name");
+    layout->addWidget(nameLineEdit);
+
+    QDoubleSpinBox *priceSpinBox = new QDoubleSpinBox(&dialog);
+    priceSpinBox->setSuffix(" EGP");
+    priceSpinBox->setMinimum(1);
+    priceSpinBox->setMaximum(1000);
+    priceSpinBox->setSingleStep(1);
+    priceSpinBox->setAccelerated(true);
+    layout->addWidget(priceSpinBox);
+
+    QSpinBox *quantitySpinBox = new QSpinBox(&dialog);
+    quantitySpinBox->setMinimum(1);
+    quantitySpinBox->setMaximum(1000);
+    layout->addWidget(quantitySpinBox);
+
+    QLineEdit *imagePathLineEdit = new QLineEdit(&dialog);
+    imagePathLineEdit->setPlaceholderText("Image Path");
+    layout->addWidget(imagePathLineEdit);
+
+    //additional fields for all products
+    QLabel *isbnLabel = new QLabel("ISBN", &dialog);
+    QLineEdit *isbnLineEdit = new QLineEdit(&dialog);
+    layout->addWidget(isbnLabel);
+    layout->addWidget(isbnLineEdit);
+    isbnLabel->setVisible(false);
+    isbnLineEdit->setVisible(false);
+
+    QCheckBox *availabilityCheckBox = new QCheckBox("Availability", &dialog);
+    layout->addWidget(availabilityCheckBox);
+
+    //additional fields for books
+    QLabel *genreLabel = new QLabel("Genre", &dialog);
+    QLineEdit *genreLineEdit = new QLineEdit(&dialog);
+    layout->addWidget(genreLabel);
+    layout->addWidget(genreLineEdit);
+    genreLabel->setVisible(false);
+    genreLineEdit->setVisible(false);
+
+    QLabel *authorLabel = new QLabel("Author", &dialog);
+    QLineEdit *authorLineEdit = new QLineEdit(&dialog);
+    layout->addWidget(authorLabel);
+    layout->addWidget(authorLineEdit);
+    authorLabel->setVisible(false);
+    authorLineEdit->setVisible(false);
+
+    //additional fields for accessories
+    QLabel *typeLabel = new QLabel("Type", &dialog);
+    QLineEdit *typeLineEdit = new QLineEdit(&dialog);
+    layout->addWidget(typeLabel);
+    layout->addWidget(typeLineEdit);
+    typeLabel->setVisible(false);
+    typeLineEdit->setVisible(false);
+
+    QLabel *sizeLabel = new QLabel("Size", &dialog);
+    QLineEdit *sizeLineEdit = new QLineEdit(&dialog);
+    layout->addWidget(sizeLabel);
+    layout->addWidget(sizeLineEdit);
+    sizeLabel->setVisible(false);
+    sizeLineEdit->setVisible(false);
+
+    //additional fields for tech
+    QLabel *warrantyLabel = new QLabel("Warranty", &dialog);
+    QSpinBox *warrantySpinBox = new QSpinBox(&dialog);
+    warrantySpinBox->setMinimum(0);
+    warrantySpinBox->setMaximum(10); // Adjust the range as needed
+    layout->addWidget(warrantyLabel);
+    layout->addWidget(warrantySpinBox);
+    warrantyLabel->setVisible(false);
+    warrantySpinBox->setVisible(false);
+
+    //connect signals and slots for radio buttons
+    connect(bookRadioButton, &QRadioButton::toggled, [&]() {
+        isbnLabel->setVisible(true);
+        isbnLineEdit->setVisible(true);
+        genreLabel->setVisible(true);
+        genreLineEdit->setVisible(true);
+        authorLabel->setVisible(true);
+        authorLineEdit->setVisible(true);
+
+        typeLabel->setVisible(false);
+        typeLineEdit->setVisible(false);
+        sizeLabel->setVisible(false);
+        sizeLineEdit->setVisible(false);
+        warrantyLabel->setVisible(false);
+        warrantySpinBox->setVisible(false);
+    });
+
+    connect(accessoryRadioButton, &QRadioButton::toggled, [&]() {
+        typeLabel->setVisible(true);
+        typeLineEdit->setVisible(true);
+        sizeLabel->setVisible(true);
+        sizeLineEdit->setVisible(true);
+
+        isbnLabel->setVisible(false);
+        isbnLineEdit->setVisible(false);
+        genreLabel->setVisible(false);
+        genreLineEdit->setVisible(false);
+        authorLabel->setVisible(false);
+        authorLineEdit->setVisible(false);
+        warrantyLabel->setVisible(false);
+        warrantySpinBox->setVisible(false);
+    });
+
+    connect(techRadioButton, &QRadioButton::toggled, [&]() {
+        warrantyLabel->setVisible(true);
+        warrantySpinBox->setVisible(true);
+
+        isbnLabel->setVisible(false);
+        isbnLineEdit->setVisible(false);
+        genreLabel->setVisible(false);
+        genreLineEdit->setVisible(false);
+        authorLabel->setVisible(false);
+        authorLineEdit->setVisible(false);
+        typeLabel->setVisible(false);
+        typeLineEdit->setVisible(false);
+        sizeLabel->setVisible(false);
+        sizeLineEdit->setVisible(false);
+    });
+
+    //add buttons for adding and canceling
+    QHBoxLayout *buttonLayout = new QHBoxLayout;
+    QPushButton *addButton = new QPushButton("Add", &dialog);
+    QPushButton *cancelButton = new QPushButton("Cancel", &dialog);
+    buttonLayout->addWidget(addButton);
+    buttonLayout->addWidget(cancelButton);
+    layout->addLayout(buttonLayout);
+
+    //connect signals and slots
+    connect(addButton, &QPushButton::clicked, [&]() {
+        QString name = nameLineEdit->text();
+        double price = priceSpinBox->value();
+        int quantity = quantitySpinBox->value();
+        QString imagePath = imagePathLineEdit->text();
+        QString isbn = isbnLineEdit->text();
+        bool availability = availabilityCheckBox->isChecked();
+        QString seller = user->getUsername();
+
+        //validate input
+        if (name.isEmpty() || price <= 0 || quantity <= 0 || imagePath.isEmpty() || (bookRadioButton->isChecked() && isbn.isEmpty())) {
+            QMessageBox::warning(&dialog, "Error", "Please fill in all fields.");
+            return;
+        }
+
+        //additional fields based on selected product type
+        QString genre, author, type, size;
+        int warranty = 0;
+
+        if (bookRadioButton->isChecked()) {
+            genre = genreLineEdit->text();
+            author = authorLineEdit->text();
+            emit createBook(name, price, quantity, availability, imagePath, seller, genre, author, isbn);
+        } else if (accessoryRadioButton->isChecked()) {
+            type = typeLineEdit->text();
+            size = sizeLineEdit->text();
+            emit createAccessory(name, price, quantity, availability, imagePath, seller, type, size);
+        } else if (techRadioButton->isChecked()) {
+            warranty = warrantySpinBox->value();
+            emit createTech(name, price, quantity, availability, QPixmap(imagePath), seller, warranty);
+        }
+
+        //close the dialog
+        dialog.close();
+    });
+
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::close);
+
+    //set dialog size and show
+    dialog.setMinimumSize(400, 300);
+    dialog.exec();
+}
+
+

@@ -83,7 +83,9 @@ private slots:
     void updateLayout(QLayout* layout);
    void sortProducts(vector<Products*>& products, const QString& arg1);
     //void loadProducts();
-public:
+   void on_addProductButton_clicked();
+
+   public:
     Ui::ProductManager *ui;
     User* user;
     AllUsers* users;
