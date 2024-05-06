@@ -18,7 +18,7 @@ public:
     void SaveUsers ();
     void LoadUsers();
     User* authenticateUser(Type type , QString u, QString p);
-    void insert (Type type, QString u, QString p, vector<QString> genres);
+    void insert (Type type, QString u, QString p, vector<QString> genres = vector<QString>(),vector <Customer::UserCart> cart = vector <Customer::UserCart>(),vector <Customer::UserAddress> add = vector <Customer::UserAddress> (),vector <Customer::UserCreditCard> cc = vector <Customer::UserCreditCard>());
     bool userExists (Type type, QString u) ;
 private:
     static int m;
