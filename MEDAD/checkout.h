@@ -20,7 +20,6 @@ public:
     explicit Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::CartItems>itemsInCart, User *logged, AllUsers *all);
     ~Checkout();
 
-
     void setTotal(double);
     double getTotal() const;
     void setDeliveryFee(double);
@@ -43,7 +42,6 @@ public:
     void CreditCardSystem();
     void updateCreditTable();
     struct Address{
-
         QString Province;
         QString Area;
         QString Street;
@@ -55,8 +53,9 @@ public:
         Address(const QString& p, const QString& a,const QString& s, const QString& b, int f, int ap, const QString& ph):
             Province(p) , Area(a), Street(s), Building(b), Floor(f), Apartment(ap), PhoneNumber(ph) {};
 
-
     };
+    vector<CreditCard> userCreditCards;
+    vector<Address> userAddress;
    void AddressSystem();
    void SaveAddressInfo();
    void updateAddressTable();
@@ -66,6 +65,7 @@ public:
    void LoadDataIntoAddress(Customer *customer);
    ShoppingCart *cartt;
    Customer *customer;
+
 
 private slots:
     void on_pushButton_clicked();
@@ -78,9 +78,7 @@ private slots:
 
     void on_ConfirmButton_clicked();
 
-protected:
-    vector<CreditCard> userCreditCards;
-    vector<Address> userAddress;
+
 private:
     Ui::Checkout *ui;
     double Total;
