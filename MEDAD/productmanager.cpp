@@ -109,6 +109,8 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
         ui->addProductB->setVisible(false);
         makeFirstPage();
         return;
+    }else if(Admin* admin = dynamic_cast<Admin*>(user)){
+        createAdminAccessPage();
     }
     //loadProducts();
 }
@@ -283,6 +285,92 @@ void ProductManager::loadProducts(){
     }
 }
 */
+
+void ProductManager::createAdminAccessPage(){
+    ui->ourproductsLogo->setVisible(false);
+    nextButton->setVisible(false);
+    prevButton->setVisible(false);
+
+    //create the main layout
+    QVBoxLayout *fullLayout = new QVBoxLayout(this);
+
+    //create a layout for the registration area alone
+    QVBoxLayout *regArea = new QVBoxLayout();
+    regArea->setAlignment(Qt::AlignTop);
+
+    QVBoxLayout *accManagmentArea = new QVBoxLayout();
+    accManagmentArea->setAlignment(Qt::AlignTop);
+
+    //create a widgets
+    QWidget *accManagmentWidget = new QWidget();
+    accManagmentWidget->setLayout(accManagmentArea);
+    QWidget *regWidget = new QWidget();
+    regWidget->setLayout(regArea);
+
+    QLabel *regAdminLabel = new QLabel("Register New Admin:");
+    regArea->addWidget(regAdminLabel);
+
+    QLineEdit *nameLineEdit = new QLineEdit();
+    nameLineEdit->setPlaceholderText("Enter username");
+    nameLineEdit->setFixedWidth(400); // Set fixed width for username input
+    regArea->addWidget(nameLineEdit);
+    QLineEdit *passLineEdit = new QLineEdit();
+    passLineEdit->setPlaceholderText("Enter password");
+    passLineEdit->setEchoMode(QLineEdit::Password);
+    passLineEdit->setFixedWidth(400); // Set fixed width for password input
+    regArea->addWidget(passLineEdit);
+    QLineEdit *repPassLineEdit = new QLineEdit();
+    repPassLineEdit->setPlaceholderText("Repeat password");
+    repPassLineEdit->setEchoMode(QLineEdit::Password);
+    repPassLineEdit->setFixedWidth(400); // Set fixed width for repeat password input
+    regArea->addWidget(repPassLineEdit);
+    QPushButton *regButton = new QPushButton("Register");
+    regButton->setFixedWidth(400);
+    regArea->addWidget(regButton);
+    QLabel *passError = new QLabel();
+    passError->setStyleSheet("color: red");
+    regArea->addWidget(passError);
+
+    //connect regButton with action of registering user
+    connect(regButton, &QPushButton::clicked, [=]() {
+        QString password = passLineEdit->text();
+        QString repeatPassword = repPassLineEdit->text();
+
+        if (password != repeatPassword) {
+            // Display error message if passwords do not match
+            passError->setText("Passwords do not match. Please try again.");
+            passLineEdit->clear();
+            repPassLineEdit->clear();
+            passLineEdit->setFocus();
+            return;
+        } else {
+            // Clear the error message if passwords match
+            passError->clear();
+        }
+
+        //@ayla, check usernames here, maybe call a fucntion?
+        //then just send it to a function i made in registerwindow called makeAdmin
+        //please also do the functionality for that makeAdmin function
+    });
+
+    fullLayout->addWidget(regWidget);
+    fullLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+    QLabel *manageAccountsLabel = new QLabel("Manage Accounts:");
+    accManagmentArea->addWidget(manageAccountsLabel);
+
+    //create a table for managing accounts
+    QTableWidget *accountsTable = new QTableWidget();
+    accManagmentArea->addWidget(accountsTable);
+
+    fullLayout->addWidget(regWidget);
+    fullLayout->addWidget(accManagmentWidget);
+
+    QSpacerItem *spacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    fullLayout->addSpacerItem(spacer);
+}
+
+
 void ProductManager::initializeProducts() {
     QString productsData[][8] = {
         {"War and Peace", "12.5", "5", "true", ":/Books/assets/warandpeace.png", "Classics", "Leo Tolstoy", "9780393042375"},

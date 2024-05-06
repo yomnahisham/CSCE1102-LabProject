@@ -38,6 +38,8 @@ public:
     Accessories* createAccessory(const QString& name, double price, int quantity, bool availability, const QString& imagePath, const QString& type, char size);
     Techs* createTech(const QString& name, double price, int quantity, bool availability, const QPixmap& image, int type);
 
+    void createAdminAccessPage();
+
     vector<Products*> suggestSimilarItems();
 
     void makeFirstPage();
@@ -51,9 +53,11 @@ public:
     void initializeProducts();
     void showSuggestions();
     void showRemainingProducts();
+
     void clearLayout(QLayout* layout);
     bool isProductDisplayed(Products* product);
     void remarkItemsBeforeCall();
+
     ShoppingCart *cart;
     Customer *customer;
 
