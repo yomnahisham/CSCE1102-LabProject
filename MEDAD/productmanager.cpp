@@ -401,11 +401,11 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 
     qDebug() << "Row count of the table:" << accountsTable->rowCount();
 
-    int numColumns = 4;
+    int numColumns = 6;
     accountsTable->setColumnCount(numColumns);
 
     QStringList headers;
-    headers << "     " << "Username" << "Password" << " ";
+    headers << "Role" << "Username" << "Password" << "     " << "     " << "     ";
     accountsTable->setHorizontalHeaderLabels(headers);
 
     for (int i = 0; i < users.size(); ++i) {
@@ -417,16 +417,15 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
         passwordItem->setData(Qt::DisplayRole, "********");
 
         //button to reveal the password, requiring admin badge number
-        QPushButton *showPasswordButton = new QPushButton("Show Password");
+        QPushButton* showPasswordButton = new QPushButton("Show Password");
         showPasswordButton->setProperty("userIndex", i); //set a property to identify the user index
 
-        //connect the button's clicked signal to a slot
         connect(showPasswordButton, &QPushButton::clicked, this, [=]() {
             int userIndex = showPasswordButton->property("userIndex").toInt();
             bool isVerified;
             QString secretNumber = QInputDialog::getText(this, "Enter Authorized Badge Number", "Enter authorized badge number:");
             Admin* ad = dynamic_cast<Admin*>(user);
-            if((ad->getBadgeNum()) == secretNumber)
+            if(ad && (ad->getBadgeNum()) == secretNumber)
                 isVerified = true;
             if (isVerified) {
                 QTableWidgetItem *passwordItem = accountsTable->item(userIndex, 2);
@@ -437,29 +436,31 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
             }
         });
 
-        //want the image to really show
-        QLabel *imageLabel = new QLabel();
-        if (client.getRole() == "admin") {
-            // Set admin image
-            QPixmap adminPixmap(":/logos/assets/AdminLogo.png");
-            imageLabel->setPixmap(adminPixmap.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        } else if (client.getRole() == "customer") {
-            // Set user image
-            QPixmap cusPixmap(":/logos/assets/customerLogo.png");
-            imageLabel->setPixmap(cusPixmap.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        } else if (client.getRole() == "seller") {
-            QPixmap sellerPixmap(":/logos/assets/seller.png");
-            imageLabel->setPixmap(sellerPixmap.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        }
+        QPushButton* deleteUserButton = new QPushButton("Delete User");
+        deleteUserButton->setProperty("userIndex", i);
 
-        accountsTable->setCellWidget(i, 0, imageLabel);
+        connect(deleteUserButton, &QPushButton::clicked, this, [=]() {
+            int userIndex = deleteUserButton->property("userIndex").toInt();
+            //@ayla, how to delete user?
+            accountsTable->removeRow(userIndex);
+        });
+
+        QPushButton* deactiveUserButton = new QPushButton("Deactivate User");
+        deactiveUserButton->setProperty("userIndex", i);
+
+        connect(deactiveUserButton, &QPushButton::clicked, this, [=]() {
+            int userIndex = deactiveUserButton->property("userIndex").toInt();
+            //?? can we make it so that the user can't buy anything for a while?
+        });
+
+        accountsTable->setItem(i, 0, roleItem);
         accountsTable->setItem(i, 1, usernameItem);
         accountsTable->setItem(i, 2, passwordItem);
         accountsTable->setCellWidget(i, 3, showPasswordButton);
+        accountsTable->setCellWidget(i, 4, deactiveUserButton);
+        accountsTable->setCellWidget(i, 5, deleteUserButton);
     }
 }
-
-
 
 
 void ProductManager::initializeProducts() {
