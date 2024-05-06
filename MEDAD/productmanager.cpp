@@ -898,6 +898,7 @@ void ProductManager::showPrevious() {
 
         ui->ourproductsLogo->move(67, 480);
         ui->recsLayout->parentWidget()->lower();
+        ui->allproductsLayout->Down;
         makeFirstPage();
         return;
     }
@@ -921,6 +922,8 @@ void ProductManager::showPrevious() {
         qDebug() << "Number of products in secondPageProducts: " << secondPageProducts.size();
 
         //show the products based on the second page vector
+        ui->allproductsLayout->Down;
+        ui->recsLayout->parentWidget()->raise();
         showProductsBasedonPage(secondPageProducts);
         return;
     }
@@ -943,6 +946,8 @@ void ProductManager::showPrevious() {
         qDebug() << "Number of products in secondPageProducts: " << thirdPageProducts.size();
 
         //show the products based on the second page vector
+        ui->allproductsLayout->Down;
+        ui->recsLayout->parentWidget()->raise();
         showProductsBasedonPage(thirdPageProducts);
         return;
     }
@@ -1129,6 +1134,9 @@ void ProductManager::makeSecondPage(){
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
     ui->allproductsLayout->Down;
+     ui->recsLayout->parentWidget()->raise();
+    nextButton->raise();
+    prevButton->raise();
     showRemainingProducts();
 }
 
@@ -1142,6 +1150,9 @@ void ProductManager::makeThirdPage(){
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
  ui->allproductsLayout->Down;
+     ui->recsLayout->parentWidget()->raise();
+ nextButton->raise();
+ prevButton->raise();
     showRemainingProducts();
 }
 
@@ -1156,6 +1167,9 @@ void ProductManager::makeFourthPage(){
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
  ui->allproductsLayout->Down;
+     ui->recsLayout->parentWidget()->raise();
+ nextButton->raise();
+ prevButton->raise();
     showRemainingProducts();
 }
 
