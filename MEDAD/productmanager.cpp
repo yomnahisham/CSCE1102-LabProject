@@ -1573,11 +1573,15 @@ void ProductManager::showRemainingProducts() {
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this, accessory, imagePath, name, price](){
 
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                    if(accessory->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+
+                    }
                 });
-
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
 
                 accessoryLayout->addWidget(imageLabel);
@@ -1636,9 +1640,14 @@ void ProductManager::showRemainingProducts() {
                 ClickableLabels* addtoCart = new ClickableLabels(this);
                 QPixmap addPix(":/logos/assets/addtoCart.png");
                 addtoCart->setPixmap(addPix.scaled(30, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                connect(addtoCart, &ClickableLabels::clicked, [this,imagePath, name, price](){
+                connect(addtoCart, &ClickableLabels::clicked, [this, tech, imagePath, name, price](){
 
-                    this->cart->AddItemToCart(imagePath,name, price, 1);
+                    if(tech->getQuantity() > 0){
+                        this->cart->AddItemToCart(imagePath,name, price, 1);
+                    }else{
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+
+                    }
                 });
 
                 //connect(addtoCart, &ClickableLabels::clicked, this, &ProductManager::onAddToCartClicked);
