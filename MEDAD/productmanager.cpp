@@ -95,6 +95,7 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     nextButton->move(widthFull/2 + 20, 800);
     connect(nextButton, &ClickableLabels::clicked, this, &ProductManager::onNextClicked);
 
+
     QPixmap prevPix(":/logos/assets/prevArrow.png");
     prevButton->setPixmap(prevPix.scaled(70, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     prevButton->move(widthFull/2 -20, 800);
@@ -131,6 +132,11 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
         ui->searchLineEdit->setVisible(false);
         ui->filterBox->setVisible(false);
         createSellerView();
+        nextButton->setVisible(true);
+        prevButton->setVisible(true);
+        nextButton->raise();
+        prevButton->raise();
+
         return;
     }
     //loadProducts();
@@ -845,6 +851,8 @@ vector<Products*> ProductManager::suggestSimilarItems(){
 }
 
 void ProductManager::makeFirstPage(){
+
+
     displayedProducts.clear();
     firstPage = true;
     showSuggestions();
@@ -920,9 +928,12 @@ void ProductManager::makeFirstPage(){
 
     //add the last row layout to the main layout
     ui->allproductsLayout->addLayout(currentRowLayout);
+
 }
 
 void ProductManager::searchProducts(const QString &keyword) {
+
+
     ui->allproductsLayout->parentWidget()->raise();
     ui->basedonyouLogo->setVisible(false);
     ui->ourproductsLogo->setVisible(false);
@@ -931,7 +942,7 @@ void ProductManager::searchProducts(const QString &keyword) {
     clearLayout(ui->recsLayout);
     clearLayout(ui->allproductsLayout);
 
-    ClickableLabels* nextButton = new ClickableLabels(this);
+    ClickableLabels* nextButton= new ClickableLabels(this);
     QPixmap nextPix(":/logos/assets/nextLogo.png");
     nextButton->setPixmap(nextPix.scaled(70, 60, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     nextButton->move(widthFull/2, 800);
@@ -1060,6 +1071,14 @@ void ProductManager::searchProducts(const QString &keyword) {
     }
     ui->recsLayout->setAlignment(Qt::AlignHCenter);
     ui->allproductsLayout->setAlignment(Qt::AlignHCenter);
+    ui->allproductsLayout->parentWidget()->lower();
+    ui->recsLayout->parentWidget()->raise();
+    nextButton->setVisible(true);
+    prevButton->raise();
+    nextButton->raise();
+
+
+
 }
 
 
@@ -1218,6 +1237,8 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
 
     nextButton->setVisible(true);
     prevButton->setVisible(true);
+    nextButton->raise();
+    prevButton->raise();
 
     ui->ourproductsLogo->move(67, 150);
     ui->basedonyouLogo->setVisible(false);
@@ -1387,6 +1408,8 @@ void ProductManager::showProductsBasedonPage(vector<Products*> neededProducts){
         }
     }
     ui->recsLayout->addLayout(gridLayout);
+
+
 }
 
 

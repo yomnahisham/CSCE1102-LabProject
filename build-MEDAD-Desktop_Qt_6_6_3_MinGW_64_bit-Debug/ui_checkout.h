@@ -44,6 +44,9 @@ public:
     QTableWidget *CreditCardsTableWidget;
     QGroupBox *SavedAddressGroup;
     QTableWidget *savedAddressTable;
+    QLineEdit *PromoCode;
+    QPushButton *enterDiscount;
+    QLabel *InValidDiscount;
     QWidget *CreditWidget;
     QPushButton *enterCredit;
     QGroupBox *CreditCardInfoGroupBox;
@@ -85,10 +88,10 @@ public:
 ""));
         PaymentWidget = new QWidget(Checkout);
         PaymentWidget->setObjectName("PaymentWidget");
-        PaymentWidget->setGeometry(QRect(80, 10, 561, 781));
+        PaymentWidget->setGeometry(QRect(80, 20, 561, 781));
         DeliveryFee = new QLabel(PaymentWidget);
         DeliveryFee->setObjectName("DeliveryFee");
-        DeliveryFee->setGeometry(QRect(20, 580, 509, 61));
+        DeliveryFee->setGeometry(QRect(10, 630, 509, 61));
         QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Minimum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -100,7 +103,7 @@ public:
         DeliveryFee->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         Total = new QLabel(PaymentWidget);
         Total->setObjectName("Total");
-        Total->setGeometry(QRect(20, 670, 291, 111));
+        Total->setGeometry(QRect(10, 730, 301, 51));
         QFont font1;
         font1.setPointSize(20);
         font1.setBold(true);
@@ -131,7 +134,7 @@ public:
 ""));
         subTotal = new QLabel(PaymentWidget);
         subTotal->setObjectName("subTotal");
-        subTotal->setGeometry(QRect(20, 640, 509, 61));
+        subTotal->setGeometry(QRect(10, 670, 509, 61));
         QSizePolicy sizePolicy1(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Ignored);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -180,6 +183,21 @@ public:
         savedAddressTable = new QTableWidget(SavedAddressGroup);
         savedAddressTable->setObjectName("savedAddressTable");
         savedAddressTable->setGeometry(QRect(10, 40, 261, 121));
+        PromoCode = new QLineEdit(PaymentWidget);
+        PromoCode->setObjectName("PromoCode");
+        PromoCode->setGeometry(QRect(220, 640, 231, 28));
+        PromoCode->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        enterDiscount = new QPushButton(PaymentWidget);
+        enterDiscount->setObjectName("enterDiscount");
+        enterDiscount->setGeometry(QRect(470, 640, 83, 29));
+        enterDiscount->setFont(font);
+        enterDiscount->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"background-color: rgb(249, 184, 158);\n"
+""));
+        InValidDiscount = new QLabel(PaymentWidget);
+        InValidDiscount->setObjectName("InValidDiscount");
+        InValidDiscount->setGeometry(QRect(220, 680, 271, 20));
+        InValidDiscount->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
         CreditWidget = new QWidget(Checkout);
         CreditWidget->setObjectName("CreditWidget");
         CreditWidget->setGeometry(QRect(650, 140, 401, 391));
@@ -360,6 +378,8 @@ public:
         SavedAddressButton->setText(QCoreApplication::translate("Checkout", "Saved", nullptr));
         CreditCardsGroup->setTitle(QCoreApplication::translate("Checkout", "Credit Cards", nullptr));
         SavedAddressGroup->setTitle(QCoreApplication::translate("Checkout", "Saved Address", nullptr));
+        enterDiscount->setText(QCoreApplication::translate("Checkout", "Enter", nullptr));
+        InValidDiscount->setText(QCoreApplication::translate("Checkout", "*Invalid Promo Code", nullptr));
         enterCredit->setText(QCoreApplication::translate("Checkout", "Enter", nullptr));
         CreditCardInfoGroupBox->setTitle(QCoreApplication::translate("Checkout", "Credit Card Info", nullptr));
         CreditNumLabel->setText(QCoreApplication::translate("Checkout", "Credit Card Num:", nullptr));

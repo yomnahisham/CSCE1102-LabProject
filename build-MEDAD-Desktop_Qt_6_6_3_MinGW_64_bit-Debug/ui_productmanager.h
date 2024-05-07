@@ -33,9 +33,10 @@ public:
     QLabel *basedonyouLogo;
     QLabel *basedonsearchLogo;
     QComboBox *filterBox;
-    QPushButton *addProductB;
-    QPushButton *addAdminB;
+    QPushButton *addProductButton;
     QLabel *ourproductsLogo;
+    QLabel *XLogo;
+    QLabel *sellerLogo;
 
     void setupUi(QWidget *ProductManager)
     {
@@ -84,17 +85,21 @@ public:
         filterBox->setGeometry(QRect(1210, 120, 161, 21));
         filterBox->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 252); color: black;\n"
 "font: italic 13pt \"Helvetica\";"));
-        addProductB = new QPushButton(ProductManager);
-        addProductB->setObjectName("addProductB");
-        addProductB->setGeometry(QRect(580, 30, 100, 32));
-        addProductB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
-        addAdminB = new QPushButton(ProductManager);
-        addAdminB->setObjectName("addAdminB");
-        addAdminB->setGeometry(QRect(760, 30, 100, 32));
-        addAdminB->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        addProductButton = new QPushButton(ProductManager);
+        addProductButton->setObjectName("addProductButton");
+        addProductButton->setGeometry(QRect(580, 30, 100, 32));
+        addProductButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         ourproductsLogo = new QLabel(ProductManager);
         ourproductsLogo->setObjectName("ourproductsLogo");
         ourproductsLogo->setGeometry(QRect(60, 480, 111, 31));
+        XLogo = new QLabel(ProductManager);
+        XLogo->setObjectName("XLogo");
+        XLogo->setGeometry(QRect(240, 60, 16, 51));
+        XLogo->setStyleSheet(QString::fromUtf8(""));
+        sellerLogo = new QLabel(ProductManager);
+        sellerLogo->setObjectName("sellerLogo");
+        sellerLogo->setGeometry(QRect(270, 50, 291, 91));
+        sellerLogo->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0)"));
         logoCorner->raise();
         horizontalLayoutWidget->raise();
         horizontalLayoutWidget_2->raise();
@@ -102,10 +107,11 @@ public:
         basedonsearchLogo->raise();
         searchLineEdit->raise();
         filterBox->raise();
-        addProductB->raise();
-        addAdminB->raise();
+        addProductButton->raise();
         logoSub->raise();
         ourproductsLogo->raise();
+        XLogo->raise();
+        sellerLogo->raise();
 
         retranslateUi(ProductManager);
 
@@ -127,9 +133,10 @@ public:
         filterBox->setItemText(4, QCoreApplication::translate("ProductManager", "Z-A", nullptr));
         filterBox->setItemText(5, QString());
 
-        addProductB->setText(QCoreApplication::translate("ProductManager", "Add Product", nullptr));
-        addAdminB->setText(QCoreApplication::translate("ProductManager", "Add Admin", nullptr));
+        addProductButton->setText(QCoreApplication::translate("ProductManager", "Add Product", nullptr));
         ourproductsLogo->setText(QCoreApplication::translate("ProductManager", "all prod", nullptr));
+        XLogo->setText(QCoreApplication::translate("ProductManager", "X", nullptr));
+        sellerLogo->setText(QCoreApplication::translate("ProductManager", "SellerLogo", nullptr));
     } // retranslateUi
 
 };
