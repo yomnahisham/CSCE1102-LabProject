@@ -33,7 +33,7 @@ customer :aylaS :ayla1234 :Classics :Palestine :G :0 :N
 /
 /
 /
-/
+seller :ReadersCorner :rc :N
 /
 /
 /
@@ -45,7 +45,7 @@ seller :test :test :N
 /
 /
 /
-/
-/
+seller :AUCBookstore :1234 :N
+seller :ViriginBookstore :1234 :N
 /
 seller :seller1 :seller :N

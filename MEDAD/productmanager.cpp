@@ -1614,6 +1614,7 @@ void ProductManager::showRemainingProducts() {
     int row = 0;
     int col = 0;
     int productCount = 0; //counter for the number of displayed products
+    int total = 0;
 
     //add remaining products to the grid layout
     for (Products* product : *bookProducts) {
@@ -1672,6 +1673,7 @@ void ProductManager::showRemainingProducts() {
                     col++;
                 }
                 productCount++;
+                total++;
                 displayedProducts.push_back(book);
                 beforeCallProducts.push_back(book);
                 if(fourthPage)
@@ -1739,6 +1741,7 @@ void ProductManager::showRemainingProducts() {
                     col++;
                 }
                 productCount++;
+                total++;
                 displayedProducts.push_back(accessory);
                 beforeCallProducts.push_back(accessory);
                 if(fourthPage)
@@ -1807,6 +1810,7 @@ void ProductManager::showRemainingProducts() {
                     col++;
                 }
                 productCount++;
+                total++;
                 displayedProducts.push_back(tech);
                 beforeCallProducts.push_back(tech);
                 if(fourthPage)
@@ -1820,6 +1824,9 @@ void ProductManager::showRemainingProducts() {
             }
         }
     }
+
+    if(total < 8)
+        nextButton->setVisible(false);
 
     ui->recsLayout->addLayout(gridLayout);
     ui->allproductsLayout->addLayout(gridLayout);
