@@ -16,6 +16,9 @@ To run the Product Management System, follow these steps:
 
 # Contributors
 Ayla Saleh (@aylasaleh) - User and All-Users 
+
 Menna Zaid (@MennaZaid) - Products (+some functionalities in Product Manager)
+
 Yomna Hisham (@yomnahisham) - Product Manager (Customer, Admin, and Seller Functionalities +/- Design)
+
 Rawan ElDeep (@RawanEldeep) - Shopping Cart and Checkout (+ Order Confirmation)
