@@ -22,6 +22,13 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
     isCredit = false;
 
     ui->InValidDiscount->setVisible(false);
+    ui->InvalidCardNum->setVisible(false);
+    ui->InvalidCVV->setVisible(false);
+    ui->InvalidArea->setVisible(false);
+    ui->InvalidBuilding->setVisible(false);
+    ui->InvalidStreet->setVisible(false);
+    ui->InvalidApt->setVisible(false);
+    ui->InvalidPhoneNum->setVisible(false);
 
     ui->savedAddressTable->setVisible(false);
     ui->savedAddressTable->setColumnCount(2);
@@ -74,11 +81,11 @@ Checkout::Checkout(QWidget *parent, ShoppingCart *cart, QVector<ShoppingCart::Ca
 
 
     ui->CVV->setPlaceholderText("E.g 123");
-    ui->CreditNum->setPlaceholderText("E.g 7788277383225678");
+    ui->CreditNum->setPlaceholderText("E.g 7788 2773 8322 5678");
     ui->Area->setPlaceholderText("E.g Rehab City 1");
     ui->Street->setPlaceholderText("E.g Othman Ibn Affan");
-    ui->Apt->setPlaceholderText("E.g 1");
-    ui->Floor->setPlaceholderText("E.g 1");
+    ui->Apt->setPlaceholderText("E.g 1 ");
+    ui->Floor->setPlaceholderText("E.g 1 (Optional)");
     ui->Building->setPlaceholderText("E.g BuildingName");
     ui->PhoneNum->setPlaceholderText("E.g 101 234 432 7");
 
@@ -193,7 +200,7 @@ void Checkout::SaveCreditInfo(){
     int Month = ui->Month->currentIndex() + 1;
     int Year = ui->Year->currentText().toInt();
 
-    if(cardnum.length() == 16 && cvvText.length() == 3 && (Month > 0 && Month <= 12) && (Year >= 2024)){
+    if(cardnum.length() >= 16 && cvvText.length() == 3 && (Month > 0 && Month <= 12) && (Year >= 2024)){
         int cvv = cvvText.toInt();
         CreditCard newCard(cvv, cardnum, Month, Year);
         userCreditCards.push_back(newCard);
@@ -266,25 +273,9 @@ double Checkout::getSubTotal() const{
     return subTotal;
 }
 
-void Checkout::on_enterCredit_clicked()
-{
-
-    if(ui->SaveCredit->isChecked()){
-        SaveCreditInfo();
-    }
-    ui->CreditWidget->setVisible(false);
-    ui->CreditCardsGroup->setVisible(true);
-    ui->CreditCardsTableWidget->setVisible(true);
-    updateCreditTable();
-
-}
-
-/*
-void Checkout::on_pushButton_clicked(){
 
 
-}
-*/
+
 void Checkout::on_ReTurnHome_clicked()
 {
     Customer *customer = dynamic_cast<Customer *>(user);
@@ -308,17 +299,66 @@ void Checkout::on_ReTurnHome_clicked()
     productManager->show();
     this->hide();
 }
-
-
-void Checkout::on_enterAddress_clicked()
+void Checkout::on_enterCredit_clicked()
 {
-    if(ui->SaveAddress->isChecked()){
-        SaveAddressInfo();
+    bool isValid = true;
+    if(ui->CreditNum->text() == "" || ui->CreditNum->text().length() < 16){
+        ui->InvalidCardNum->setVisible(true);
+        isValid = false;
     }
-    ui->AddressWidget->setVisible(false);
-    ui->SavedAddressGroup->setVisible(true);
-    ui->savedAddressTable->setVisible(true);
-    updateAddressTable();
+    if(ui->CVV->text() == "" || ui->CVV->text().length() < 3){
+        ui->InvalidCVV->setVisible(true);
+        isValid = false;
+
+    }
+    if(isValid){
+
+        if(ui->SaveCredit->isChecked()){
+            SaveCreditInfo();
+        }
+        ui->CreditWidget->setVisible(false);
+        ui->CreditCardsGroup->setVisible(true);
+        ui->CreditCardsTableWidget->setVisible(true);
+        updateCreditTable();
+    }
+
+
+}
+
+void Checkout::on_enterAddress_clicked(){
+    bool isValid = true;
+
+    if(ui->Area->text() == ""){
+        ui->InvalidArea->setVisible(true);
+        isValid = false;
+
+    }
+    if(ui->Building->text() == ""){
+        ui->InvalidBuilding->setVisible(true);
+        isValid = false;
+    }
+    if(ui->Street->text() == ""){
+        ui->InvalidStreet->setVisible(true);
+        isValid = false;
+    }
+    if(ui->Apt->text() == ""){
+        ui->InvalidApt->setVisible(true);
+        isValid = false;
+    }
+    if(ui->PhoneNum->text() == "" || ui->PhoneNum->text().length() < 10){
+        ui->InvalidBuilding->setVisible(true);
+        isValid = false;
+    }
+
+    if(isValid){
+        if(ui->SaveAddress->isChecked()){
+            SaveAddressInfo();
+        }
+        ui->AddressWidget->setVisible(false);
+        ui->SavedAddressGroup->setVisible(true);
+        ui->savedAddressTable->setVisible(true);
+        updateAddressTable();
+    }
 }
 
 

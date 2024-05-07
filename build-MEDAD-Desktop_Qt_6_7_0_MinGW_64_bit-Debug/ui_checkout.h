@@ -58,6 +58,8 @@ public:
     QComboBox *Month;
     QComboBox *Year;
     QCheckBox *SaveCredit;
+    QLabel *InvalidCardNum;
+    QLabel *InvalidCVV;
     QPushButton *ConfirmButton;
     QPushButton *ReTurnHome;
     QWidget *AddressWidget;
@@ -78,6 +80,11 @@ public:
     QLineEdit *Floor;
     QLabel *PhoneNoLabel;
     QLineEdit *PhoneNum;
+    QLabel *InvalidArea;
+    QLabel *InvalidStreet;
+    QLabel *InvalidBuilding;
+    QLabel *InvalidApt;
+    QLabel *InvalidPhoneNum;
 
     void setupUi(QWidget *Checkout)
     {
@@ -200,7 +207,7 @@ public:
         InValidDiscount->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
         CreditWidget = new QWidget(Checkout);
         CreditWidget->setObjectName("CreditWidget");
-        CreditWidget->setGeometry(QRect(650, 140, 401, 391));
+        CreditWidget->setGeometry(QRect(650, 150, 401, 391));
         enterCredit = new QPushButton(CreditWidget);
         enterCredit->setObjectName("enterCredit");
         enterCredit->setGeometry(QRect(130, 340, 111, 41));
@@ -263,29 +270,37 @@ public:
         SaveCredit = new QCheckBox(CreditCardInfoGroupBox);
         SaveCredit->setObjectName("SaveCredit");
         SaveCredit->setGeometry(QRect(10, 260, 311, 26));
+        InvalidCardNum = new QLabel(CreditCardInfoGroupBox);
+        InvalidCardNum->setObjectName("InvalidCardNum");
+        InvalidCardNum->setGeometry(QRect(180, 110, 161, 20));
+        InvalidCardNum->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
+        InvalidCVV = new QLabel(CreditCardInfoGroupBox);
+        InvalidCVV->setObjectName("InvalidCVV");
+        InvalidCVV->setGeometry(QRect(140, 150, 161, 20));
+        InvalidCVV->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
         ConfirmButton = new QPushButton(Checkout);
         ConfirmButton->setObjectName("ConfirmButton");
-        ConfirmButton->setGeometry(QRect(1170, 640, 281, 71));
+        ConfirmButton->setGeometry(QRect(1150, 670, 281, 71));
         ConfirmButton->setFont(font);
         ConfirmButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(249, 184, 158);"));
         ReTurnHome = new QPushButton(Checkout);
         ReTurnHome->setObjectName("ReTurnHome");
-        ReTurnHome->setGeometry(QRect(840, 640, 281, 71));
+        ReTurnHome->setGeometry(QRect(820, 670, 281, 71));
         ReTurnHome->setFont(font);
         ReTurnHome->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(249, 184, 158);"));
         AddressWidget = new QWidget(Checkout);
         AddressWidget->setObjectName("AddressWidget");
-        AddressWidget->setGeometry(QRect(1050, 140, 431, 441));
+        AddressWidget->setGeometry(QRect(1080, 140, 441, 491));
         enterAddress = new QPushButton(AddressWidget);
         enterAddress->setObjectName("enterAddress");
-        enterAddress->setGeometry(QRect(150, 400, 111, 41));
+        enterAddress->setGeometry(QRect(170, 440, 111, 41));
         enterAddress->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(249, 184, 158);"));
         AddressGroupBox = new QGroupBox(AddressWidget);
         AddressGroupBox->setObjectName("AddressGroupBox");
-        AddressGroupBox->setGeometry(QRect(20, 30, 391, 361));
+        AddressGroupBox->setGeometry(QRect(10, 20, 421, 411));
         AddressGroupBox->setFont(font2);
         AddressGroupBox->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         StreetLabel = new QLabel(AddressGroupBox);
@@ -294,7 +309,7 @@ public:
         StreetLabel->setFont(font3);
         Street = new QLineEdit(AddressGroupBox);
         Street->setObjectName("Street");
-        Street->setGeometry(QRect(10, 150, 113, 28));
+        Street->setGeometry(QRect(10, 140, 113, 28));
         ProvinceLabel = new QLabel(AddressGroupBox);
         ProvinceLabel->setObjectName("ProvinceLabel");
         ProvinceLabel->setGeometry(QRect(10, 50, 181, 20));
@@ -312,7 +327,7 @@ public:
         Province->setGeometry(QRect(10, 80, 171, 28));
         SaveAddress = new QCheckBox(AddressGroupBox);
         SaveAddress->setObjectName("SaveAddress");
-        SaveAddress->setGeometry(QRect(10, 320, 311, 26));
+        SaveAddress->setGeometry(QRect(10, 380, 311, 26));
         AreaLabel = new QLabel(AddressGroupBox);
         AreaLabel->setObjectName("AreaLabel");
         AreaLabel->setGeometry(QRect(230, 50, 181, 20));
@@ -323,33 +338,53 @@ public:
         Area->setGeometry(QRect(230, 80, 131, 28));
         BuildingLabel = new QLabel(AddressGroupBox);
         BuildingLabel->setObjectName("BuildingLabel");
-        BuildingLabel->setGeometry(QRect(230, 130, 181, 20));
+        BuildingLabel->setGeometry(QRect(230, 140, 181, 31));
         BuildingLabel->setFont(font3);
         BuildingLabel->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         Building = new QLineEdit(AddressGroupBox);
         Building->setObjectName("Building");
-        Building->setGeometry(QRect(230, 150, 151, 28));
+        Building->setGeometry(QRect(230, 180, 151, 28));
         AptLabel = new QLabel(AddressGroupBox);
         AptLabel->setObjectName("AptLabel");
-        AptLabel->setGeometry(QRect(10, 190, 171, 20));
+        AptLabel->setGeometry(QRect(10, 200, 171, 20));
         AptLabel->setFont(font3);
         Apt = new QLineEdit(AddressGroupBox);
         Apt->setObjectName("Apt");
-        Apt->setGeometry(QRect(10, 220, 113, 28));
+        Apt->setGeometry(QRect(10, 230, 113, 28));
         FloorLabel = new QLabel(AddressGroupBox);
         FloorLabel->setObjectName("FloorLabel");
-        FloorLabel->setGeometry(QRect(240, 190, 171, 20));
+        FloorLabel->setGeometry(QRect(230, 230, 171, 20));
         FloorLabel->setFont(font3);
         Floor = new QLineEdit(AddressGroupBox);
         Floor->setObjectName("Floor");
-        Floor->setGeometry(QRect(230, 220, 113, 28));
+        Floor->setGeometry(QRect(230, 260, 113, 28));
         PhoneNoLabel = new QLabel(AddressGroupBox);
         PhoneNoLabel->setObjectName("PhoneNoLabel");
-        PhoneNoLabel->setGeometry(QRect(10, 260, 171, 20));
+        PhoneNoLabel->setGeometry(QRect(10, 300, 171, 20));
         PhoneNoLabel->setFont(font3);
         PhoneNum = new QLineEdit(AddressGroupBox);
         PhoneNum->setObjectName("PhoneNum");
-        PhoneNum->setGeometry(QRect(10, 280, 231, 28));
+        PhoneNum->setGeometry(QRect(10, 330, 231, 28));
+        InvalidArea = new QLabel(AddressGroupBox);
+        InvalidArea->setObjectName("InvalidArea");
+        InvalidArea->setGeometry(QRect(300, 110, 101, 21));
+        InvalidArea->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
+        InvalidStreet = new QLabel(AddressGroupBox);
+        InvalidStreet->setObjectName("InvalidStreet");
+        InvalidStreet->setGeometry(QRect(10, 170, 111, 21));
+        InvalidStreet->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
+        InvalidBuilding = new QLabel(AddressGroupBox);
+        InvalidBuilding->setObjectName("InvalidBuilding");
+        InvalidBuilding->setGeometry(QRect(290, 210, 111, 21));
+        InvalidBuilding->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
+        InvalidApt = new QLabel(AddressGroupBox);
+        InvalidApt->setObjectName("InvalidApt");
+        InvalidApt->setGeometry(QRect(10, 260, 111, 21));
+        InvalidApt->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
+        InvalidPhoneNum = new QLabel(AddressGroupBox);
+        InvalidPhoneNum->setObjectName("InvalidPhoneNum");
+        InvalidPhoneNum->setGeometry(QRect(240, 360, 161, 21));
+        InvalidPhoneNum->setStyleSheet(QString::fromUtf8("color: rgb(255, 0, 0);"));
         PaymentWidget->raise();
         ConfirmButton->raise();
         CreditWidget->raise();
@@ -412,6 +447,8 @@ public:
         Year->setItemText(11, QString());
 
         SaveCredit->setText(QCoreApplication::translate("Checkout", "Save Credit Card Info", nullptr));
+        InvalidCardNum->setText(QCoreApplication::translate("Checkout", "*Invalid Card Number", nullptr));
+        InvalidCVV->setText(QCoreApplication::translate("Checkout", "*Invalid CVV", nullptr));
         ConfirmButton->setText(QCoreApplication::translate("Checkout", "Order Confirmation", nullptr));
         ReTurnHome->setText(QCoreApplication::translate("Checkout", "Return to Home Page", nullptr));
         enterAddress->setText(QCoreApplication::translate("Checkout", "Enter", nullptr));
@@ -433,6 +470,11 @@ public:
         AptLabel->setText(QCoreApplication::translate("Checkout", "Apartment No.", nullptr));
         FloorLabel->setText(QCoreApplication::translate("Checkout", "Floor", nullptr));
         PhoneNoLabel->setText(QCoreApplication::translate("Checkout", "Phone No.", nullptr));
+        InvalidArea->setText(QCoreApplication::translate("Checkout", "*Invalid Area", nullptr));
+        InvalidStreet->setText(QCoreApplication::translate("Checkout", "*Invalid Street", nullptr));
+        InvalidBuilding->setText(QCoreApplication::translate("Checkout", "*Invalid Building", nullptr));
+        InvalidApt->setText(QCoreApplication::translate("Checkout", "*Invalid Apt.", nullptr));
+        InvalidPhoneNum->setText(QCoreApplication::translate("Checkout", "*Invalid Phone Number", nullptr));
     } // retranslateUi
 
 };
