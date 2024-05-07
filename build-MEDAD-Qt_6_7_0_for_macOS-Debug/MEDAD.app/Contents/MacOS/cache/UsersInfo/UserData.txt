@@ -1,17 +1,6 @@
+customer :yomna :yomna1 :Classics :Comic-Books :G :1 :N
+customer :aylaS :ayla1234 :Classics :Palestine :G :1 :N
 admin :AylaSaleh :ayla1234 :N
-/
-/
-/
-/
-/
-/
-/
-/
-/
-/
-/
-/
-/
 admin :yoyoo :yomna1 :N
 /
 /
@@ -19,16 +8,27 @@ admin :yoyoo :yomna1 :N
 /
 /
 /
-customer :yomna :yomna1 :Classics :Comic-Books :G :N
-/
-customer :cus1 :1234 :Classics :Arabic-Literature :Philosophy :Poetry :Palestine :Arab-American :Comic-Books :G :N
 /
 /
 /
 /
 /
 /
-customer :aylaS :ayla1234 :Classics :Palestine :G :N
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
 /
 /
 /

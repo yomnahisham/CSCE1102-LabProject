@@ -1,3 +1,4 @@
+
 #include "accessories.h"
 
 Accessories::Accessories(QString n, double p, int q, bool a, QPixmap i, QString sel, QString t, QString s): Products(n,p,q,a,i,sel) , type(t) ,size(s){}

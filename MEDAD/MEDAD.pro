@@ -17,7 +17,6 @@ SOURCES += \
     clickablelabels.cpp \
     confirm.cpp \
     customer.cpp \
-    discounts.cpp \
     loginwindow.cpp \
     main.cpp \
     productmanager.cpp \
@@ -37,7 +36,6 @@ HEADERS += \
     clickablelabels.h \
     confirm.h \
     customer.h \
-    discounts.h \
     loginwindow.h \
     productmanager.h \
     products.h \

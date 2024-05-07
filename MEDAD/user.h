@@ -15,6 +15,7 @@ public:
     QString getRole() const;
     bool isempty = true;
     virtual void virtualfunc();
+    bool activated;
 private:
     QString password;
     QString username;

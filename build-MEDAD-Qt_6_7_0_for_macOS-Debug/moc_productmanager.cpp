@@ -53,7 +53,8 @@ constexpr auto qt_meta_stringdata_CLASSProductManagerENDCLASS = QtMocHelpers::st
     "originalPixmap",
     "maxWidth",
     "maxHeight",
-    "on_addAdminB_clicked",
+    "onRegisterAdminClicked",
+    "onRegisterSellerClicked",
     "sortPage",
     "QLayout*",
     "layout",
@@ -64,7 +65,8 @@ constexpr auto qt_meta_stringdata_CLASSProductManagerENDCLASS = QtMocHelpers::st
     "maxBooksToShow",
     "on_filterBox_currentTextChanged",
     "updateLayout",
-    "sortProducts"
+    "sortProducts",
+    "on_addProductButton_clicked"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -77,7 +79,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProductManagerENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -85,19 +87,21 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProductManagerENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   92,    2, 0x08,    1 /* Private */,
-       3,    0,   93,    2, 0x08,    2 /* Private */,
-       4,    0,   94,    2, 0x08,    3 /* Private */,
-       5,    0,   95,    2, 0x08,    4 /* Private */,
-       6,    0,   96,    2, 0x08,    5 /* Private */,
-       7,    1,   97,    2, 0x08,    6 /* Private */,
-       9,    1,  100,    2, 0x08,    8 /* Private */,
-      13,    3,  103,    2, 0x08,   10 /* Private */,
-      17,    0,  110,    2, 0x08,   14 /* Private */,
-      18,    5,  111,    2, 0x08,   15 /* Private */,
-      26,    1,  122,    2, 0x08,   21 /* Private */,
-      27,    1,  125,    2, 0x08,   23 /* Private */,
-      28,    2,  128,    2, 0x08,   25 /* Private */,
+       1,    0,  104,    2, 0x08,    1 /* Private */,
+       3,    0,  105,    2, 0x08,    2 /* Private */,
+       4,    0,  106,    2, 0x08,    3 /* Private */,
+       5,    0,  107,    2, 0x08,    4 /* Private */,
+       6,    0,  108,    2, 0x08,    5 /* Private */,
+       7,    1,  109,    2, 0x08,    6 /* Private */,
+       9,    1,  112,    2, 0x08,    8 /* Private */,
+      13,    3,  115,    2, 0x08,   10 /* Private */,
+      17,    0,  122,    2, 0x08,   14 /* Private */,
+      18,    0,  123,    2, 0x08,   15 /* Private */,
+      19,    5,  124,    2, 0x08,   16 /* Private */,
+      27,    1,  135,    2, 0x08,   22 /* Private */,
+      28,    1,  138,    2, 0x08,   24 /* Private */,
+      29,    2,  141,    2, 0x08,   26 /* Private */,
+      30,    0,  146,    2, 0x08,   29 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -109,10 +113,12 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProductManagerENDCLASS[] = {
     0x80000000 | 10, 0x80000000 | 11,   12,
     QMetaType::QPixmap, QMetaType::QPixmap, QMetaType::Int, QMetaType::Int,   14,   15,   16,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 19, QMetaType::QString, 0x80000000 | 22, QMetaType::Int, QMetaType::Int,   20,   21,   23,   24,   25,
-    QMetaType::Void, QMetaType::QString,   21,
-    QMetaType::Void, 0x80000000 | 19,   20,
-    QMetaType::Void, 0x80000000 | 22, QMetaType::QString,   23,   21,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 20, QMetaType::QString, 0x80000000 | 23, QMetaType::Int, QMetaType::Int,   21,   22,   24,   25,   26,
+    QMetaType::Void, QMetaType::QString,   22,
+    QMetaType::Void, 0x80000000 | 20,   21,
+    QMetaType::Void, 0x80000000 | 23, QMetaType::QString,   24,   22,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -147,7 +153,9 @@ Q_CONSTINIT const QMetaObject ProductManager::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<const QPixmap &, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
-        // method 'on_addAdminB_clicked'
+        // method 'onRegisterAdminClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onRegisterSellerClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'sortPage'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
@@ -165,7 +173,9 @@ Q_CONSTINIT const QMetaObject ProductManager::staticMetaObject = { {
         // method 'sortProducts'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<vector<Products*> &, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
+        // method 'on_addProductButton_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
 } };
@@ -186,24 +196,26 @@ void ProductManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
             if (_a[0]) *reinterpret_cast< QWidget**>(_a[0]) = std::move(_r); }  break;
         case 7: { QPixmap _r = _t->resizeImage((*reinterpret_cast< std::add_pointer_t<QPixmap>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[3])));
             if (_a[0]) *reinterpret_cast< QPixmap*>(_a[0]) = std::move(_r); }  break;
-        case 8: _t->on_addAdminB_clicked(); break;
-        case 9: _t->sortPage((*reinterpret_cast< std::add_pointer_t<QLayout*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<vector<Products*>&>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[5]))); break;
-        case 10: _t->on_filterBox_currentTextChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 11: _t->updateLayout((*reinterpret_cast< std::add_pointer_t<QLayout*>>(_a[1]))); break;
-        case 12: _t->sortProducts((*reinterpret_cast< std::add_pointer_t<vector<Products*>&>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 8: _t->onRegisterAdminClicked(); break;
+        case 9: _t->onRegisterSellerClicked(); break;
+        case 10: _t->sortPage((*reinterpret_cast< std::add_pointer_t<QLayout*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<vector<Products*>&>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[5]))); break;
+        case 11: _t->on_filterBox_currentTextChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 12: _t->updateLayout((*reinterpret_cast< std::add_pointer_t<QLayout*>>(_a[1]))); break;
+        case 13: _t->sortProducts((*reinterpret_cast< std::add_pointer_t<vector<Products*>&>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 14: _t->on_addProductButton_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
-        case 9:
+        case 10:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
             case 0:
                 *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType::fromType< QLayout* >(); break;
             }
             break;
-        case 11:
+        case 12:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
             case 0:
@@ -233,13 +245,13 @@ int ProductManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 15;
     }
     return _id;
 }
