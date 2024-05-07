@@ -213,6 +213,19 @@ font: italic 13pt &quot;Helvetica&quot;;</string>
     <string>SellerLogo</string>
    </property>
   </widget>
+  <widget class="QLabel" name="sellerError">
+   <property name="geometry">
+    <rect>
+     <x>1310</x>
+     <y>710</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>No Products Added Yet</string>
+   </property>
+  </widget>
   <zorder>logoCorner</zorder>
   <zorder>horizontalLayoutWidget</zorder>
   <zorder>horizontalLayoutWidget_2</zorder>
@@ -225,6 +238,7 @@ font: italic 13pt &quot;Helvetica&quot;;</string>
   <zorder>ourproductsLogo</zorder>
   <zorder>XLogo</zorder>
   <zorder>sellerLogo</zorder>
+  <zorder>sellerError</zorder>
  </widget>
  <resources/>
  <connections/>

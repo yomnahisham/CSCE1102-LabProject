@@ -397,7 +397,7 @@ void AllUsers::insert (Type type,  QString u, QString p, vector<QString> genres,
         break;
     }
 
-    if (finishedloading)
+    if (finishedloading && type == customer)
     {
         SaveUsers(); // save any new users created
     }

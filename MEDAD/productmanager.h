@@ -89,7 +89,7 @@ private slots:
    public:
     Ui::ProductManager *ui;
     User* user;
-    AllUsers* users;
+    AllUsers* allusers;
     QVector<Books*> *bookProducts;
     QVector<Accessories*> *accessoryProducts;
     QVector<Techs*> *techyProducts;

@@ -27,13 +27,14 @@
 #include <QSpinBox>
 #include <QMessageBox>
 #include <QCheckBox>
+#include <QTimer>
 
 
 ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allusers, ShoppingCart *cartPage)
     : QWidget(parent)
     , ui(new Ui::ProductManager)
     , user(loggedUser)
-    , users (Allusers)
+    , allusers (Allusers)
     ,cart (cartPage)
     , techyProducts(new QVector<Techs*>())
     , accessoryProducts(new QVector<Accessories*>())
@@ -47,12 +48,14 @@ ProductManager::ProductManager(QWidget *parent, User* loggedUser, AllUsers* Allu
     ui->searchLineEdit->setPlaceholderText("Search by genre or title...");
     ui->XLogo->setVisible(false);
     ui->sellerLogo->setVisible(false);
+    ui -> sellerError -> setVisible(false);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     widthFull = screenGeometry.width();
     heightFull = screenGeometry.height();
 
+    ui -> sellerError -> move(widthFull/2,heightFull/2);
     //setting logo in the corner of the shop app
     QPixmap logoPix(":/logos/assets/nameonlyLogo.png");
     int w = ui->logoCorner->width();
@@ -200,22 +203,58 @@ void ProductManager::createAdminAccessPage(){
     QLabel *manageAccountsLabel = new QLabel("Manage Accounts:");
     mainLayout->addWidget(manageAccountsLabel);
 
-    QTableWidget *accountsTable = new QTableWidget();
-    makeAccountsTable(accountsTable);
-    mainLayout->addWidget(accountsTable);
+
+        QTableWidget *accountsTable = new QTableWidget();
+        makeAccountsTable(accountsTable);
+        mainLayout->addWidget(accountsTable);
 
     mainLayout->addStretch();
 }
+QString cached(const QString &resPath) {
+    // Not a resource -> done
+    if (!resPath.startsWith(":"))
+        return resPath;
+
+    // Get the cache directory of your app relative to the executable
+    QString executablePath = QCoreApplication::applicationDirPath();
+    QString cacheDir = executablePath + "/cache";
+
+    // Construct the path for the cached resource
+    QString subPath = cacheDir + resPath.mid(1); // cache folder plus resource without the leading ':'
+
+    // Check if the resource is already cached
+    if (QFile::exists(subPath)) // File exists -> done
+    {   qDebug()<< "file exists";
+        return subPath;}
+
+    // Ensure the cache directory exists
+    if (!QFileInfo(cacheDir).dir().mkpath("."))
+    {   qDebug()<< "couldn't create cache folder";
+        return {}; // Failed to create dir
+    }
+
+    // Copy the resource file to the cache directory
+    if (!QFile::copy(resPath, subPath))
+    {   qDebug()<< "couldn't copy file";
+        return {}; // Failed to copy file
+    }
+
+    // Make the copied file writable
+    QFile::setPermissions(subPath, QFileDevice::ReadUser | QFileDevice::WriteUser);
+
+    return subPath;
+}
 
 void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
+    qDebug()<<"MADE ACCOUNTS TABLE";
     //using QList to store User data before displaying them in the table
     QList<User> users;
-    QFile file(":/UsersInfo/UserData.txt");
+    QFile file(cached(":/UsersInfo/UserData.txt"));
     if (file.open(QIODevice::ReadOnly)) {
         QTextStream in(&file);
         while (!in.atEnd()) {
             QString line = in.readLine();
-            QStringList parts = line.split(" ");
+            QStringList parts = line.split(" :");
             if (parts.size() >= 3) {
                 User client;
                 client.setRole(parts[0]);
@@ -225,8 +264,12 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
             }
         }
         file.close();
+        if(file.isOpen())
+        {
+            file.close();
+        }
     } else {
-        qDebug() << "Error opening file";
+        qDebug() << "Error opening file"<< file.errorString();
         return;
     }
 
@@ -276,7 +319,14 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 
         connect(deleteUserButton, &QPushButton::clicked, this, [=]() {
             int userIndex = deleteUserButton->property("userIndex").toInt();
-            //@ayla, how to delete user?
+            if (client.getRole() == "admin")
+                allusers -> deleteUser(AllUsers::admin, client.getUsername());
+            else if (client.getRole() == "customer")
+                allusers -> deleteUser(AllUsers::customer, client.getUsername());
+            else if (client.getRole() == "seller")
+                allusers -> deleteUser(AllUsers::seller, client.getUsername());
+            qDebug()<< "deleted";
+            allusers -> SaveUsers();
             accountsTable->removeRow(userIndex);
         });
 
@@ -285,7 +335,12 @@ void ProductManager::makeAccountsTable(QTableWidget *accountsTable) {
 
         connect(deactiveUserButton, &QPushButton::clicked, this, [=]() {
             int userIndex = deactiveUserButton->property("userIndex").toInt();
-            //?? can we make it so that the user can't buy anything for a while?
+            if (client.getRole() == "admin")
+                allusers -> deActivateUser(AllUsers::admin, client.getUsername());
+            else if (client.getRole() == "customer")
+                allusers -> deActivateUser(AllUsers::customer, client.getUsername());
+            else if (client.getRole() == "seller")
+                allusers -> deActivateUser(AllUsers::seller, client.getUsername());
         });
 
         accountsTable->setItem(i, 0, roleItem);
@@ -381,6 +436,7 @@ void ProductManager::createSellerView(){
                 // Create widgets for the product
                 QVBoxLayout* productLayout = new QVBoxLayout();
                 QLabel* imageLabel = new QLabel();
+                //yomna: does not keep aspect ratio->kepps ratio of label
                 imageLabel->setPixmap(imagePath.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 imageLabel->setScaledContents(true);
                 QLabel* nameLabel = new QLabel(name);
@@ -504,7 +560,6 @@ void ProductManager::onCartClicked(){
 
 void ProductManager::onSignOutClicked(){
     qDebug() << "signing out!";
-    users-> SaveUsers();
 
     Customer *customer = dynamic_cast<Customer *>(user);
     if(customer){
@@ -515,10 +570,16 @@ void ProductManager::onSignOutClicked(){
         }
     }
 
-    LoginWindow* login = new LoginWindow(nullptr, users);
+    Seller *sell = dynamic_cast<Seller *>(user);
+    if(sell){
+        loadNewProduct();
+    }
+
+    LoginWindow* login = new LoginWindow(nullptr, allusers);
     login-> resize(widthFull, heightFull); //resizing according to the QScreen measurements
     login-> setWindowTitle("Login");
     login -> show();
+    allusers-> SaveUsers();
     hide();
 }
 
@@ -628,7 +689,6 @@ void ProductManager::loadProducts(){
 void ProductManager::initializeProducts() {
     qDebug()<< "Initializing...";
     QString productsData[][9] = {
-        {"War and Peace", "72.5", "10", "true", ":/Books/assets/warandpeace.png", "Classics", "Leo Tolstoy", "9780393042375", "AUCBookstore"},
         {"Anna Karenina", "12.2", "23", "true", ":/Books/assets/anna kare.jpeg", "Classics", "Leo Tolstoy", "9780393042771", "ReadersCorner"},
         {"A Tale of Two Cities", "89.5", "2", "true", ":/Books/assets/tale of two.jpeg", "Classics", "Charles Dickens", "9780582400115", "AUCBookstore"},
         {"Oliver Twist", "100", "6", "true", ":/Books/assets/oliver.jpeg", "Classics", "Charles Dickens", "9780140430172", "AUCBookstore"},
@@ -698,12 +758,63 @@ void ProductManager::initializeProducts() {
                      QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
                 }
 
-
             }
 
 
         }}
     }
+
+    QFile sellerBooks(cached(":/UsersInfo/sellerEnteredProducts.txt"));
+    if (sellerBooks.setPermissions(QFile::ReadOwner))
+        qDebug() << "Permissions updated successfully for file:";
+    else
+        qDebug() << "Error updating permissions for file:" ;
+
+    sellerBooks.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream in(&sellerBooks);
+    QString bookData = in.readLine();
+    qDebug()<< bookData;
+    QStringList data = bookData.split ("\", \"");
+    bool atEnd = false;
+    while(!atEnd) {
+        if (data [0] == "book")
+        {QString name = data[1];
+        double price = data[2].toDouble();
+        int quantity = data[3].toInt();
+        bool availability = (data[4].compare("true", Qt::CaseInsensitive) == 0);
+        QString imagePath = data[5];
+        QString genre = data[6];
+        QString author = data[7];
+        QString ISBN = data[8];
+        QString seller = data[9];
+        qDebug()<< "seller :"<< seller;
+        Books* product = createBook(name, price, quantity, availability, imagePath, seller, genre, author, ISBN);
+        bookProducts->push_back(product);
+        allProducts.push_back(product);
+        Customer *customer = dynamic_cast<Customer*>(user);
+        if(customer){
+            for(const auto &item : customer->getShopingCart()){
+                if(item.name == name){
+                    if(quantity > 0){
+                        cart->AddItemToCart(imagePath, name, price,item.quant);
+                    }else{
+
+                        QMessageBox::warning(this, "Item out of stock", QString("%1 out of stock").arg(name));
+                    }
+
+
+                }
+
+
+        }}
+        }
+
+        if (in.atEnd())
+            atEnd = true;
+    }
+
+    sellerBooks.close();
 
     QString accessoriesData[][8] = {
                                     {"Books Defense Tshirt", "25", "5", "true", ":/Tshirts/assets/Books Defense Tshirt.jpeg", "T-shirt", "M", "MedadBookstore"},
@@ -806,6 +917,10 @@ vector<Products*> ProductManager::getSellerProducts(){
             }
         }
         qDebug() << "Found " << sellerProducts.size() << " products for seller " << username;
+        if (sellerProducts.size() == 0)
+            ui -> sellerError -> setVisible(true);
+        else
+            ui -> sellerError -> setVisible(false);
         return sellerProducts;
     } else {
         qDebug() << "User is not a seller";
@@ -1755,14 +1870,23 @@ void ProductManager::onRegisterAdminClicked()
 {
     Admin* ad = dynamic_cast<Admin*> (user);
 
-    RegisterWindow *reg = new RegisterWindow(nullptr, users, AllUsers::admin, ad);
+    RegisterWindow *reg = new RegisterWindow(nullptr, allusers, AllUsers::admin, ad);
     reg->resize(widthFull, heightFull);
     reg -> setWindowTitle("Register new Admin");
     reg->show();
     hide();
 }
 void ProductManager::onRegisterSellerClicked(){
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
 
+    Admin* ad = dynamic_cast<Admin*> (user);
+
+    RegisterWindow *reg = new RegisterWindow(nullptr, allusers, AllUsers::seller, ad);
+    reg->resize(screenGeometry.width(), screenGeometry.height());
+    reg -> setWindowTitle("Register new Seller");
+    reg->show();
+    hide();
 }
 
 QWidget* ProductManager::createProductWidget(Products* product) {
@@ -2113,11 +2237,19 @@ void ProductManager::on_addProductButton_clicked()
 
     //additional fields for books
     QLabel *genreLabel = new QLabel("Genre", &dialog);
-    QLineEdit *genreLineEdit = new QLineEdit(&dialog);
+    QComboBox *genreCombo = new QComboBox(&dialog);
+    genreCombo ->addItem("Classics");
+    genreCombo ->addItem("Philosophy");
+    genreCombo ->addItem("Arabic-Literature");
+    genreCombo ->addItem("Poetry");
+    genreCombo ->addItem("Palestine");
+    genreCombo ->addItem("Arab-American");
+    genreCombo ->addItem("Comic-Books");
+
     layout->addWidget(genreLabel);
-    layout->addWidget(genreLineEdit);
+    layout->addWidget(genreCombo);
     genreLabel->setVisible(false);
-    genreLineEdit->setVisible(false);
+    genreCombo->setVisible(false);
 
     QLabel *authorLabel = new QLabel("Author", &dialog);
     QLineEdit *authorLineEdit = new QLineEdit(&dialog);
@@ -2156,7 +2288,7 @@ void ProductManager::on_addProductButton_clicked()
         isbnLabel->setVisible(true);
         isbnLineEdit->setVisible(true);
         genreLabel->setVisible(true);
-        genreLineEdit->setVisible(true);
+        genreCombo->setVisible(true);
         authorLabel->setVisible(true);
         authorLineEdit->setVisible(true);
 
@@ -2177,7 +2309,7 @@ void ProductManager::on_addProductButton_clicked()
         isbnLabel->setVisible(false);
         isbnLineEdit->setVisible(false);
         genreLabel->setVisible(false);
-        genreLineEdit->setVisible(false);
+        genreCombo->setVisible(false);
         authorLabel->setVisible(false);
         authorLineEdit->setVisible(false);
         warrantyLabel->setVisible(false);
@@ -2191,7 +2323,7 @@ void ProductManager::on_addProductButton_clicked()
         isbnLabel->setVisible(false);
         isbnLineEdit->setVisible(false);
         genreLabel->setVisible(false);
-        genreLineEdit->setVisible(false);
+        genreCombo->setVisible(false);
         authorLabel->setVisible(false);
         authorLineEdit->setVisible(false);
         typeLabel->setVisible(false);
@@ -2234,19 +2366,25 @@ void ProductManager::on_addProductButton_clicked()
         int warranty = 0;
 
         if (bookRadioButton->isChecked()) {
-            genre = genreLineEdit->text();
+            genre = genreCombo->currentText();
             author = authorLineEdit->text();
             Books* newBook = new Books(name, price, quantity, availability, imagePath, seller, genre, author, isbn);
             sellerNewProducts.push_back(newBook);
+            allProducts.push_back(newBook);
+            bookProducts->push_back(newBook);
         } else if (accessoryRadioButton->isChecked()) {
             type = typeLineEdit->text();
             size = sizeLineEdit->text();
             Accessories* newAccessory = new Accessories(name, price, quantity, availability, imagePath, seller, type, size);
             sellerNewProducts.push_back(newAccessory);
+            allProducts.push_back(newAccessory);
+            accessoryProducts->push_back(newAccessory);
         } else if (techRadioButton->isChecked()) {
             warranty = warrantySpinBox->value();
             Techs* newTech = new Techs(name, price, quantity, availability, QPixmap(imagePath), seller, warranty);
             sellerNewProducts.push_back(newTech);
+            allProducts.push_back(newTech);
+            techyProducts->push_back(newTech);
         }
         loadNewProduct();
         addedNewProduct = true;
@@ -2264,12 +2402,13 @@ void ProductManager::on_addProductButton_clicked()
 
 void ProductManager::loadNewProduct()
 {
+    qDebug()<< "entering load products";
     //open the file for writing
-    QFile file(":/UsersInfo/sellerEnteredProducts.txt");
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open the file for writing.";
-        return;
-    }
+    QFile file(cached(":/UsersInfo/sellerEnteredProducts.txt"));
+    if (file.setPermissions(QFile::WriteOwner))
+        qDebug() << "Permissions updated successfully for file:";
+    else
+        qDebug() << "Error updating permissions for file:" ;
 
     //create a QTextStream to write to the file
     QTextStream out(&file);
@@ -2277,14 +2416,14 @@ void ProductManager::loadNewProduct()
     //iterate over the sellerNewProducts vector and write each product's data to the file
     for (Products* product : sellerNewProducts) {
         if (Books* book = dynamic_cast<Books*>(product)) {
-            out << book->getName() << "," << book->getPrice() << "," << book->getQuantity() << "," << book->getImagePath() << "," << book->getSeller() << ","
-                << book->getISBN() << "," << book->getGenre() << "," << book->getAuthor() << ",Book\n";
+            out << "book\", \"" <<book->getName() << "\", \"" << book->getPrice() << "\", \"" << book->getQuantity() << "\", \"" << book->getImagePath() << "\", \"" << book->getSeller() << "\", \""
+                << book->getISBN() << "\", \"" << book->getGenre() << "\", \"" << book->getAuthor() << "\n";
         } else if (Accessories* accessory = dynamic_cast<Accessories*>(product)) {
-            out << accessory->getName() << "," << accessory->getPrice() << "," << accessory->getQuantity() << "," << accessory->getImagePath() << ","
-                << accessory->getSeller() << "," << accessory->getType() << "," << accessory->getSize() << ",Accessory\n";
+            out << "acc\", \""<< accessory->getName() << "\", \"" << accessory->getPrice() << "\", \"" << accessory->getQuantity() << "\", \"" << accessory->getImagePath() << "\", \""
+                << accessory->getSeller() << "\", \"" << accessory->getType() << "\", \"" << accessory->getSize() << "\n";
         } else if (Techs* tech = dynamic_cast<Techs*>(product)) {
-            out << tech->getName() << "," << tech->getPrice() << "," << tech->getQuantity() << "," << tech->getImagePath() << ","
-                << tech->getSeller() << "," << tech->getWarranty() << ",Tech\n";
+            out << "techs\", \""<<tech->getName() << "\", \"" << tech->getPrice() << "\", \"" << tech->getQuantity() << "\", \"" << tech->getImagePath() << "\", \""
+                << tech->getSeller() << "\", \"" << tech->getWarranty() << "\n";
         }
     }
 

@@ -37,6 +37,7 @@ public:
     QLabel *ourproductsLogo;
     QLabel *XLogo;
     QLabel *sellerLogo;
+    QLabel *sellerError;
 
     void setupUi(QWidget *ProductManager)
     {
@@ -100,6 +101,9 @@ public:
         sellerLogo->setObjectName("sellerLogo");
         sellerLogo->setGeometry(QRect(270, 50, 291, 91));
         sellerLogo->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0)"));
+        sellerError = new QLabel(ProductManager);
+        sellerError->setObjectName("sellerError");
+        sellerError->setGeometry(QRect(1310, 710, 171, 31));
         logoCorner->raise();
         horizontalLayoutWidget->raise();
         horizontalLayoutWidget_2->raise();
@@ -112,6 +116,7 @@ public:
         ourproductsLogo->raise();
         XLogo->raise();
         sellerLogo->raise();
+        sellerError->raise();
 
         retranslateUi(ProductManager);
 
@@ -137,6 +142,7 @@ public:
         ourproductsLogo->setText(QCoreApplication::translate("ProductManager", "all prod", nullptr));
         XLogo->setText(QCoreApplication::translate("ProductManager", "X", nullptr));
         sellerLogo->setText(QCoreApplication::translate("ProductManager", "SellerLogo", nullptr));
+        sellerError->setText(QCoreApplication::translate("ProductManager", "No Products Added Yet", nullptr));
     } // retranslateUi
 
 };

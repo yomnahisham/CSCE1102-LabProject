@@ -76,6 +76,8 @@ void LoginWindow::on_regB_clicked()
 
 void LoginWindow::on_loginB_clicked()
 {
+    qDebug()<< "type is" << UserType;
+
     QString username = ui -> userLE ->text();
     QString password = ui -> passLE ->text();
 
@@ -85,6 +87,8 @@ void LoginWindow::on_loginB_clicked()
     //check for password
     loggedUser = users-> AllUsers::authenticateUser(UserType, username, password);
 
+    if (!loggedUser)
+        qDebug()<< "user not authenticated";
 
     //if both apply then go to productmanager window
     if (userExists&&loggedUser && password != "" && !loggedUser->isempty)

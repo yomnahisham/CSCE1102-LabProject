@@ -392,6 +392,7 @@ void Checkout::on_ConfirmButton_clicked()
         const CreditCard *selectedCredit = (creditSelected >= 0 && creditSelected < userCreditCards.size()) ? &userCreditCards[creditSelected] : nullptr;
         QScreen* screen = QGuiApplication::primaryScreen();
         QRect screenGeometry = screen->geometry();
+        cartt->clearCart();
         Confirm *confirmorder = new Confirm(nullptr, this, cartt, selectedAddress, selectedCredit, user, users);
         confirmorder->resize(screenGeometry.width(), screenGeometry.height());
         confirmorder->show();
@@ -399,7 +400,7 @@ void Checkout::on_ConfirmButton_clicked()
 
     }
 
-    cartt->clearCart();
+
 
 }
 
@@ -420,6 +421,9 @@ void Checkout::userDiscount(){
             ui->Total->setText("Total: " + QString("EGP %1").arg(Total, 0, 'f', 2));
             isApplied = true;
 
+        }else if (PromoCodes.isEmpty())
+        {
+            isApplied = true;
         }else{
             ui->InValidDiscount->setVisible(true);
 
