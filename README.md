@@ -2,8 +2,6 @@
 # Overview
 MEDAD Bookstore is a Qt-based application designed to operate as a bookstore service provider, like Amazon. It provides a user-friendly interface for customers, admins, and sellers.
 
-# Features
-
 # Getting Started
 To run the Product Management System, follow these steps:
 
@@ -11,8 +9,6 @@ To run the Product Management System, follow these steps:
   Install Qt Creator and configure it for C++ development.
   Open the project in Qt Creator.
   Build and run the project to launch the application.
-
-# Usage
 
 # Contributors
 Ayla Saleh (@aylasaleh) - User and All-Users 
